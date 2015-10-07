@@ -1,0 +1,24 @@
+Setup (0.5h)
+
+Come up with a design of the ALU (1h)
+
+come up with test benches (0.5h)
+
+learn about Bitslice + Control Logic LUT and some new stuff (1.5h)
+
+code and debug the design in verilog (4h)
+
+run the code in vivado and get data to analyze (2h)
+
+report  - Discuss any interesting design choices you made along the way (0.25h)
+	- Test Results (0.5h)
+	- Timing Analysis (0.5h)
+	- Work Plan Reflection (0.25h)
+
+Total time: 11h
+
+1st Meeting: Oct. 7th 4pm - 5:30pm 6:00pm - 8:30pm 
+
+2nd Meeting: 3.5h(coding in verilog) + 2h(vivado)
+
+3nd Meeting: 1.5h(Report)
