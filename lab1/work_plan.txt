@@ -1,6 +1,6 @@
 Setup (0.5h)
 
-Come up with a design of the ALU (1h)
+Come up with a design of the ALU (1h) 1.5h
 
 come up with test benches (0.5h)
 
