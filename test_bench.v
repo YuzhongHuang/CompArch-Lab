@@ -17,54 +17,36 @@ module testALU;
 	//adder
 	//posi+posi
 	command=3'd0;
-	$display("A  Operation  B | Result| Estimated result | carryout overflow zero");
-	a=32'sd2**32-2; b=32'sd1;  #10000000 
-	$display("%h  +(Add)   %h    |    %h  | ffffffff  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=32'sd2**32-2; b=32'sd2; #10000000 
-	$display("%h  +(Add)   %h    |    %h  | overflow  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=32'sd2**30;b=32'sd2**30-1; #10000000 
-	$display("%h  +(Add)   %h    |    %h  | fffffff  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	//positive+negative
-	a=32'sd2**31-1;b=-32'sd2**31-1; #10000000
-	$display("%h  +(Add)   %h    |    %h  | 00000000  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=32'sd2**31-1;b=-32'sd2**31-2; #10000000 
-	$display("%h  +(Add)   %h    |    %h  | 00000001  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	//negative+negative
-	a=-32'sd2**31-1; b=-32'sd1;  #10000000 
-	$display("%h  +(Add)   %h    |    %h  | 80000000  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=-32'sd2**31-1; b=-32'sd2; #10000000 
-	$display("%h  +(Add)   %h    |    %h  | overflow  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=-32'sd2**30;b=-32'sd2**30-1; #10000000 
-	$display("%h  +(Add)   %h    |    %h  | 80000001  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-
+	$display("A  Operation  B | Result| Estimated result | carryout overflow zero | expected_carryout overflow ");
+	a=32'sh7ffffffe; b=32'sd1;  #10000000 //011111....1110  + 000....00001
+	$display("%h   +(Add)    %h    |    %h   | 7fffffff  | %b  %b  %b  | 0  0 ", a, b,result,carryout, overflow, zero);
+	a=32'sh7ffffffe; b=32'sd2; #10000000  ///0111111.....1110 + 00000000....10
+	$display("%h   +(Add)    %h    |    %h   | 800000000  | %b  %b  %b | 0  1 ", a, b,result,carryout, overflow, zero);
+	a=32'sh40000000;b=32'sh3fffffff; #10000000 //01000...0000 + 0011111....1111
+	$display("%h   +(Add)    %h    |    %h   | fffffff  | %b  %b  %b | 0  0 ", a, b,result,carryout, overflow, zero);
+	//nega+nega
+	a=32'sh8000001;b=32'shffffffff; #10000000 //-(2**31-1)+ (-1)/// 10000...01 + 11111..1111
+	$display("%h   +(Add)    %h    |    %h   | 80000000 | %b  %b  %b | 1  0 ", a, b,result,carryout, overflow, zero);
+	a=32'sh80000000;b=32'shffffffff; #10000000 //-(2**31)+ (-1)/// 100....00000+1111....1111
+	$display("%h   +(Add)    %h    |     %h  | 7ffffff  | %b  %b  %b | 1  1 ", a, b,result,carryout, overflow, zero);
 
 	//substract
 	//posi-posi
 	command=3'd1;
-	$display("A  Operation  B | Result| Estimated result | carryout overflow zero");
-	a=32'sd2**31-1; b=32'sd2**31-2;  #1000 
-	$display("%h  -(Sub)   %h    |    %h  | 00000001  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=32'sd2**31-2; b=32'sd2**31-1; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | ffffffff  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	//posi-nega
-	a=32'sd2**30;b=-32'sd2**30-1; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | ffffffff  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=32'sd2**30;b=-32'sd2**30; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | 80000000  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=32'sd2**30; b=-32'sd2**31-1; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | overflow  | %b  %b  %b", a, b,result,carryout, overflow, zero);
+	$display("A  Operation  B | Result| Estimated result | carryout overflow zero | expected_carryout overflow");
+	a=32'sh7fffffff; b=32'sh7ffffffe;  #1000 //(2**31-1)-(2**31-2)// 011...1111 - 0111111...1110
+	$display("%h  -(Sub)   %h    |    %h  | 00000001  | %b  %b  %b | 1 0 ", a, b,result,carryout, overflow, zero);
+	a=32'sh7ffffffe; b=32'sh7fffffff; #1000 //(2**31-2)-(2**31-1)
+	$display("%h  -(Sub)   %h    |    %h  | ffffffff  | %b  %b  %b | 0 0", a, b,result,carryout, overflow, zero);
+	a=32'sh7fffffff; b=32'sh7fffffff; #1000 //(2**31-1)-(2**31-1)
+	$display("%h  -(Sub)   %h    |    %h  | 00000000  | %b  %b  %b | 0 0", a, b,result,carryout, overflow, zero);
+
+
 	//nega-posi
-	a=-32'sd1;b=32'sd2**31-1; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | 80000000  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=-32'sd2;b=32'sd2**31-1; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | overflow  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	//negative-negative
-	a=-32'sd2**31; b=-32'sd2**31-1;  #1000 
-	$display("%h  -(Sub)   %h    |    %h  | ffffffff  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=-32'sd2**31-1; b=-32'sd2**31-1; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | 00000000  | %b  %b  %b", a, b,result,carryout, overflow, zero);
-	a=-32'sd2**31-1;b=-32'sd2**31; #1000 
-	$display("%h  -(Sub)   %h    |    %h  | 00000001  | %b  %b  %b",a, b,result,carryout, overflow, zero);
+		a=-32'sd1;b=32'sh7fffffff; #1000 //1111....1111 - 011111...1111
+	$display("%h  -(Sub)   %h    |    %h  | 80000000  | %b  %b  %b| 1  0 ", a, b,result,carryout, overflow, zero);
+	a=-32'sd2;b=32'sh7fffffff; #1000 //1111....11110 - 011111...1111
+	$display("%h  -(Sub)   %h    |    %h  | 7fffffff  | %b  %b  %b| 1  1", a, b,result,carryout, overflow, zero);
 
 	//XOR
 	command=3'd2;
@@ -82,28 +64,30 @@ module testALU;
 
 	//SLT
 	command=3'd3;
-	$display("A  Operation  B | Result| Estimated result | carryout overflow zero");
+	$display("A  Operation  B | Result(SLT)| Estimated result | carryout overflow zero");
+	//if a<b , return 1 else return 0
 	a=32'sd2**31-1; b=32'sd2**31-2;  #1000 
-	$display("%h  SLT   %h    |    %h  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h    |    %b  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=32'sd2**31-1; b=32'sd2**31-1;  #1000 
-	$display("%h  SLT   %h   |    %h  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=32'sd2**31-2; b=32'sd2**31-1;  #1000 
-	$display("%h  SLT   %h   |    %h  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=32'sd1; b=-32'sd1;  #1000 
-	$display("%h  SLT   %h   |    %h  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=-32'sd1; b=32'sd1;  #1000 
-	$display("%h  SLT   %h   |    %h  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=-32'sd1; b=-32'sd2;  #1000 
-	$display("%h  SLT   %h   |    %h  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=-32'sd2; b=-32'sd1;  #1000 
-	$display("%h  SLT   %h   |    %h  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+
 	//overflow slt
 	a=32'sd2**32; b=32'sd1;  #1000 
-	$display("%h  SLT   %h   |    %h  | a=overflow  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 1  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=32'sd1; b=32'sd2**32;  #1000 
-	$display("%h  SLT   %h   |    %h  | b=overflow  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 	a=32'sd2**32; b=32'sd2**32;  #1000 
-	$display("%h  SLT   %h   |    %h  | a,b=overflow  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
+	$display("%h  SLT   %h   |    %b  | 0  | %b  %b  %b", a, b,result[0],carryout, overflow, zero);
 
 	//AND 
 	command=3'd4;
