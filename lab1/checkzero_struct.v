@@ -39,3 +39,18 @@ or_4input or_4_10(result12,result10);
 or orfinal(zero_before,result11,result12);
 not inver(zero,zero_before);
 endmodule 
+
+module testdoit;
+reg[31:0] a;
+wire zero;
+or_4input or4bit();
+checkzero checking(zero,a);
+
+
+initial begin
+a=32'sh00000000;  #1000 
+
+$display("result is %h ", a);
+end
+endmodule
+
