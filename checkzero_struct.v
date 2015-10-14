@@ -40,17 +40,17 @@ or orfinal(zero_before,result11,result12);
 not inver(zero,zero_before);
 endmodule 
 
-// module testdoit;
-// reg[31:0] a;
-// wire zero;
+module testdoit;
+reg[31:0] a;
+wire zero;
 
-// checkzero checking(zero,a);
+checkzero checking(zero,a);
 
 
-// initial begin
-// a=32'sh00000000;  #1000 
+initial begin
+a=32'sh00000000;  #1000 
 
-// $display("result is %h ", zero);
-// end
-// endmodule
+$display("result is %h ", zero);
+end
+endmodule
 

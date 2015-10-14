@@ -24,23 +24,6 @@ module oneBitAdder(
 	`OR(carryout, a0, a1);
 endmodule
 
-// 4-bit building block: 4 1-bit units
-module FullAdder4bit(
-	output[3:0] sum,
-	output carryout,
-	input[3:0] a,
-	input[3:0] b,
-	input carryin
-	);
-
-	wire c0, c1, c2;
-
-	oneBitAdder adder0 (sum[0], c0, a[0], b[0], carryin);
-	oneBitAdder adder1 (sum[1], c1, a[1], b[1], c0);
-	oneBitAdder adder2 (sum[2], c2, a[2], b[2], c1);
-	oneBitAdder adder3 (sum[3], carryout, a[3], b[3], c2);
-endmodule
-
 // Full 32-bit adder
 module FullAdder32bit(
 	output[31:0] sum,
@@ -51,17 +34,33 @@ module FullAdder32bit(
 	input carryin
 	);
 
-	integer first, last;
-	wire c0, c1, c2, c3, c4, c5, c6;
+	wire [30:0] cOut;
 
-	FullAdder4bit adder0 (sum[3:0], c0, a[3:0], b[3:0], carryin);
-	FullAdder4bit adder1 (sum[7:4], c1, a[7:4], b[7:4], c0);
-	FullAdder4bit adder2 (sum[11:8], c2, a[11:8], b[11:8], c1);
-	FullAdder4bit adder3 (sum[15:12], c3, a[15:12], b[15:12], c2);
-	FullAdder4bit adder4 (sum[19:16], c4, a[19:16], b[19:16], c3);
-	FullAdder4bit adder5 (sum[23:20], c5, a[23:20], b[23:20], c4);
-	FullAdder4bit adder6 (sum[27:24], c6, a[27:24], b[27:24], c5);
-	FullAdder4bit adder7 (sum[31:28], carryout, a[31:28], b[31:28], c6);
+	oneBitAdder adderBefore(sum[0], cOut[0], a[0], b[0], carryin);
+	generate
+		genvar i;
+		for (i=1; i<31; i=i+1) begin
+			oneBitAdder adder(sum[i], cOut[i], a[i], b[i], cOut[i-1]);
+		end
+	endgenerate
+	oneBitAdder adderAfter(sum[31], carryout, a[31], b[31], cOut[30]);
 
-	`XOR(overflow, c6, carryout);
+	`XOR(overflow, cOut[30], carryout);
 endmodule
+
+// module testAdder();
+// 	reg [31:0] a, b;
+// 	wire[31:0] sum;
+// 	wire carryout, overflow;
+// 	reg carryin;
+
+// 	FullAdder32bit adder(sum, carryout, overflow, a, b, carryin);
+
+// 	initial begin
+// 		a=32'd50; b=32'd29975; carryin=1; #100000000
+// 		$display("a:   %d\nb:   %d\nsum: %d\ncOut: %b, overflow: %b", adder.a, adder.b, adder.sum, carryout, overflow);
+// 	end
+
+// endmodule
+
+

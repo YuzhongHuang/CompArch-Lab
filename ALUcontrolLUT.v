@@ -1,12 +1,12 @@
 //Define the 3-bit control signal to be readable
-`define ADDsignal  3'd0
-`define SUBsignal  3'd1
-`define XORsignal  3'd2
-`define SLTsignal  3'd3
-`define ANDsignal  3'd4
-`define NANDsignal 3'd5
-`define ORsignal   3'd6
-`define NORsignal  3'd7
+`define ADD  3'd0
+`define SUB  3'd1
+`define XOR  3'd2
+`define SLT  3'd3
+`define AND  3'd4
+`define NAND 3'd5
+`define OR   3'd6
+`define NOR  3'd7
 
 //The ALU control LUT
 module ALUcontrolLUT
@@ -25,14 +25,14 @@ output reg[6:0] ALUsignal
 
   always @(ALUcommand) begin
     case (ALUcommand)
-      `ADDsignal:  begin ALUsignal = 64; end //1000000 in binary, which represents enable add(sub)    
-      `SUBsignal:  begin ALUsignal = 66; end //1000010 in binary, which represents enable add(sub) and invert B  
-      `XORsignal:  begin ALUsignal = 32; end //0100000 in binary, which represents enable XOR    
-      `SLTsignal:  begin ALUsignal = 18; end //0010010 in binary, which represents enable SLT and invert B  
-      `ANDsignal:  begin ALUsignal = 8; end  //0001000 in binary, which represents enable AND     
-      `NANDsignal: begin ALUsignal = 9; end  //0001001 in binary, which represents enable AND and flip the result  
-      `ORsignal:   begin ALUsignal = 4; end  //0000100 in binary, which represents enable OR     
-      `NORsignal:  begin ALUsignal = 5; end  //0000101 in binary, which represents enable OR and flip the result  
+      `ADD:  begin ALUsignal = 64; end //1000000 in binary, which represents enable add(sub)    
+      `SUB:  begin ALUsignal = 66; end //1000010 in binary, which represents enable add(sub) and invert B  
+      `XOR:  begin ALUsignal = 32; end //0100000 in binary, which represents enable XOR    
+      `SLT:  begin ALUsignal = 18; end //0010010 in binary, which represents enable SLT and invert B  
+      `AND:  begin ALUsignal = 8; end  //0001000 in binary, which represents enable AND     
+      `NAND: begin ALUsignal = 9; end  //0001001 in binary, which represents enable AND and flip the result  
+      `OR:   begin ALUsignal = 4; end  //0000100 in binary, which represents enable OR     
+      `NOR:  begin ALUsignal = 5; end  //0000101 in binary, which represents enable OR and flip the result  
     endcase
   end
 endmodule
