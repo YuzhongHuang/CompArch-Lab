@@ -19,6 +19,7 @@ During development, we also made some decisions:
 In summary, we improve our design along the way, especially for the reduction of area.
 
 ### Explanation of your test case strategy
+The majority of our tests only test with the four most significant bits, because we think the most significant four bit are enough to cover most of the interest area. But we do include full bit test in out test bench.
 
 Run the file run.sh to see our very nice test bench in the terminal.
 
@@ -61,10 +62,11 @@ We have four major pools of test cases, for each pool, there are some sub-pools,
 And together for the add and subtract, we test carryin and carryout with and without overflow for every bit:
 
    * A = (2^32-1), B = 1; A+B
-   * A = (2^31-1), B = 1; A-B
+   * A = (2^31-1), B = 1; A+B
 
-#### SLT
-For the SLT test, we focused on overflow and the most significant bit of the adder output
+####SLT
+For the SLT test, we focus on overflow and the most significant bit of the outcome
+>>>>>>> e861fec66310aad7c4d9ad1515ea24f7c6f55e51
 
 1. Overflow = 0, R[31] = 0
 
@@ -85,6 +87,7 @@ For these single bitwise operations that are independent of other bits, we inclu
 3. "0" and "1"
    * A = 0, B = (2^32-1)
 4. "0" and "0"     
+<<<<<<< HEAD
    * A = 0, B = 0
 
 ### A list of test case failures and the changes to your design they inspired.
