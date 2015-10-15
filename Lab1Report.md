@@ -9,7 +9,7 @@ ALU output = [adder, xor, slt, and, or, invertB, invert AND/OR]
 
 We first designed a schematic for a one-bit ALU. All the operations would take place regardless of what the true operation was, and the final results will be "filtered" by all the enable signals which will zero all the undesired outputs. We then developed the bit-slice design into a full 32-bit operation seen below:
 
-![Alt Text](images/ALU.jpg)
+![enter image description here](https://lh3.googleusercontent.com/-1bx1P7GBgrM/ViAqvHFxOmI/AAAAAAAAAHs/CvuLt6iUeks/s0/ALU.JPG "ALU.JPG")
 
 During development, we also made some decisions:
 
@@ -66,7 +66,6 @@ And together for the add and subtract, we test carryin and carryout with and wit
 
 ####SLT
 For the SLT test, we focus on overflow and the most significant bit of the outcome
->>>>>>> e861fec66310aad7c4d9ad1515ea24f7c6f55e51
 
 1. Overflow = 0, R[31] = 0
 
@@ -97,7 +96,7 @@ we didn't run into any test case failures. But we do figure out some calculation
 
 Below is the timing for one test case for our ALU. Because of the fact that every operation has to be carried out before we can decide on the output, the ALU is bottlenecked by the slowest module: the 32-bit adder. Even after that, it has to carry out 32-bit and/or operations on all the results, which is why it is so much more delayed after the "validSum" value is produced. "Zero" is limited by output, because it can only be calculated once "out" is calculated. However, our design ensures that the maximum timing delay will be 1000s, regardless of the inputs/operation.
 
-![Alt Text](images/aluWaveforms.PNG)
+![enter image description here](https://lh3.googleusercontent.com/-p2LDVLpH5ok/ViArMhQcK0I/AAAAAAAAAH4/WwZ7J7YdUro/s0/aluWaveforms.png "aluWaveforms.png")
 
 ## Work Plan Reflection
 ![enter image description here](https://lh3.googleusercontent.com/-SDQt45WEFUo/Vh-dJQOAacI/AAAAAAAAAHc/bc1PpNZ1law/s0/work+plan+reflection.png "work plan reflection.png")
