@@ -14,7 +14,7 @@ module testALU;
 
 	initial begin
 		//ADDITION
-		$display("\n1/ ADDITION (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n1/ ADDITION (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("   INPUTS   |       GENERATED RESULTS    |       EXPECTED RESULTS");
 		$display("---------------------------------------------------------------------");
 		$display("  A     B   |   Sum     C_out     OFlow  |   Sum     C_out     OFlow");
@@ -43,7 +43,7 @@ module testALU;
 		$display(" %b  %b |   %b      %b         %b    |   0011      0         0  | Positive + Negative w/o C_out", a[31:28], b[31:28], result[31:28], carryout, overflow);
 
 		// SUBTRACTION
-		$display("\n2/ SUBTRACTION (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n2/ SUBTRACTION (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("  A     B   |   Sum     C_out     OFlow  |   Sum     C_out     OFlow");
 		command=3'd1; 
 		a[27:0]=28'b0; b[27:0]=28'b0;
@@ -69,7 +69,7 @@ module testALU;
 		a[31:28]=4'b1110; b[31:28]=4'b1011; #3000
 		$display(" %b  %b |   %b      %b         %b    |   0011      0         0  | Negative - Negative w/o C_out", a[31:28], b[31:28], result[31:28], carryout, overflow);
 
-		$display("\n2.5/ TESTING CARRIED BITS OF ADDER (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n2.5/ TESTING CARRIED BITS OF ADDER (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("  A     B   |   Sum     C_out     OFlow  |   Sum     C_out     OFlow");
 		command=3'd0;
 		a=32'd2**31-1; b=32'd1; #3000
@@ -78,7 +78,7 @@ module testALU;
 		$display(" %b  %b |   %b      %b         %b    |   0000      1         0  | A = 2**32-1, B = 1", a[31:28], b[31:28], result[31:28], carryout, overflow);
 
 		// XOR
-		$display("\n3/ XOR (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n3/ XOR (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("   INPUTS   |    GENERATED     |     EXPECTED");
 		$display("--------------------------------------------------");	
 		$display("  A     B   |      A ^ B       |      A ^ B       ");
@@ -94,7 +94,7 @@ module testALU;
 		$display(" %b  %b |       %b       |       0000      ", a[31:28], b[31:28], result[31:28]);
 
 		// SLT
-		$display("\n4/ SLT");
+		$write("%c[1;34m",27); $display("\n4/ SLT"); $write("%c[0m",27);
 		$display("  INPUTS    |          GENERATED          |           EXPECTED");
 		$display("-----------------------------------------------------------------------");
 		$display("  A     B   |   Sum[31]    OFlow     SLT  |   Sum[31]     OFlow     SLT");
@@ -111,7 +111,7 @@ module testALU;
 		$display(" %b  %b |      %b         %b        %b   |       1         1        0", a[31:28], b[31:28], alu.resSum[31], alu.overflow, result[31]);
 
 		// AND
-		$display("\n5/ AND (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n5/ AND (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("   INPUTS   |    GENERATED     |     EXPECTED");
 		$display("--------------------------------------------------");	
 		$display("  A     B   |      A && B      |      A && B      ");
@@ -127,7 +127,7 @@ module testALU;
 		$display(" %b  %b |       %b       |       1111      ", a[31:28], b[31:28], result[31:28]);
 
 		// NAND
-		$display("\n6/ NAND (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n6/ NAND (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("  A     B   |    ~(A && B)     |    ~(A && B)     ");
 		command=3'd5;
 
@@ -141,7 +141,7 @@ module testALU;
 		$display(" %b  %b |       %b       |       0000      ", a[31:28], b[31:28], result[31:28]);
 
 		// OR
-		$display("\n7/ OR (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n7/ OR (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("  A     B   |      A || B      |      A || B      ");
 		command=3'd6;
 
@@ -155,7 +155,7 @@ module testALU;
 		$display(" %b  %b |       %b       |       1111      ", a[31:28], b[31:28], result[31:28]);
 
 		// NOR
-		$display("\n8/ NOR (4 Most Significant Bits)");
+		$write("%c[1;34m",27); $display("\n8/ NOR (4 Most Significant Bits)"); $write("%c[0m",27);
 		$display("  A     B   |    ~(A || B)     |    ~(A || B)     ");
 		command=3'd7;
 
@@ -166,8 +166,10 @@ module testALU;
 		a=32'd2**32-1; b=32'd0; #3000
 		$display(" %b  %b |       %b       |       0000      ", a[31:28], b[31:28], result[31:28]);
 		a=32'd2**32-1; b=32'd2**32-1; #3000
-		$display(" %b  %b |       %b       |       0000      ", a[31:28], b[31:28], result[31:28]);
+		$display(" %b  %b |       %b       |       0000      \n", a[31:28], b[31:28], result[31:28]);
 
-		$display("\n");
+		
+		
+
 	end
 endmodule

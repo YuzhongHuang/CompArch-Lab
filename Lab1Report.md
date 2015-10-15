@@ -1,31 +1,30 @@
 # Lab 1: Hieu Nguyen, Yuzhong Huang, Jake Jung
 
-##Implementation
-At first, we tried to build a selector at the entry and only choose to output “1” to the chosen operation and output nothing for the others. In this way, we could potentially save lots of energy. But after check in with ninja, we figure out that is unrealizable. 
+## Implementation
+Initially, our plan was to use a decoder on the operation signal and output Z to the 7 operations that we wouldn't need to use; this method would have saved a lot of energy. However, after talking to a ninja, we realized this could not be done.
 
-Then, we came up with the idea of a big Look up table that has all the 8 operations within a one-bit-ALU. And then connect 32 of them together. Also, we added check-ZERO, SLT, overflow in the last ALU. By adapting bit-slice approach, we can reuse some of the gates(the XOR gate are shared by the adder as well as the XOR operation)
+As a result, we settled on the idea of a big Look-Up Table that takes a 3 bit signal and outputs a 7-bit signal, explained here:
 
-Below is our diagram
-/*
- * diagram goes here
- */
+ALU output = [adder, xor, slt, and, or, invertB, invert AND/OR]
 
-/*
- * further explanation of the diagram goes here
- */
+We first designed a schematic for a one-bit ALU. All the operations would take place regardless of what the true operation was, and the final results will be "filtered" by all the enable signals which will zero all the undesired outputs. We then developed the bit-slice design into a full 32-bit operation seen below:
 
-During the development, we also make some changes:
+![Alt Text](images/ALU.jpg)
 
-combine some of the output from the look up table(we combine of & co, add & sub, nand&and, Cin&invB and so on);
-choose AND and OR gate instead of MUX at the end for the sake of area;
-choose XOR instead of MUX for invB selector for the same reason;
+During development, we also made some decisions:
+
+* Combine two/three signals into one bit to minimize the width of the LUT's output e.g. we combined the enabling bit of carryout, overflow, addition and subtraction into the first bit, or carryin and invertB.
+* Using an XOR gate instead of a mux when choosing between B and ~B to save time
 
 In summary, we improve our design along the way, especially for the reduction of area.
+
 ### Explanation of your test case strategy
+
+Run the file run.sh to see our very nice test bench in the terminal.
 
 We have four major pools of test cases, for each pool, there are some sub-pools, divided as follows:
 
-####add 
+#### add
 1. Overflow with carry out
   * 1001 + 1010
   * 1101 + 1010
@@ -44,56 +43,65 @@ We have four major pools of test cases, for each pool, there are some sub-pools,
 6. Positive + negative with carry out (overflow not possible)
   * 1110 + 0101
   * 0101 + 1111
-####subtract
+
+#### subtract
 1. Overflow with carry out
-
+  * 1001 - 0110
+  * 1101 - 0110
 2. No overflow with carry out
-
+  * 0101 - 1010
+  * 0110 - 1100
 3. Overflow with no carry out
-
+  * 1110 - 0100
+  * 1100 - 0011
 4. No overflow with no carry out
+  * 0100 - 1111
+  * 0101 - 0111
 
 And together for the add and subtract, we test carryin and carryout with and without overflow for every bit:
 
-   * (2^32-1) + 1
-   * (2^31-1) + 1
- 
-And zero test for zero as well
-      * 0 + 0
-####SLT
-For the SLT test, we focus on overflow and the most significant bit of the outcome
+   * A = (2^32-1), B = 1; A+B
+   * A = (2^31-1), B = 1; A-B
 
-1. Overflow with the first bit to be 1
+#### SLT
+For the SLT test, we focused on overflow and the most significant bit of the adder output
 
-2. Overflow with the first bit to be 0
+1. Overflow = 0, R[31] = 0
 
-3. No overflow with the first bit to be 1
+2. Overflow = 0, R[31] = 1
 
-4. No overflow with the first bit to be 0
+3. Overflow = 1, R[31] = 0
 
-####AND & NAND & OR & NOR &XOR
+4. Overflow = 1, R[31] = 1
 
-For these single bit operation that are independent of other bits, we include four test cases for every bit.
+#### AND, NAND, OR, NOR, XOR
 
-1. "1" and "0" 
-   * (2^32-1) and 0
+For these single bitwise operations that are independent of other bits, we included four test cases for all of them:
+
+1. "1" and "0"
+   * A = (2^32-1), B = 0
 2. "1" and "1"
-   * (2^32-1) and (2^32-1)
+   * A = (2^32-1), B = (2^32-1)
 3. "0" and "1"
-   * 0 and (2^32-1)
+   * A = 0, B = (2^32-1)
 4. "0" and "0"     
-   * 0 and 0
-###A list of test case failures and the changes to your design they inspired.
+   * A = 0, B = 0
+
+### A list of test case failures and the changes to your design they inspired.
 we didn't run into any test case failures. But we do figure out some calculation error in our test benches. Our design changes are basically inspired by the idea of reducing area. As for the testing, we implement the test bench code according to our design, one test pool after another.
 
-##Timing Analysis
+## Timing Analysis
 
-##Work Plan Reflection
+Below is the timing for one test case for our ALU. Because of the fact that every operation has to be carried out before we can decide on the output, the ALU is bottlenecked by the slowest module: the 32-bit adder. Even after that, it has to carry out 32-bit and/or operations on all the results, which is why it is so much more delayed after the "validSum" value is produced. "Zero" is limited by output, because it can only be calculated once "out" is calculated. However, our design ensures that the maximum timing delay will be 1000s, regardless of the inputs/operation.
+
+![Alt Text](images/aluWaveforms.PNG)
+
+## Work Plan Reflection
 ![enter image description here](https://lh3.googleusercontent.com/-SDQt45WEFUo/Vh-dJQOAacI/AAAAAAAAAHc/bc1PpNZ1law/s0/work+plan+reflection.png "work plan reflection.png")
 
-Above is our work plan as well as our estimated time for each job. 
+Above is our work plan as well as our estimated time for each job.
 
-We underestimate the design part. The design of the device actually takes a lot longer than we think. Part of the design involves consulting ninjas and communicating with teammates. And both the consulting and communication saves great amount of time for the coding part. So for the next time, we would separate these two actions from the design to make tasks more specific. 
+We underestimate the design part. The design of the device actually takes a lot longer than we think. Part of the design involves consulting ninjas and communicating with teammates. And both the consulting and communication saves great amount of time for the coding part. So for the next time, we would separate these two actions from the design to make tasks more specific.
 
 We also underestimate the test bench design, which also include transform designs into code. So for the next time, we would add one more task to code for the test benches.
 
