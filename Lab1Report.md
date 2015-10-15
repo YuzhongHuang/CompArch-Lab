@@ -1,7 +1,7 @@
 # Lab 1: Hieu Nguyen, Yuzhong Huang, Jake Jung
 
 ##Implementation
-At first, we tried to build a selector at the entry and only choose to output “1” to the chosen operation and output nothing for the others. In this way, we could potentially save lots of energy. But after check in with ninja, we figure out that is unrealizable. 
+At first, we tried to build a selector at the entry and only choose to output “1” to the chosen operation and output nothing for the others. In this way, we could potentially save lots of energy. But after check in with ninja, we figure out that is unreachable. 
 
 Then, we came up with the idea of a big Look up table that has all the 8 operations within a one-bit-ALU. And then connect 32 of them together. Also, we added check-ZERO, SLT, overflow in the last ALU. By adapting bit-slice approach, we can reuse some of the gates(the XOR gate are shared by the adder as well as the XOR operation)
 
@@ -22,6 +22,7 @@ choose XOR instead of MUX for invB selector for the same reason;
 
 In summary, we improve our design along the way, especially for the reduction of area.
 ### Explanation of your test case strategy
+The majority of our tests only test with the four most significant bits, because we think the most significant four bit are enough to cover most of the interest area. But we do include full bit test in out test bench.
 
 We have four major pools of test cases, for each pool, there are some sub-pools, divided as follows:
 
@@ -44,6 +45,7 @@ We have four major pools of test cases, for each pool, there are some sub-pools,
 6. Positive + negative with carry out (overflow not possible)
   * 1110 + 0101
   * 0101 + 1111
+
 ####subtract
 1. Overflow with carry out
 
@@ -59,7 +61,7 @@ And together for the add and subtract, we test carryin and carryout with and wit
    * (2^31-1) + 1
  
 And zero test for zero as well
-      * 0 + 0
+
 ####SLT
 For the SLT test, we focus on overflow and the most significant bit of the outcome
 
@@ -83,8 +85,14 @@ For these single bit operation that are independent of other bits, we include fo
    * 0 and (2^32-1)
 4. "0" and "0"     
    * 0 and 0
+
 ###A list of test case failures and the changes to your design they inspired.
 we didn't run into any test case failures. But we do figure out some calculation error in our test benches. Our design changes are basically inspired by the idea of reducing area. As for the testing, we implement the test bench code according to our design, one test pool after another.
+
+###Test cases along the way
+we made some changes to our test cases while testing. A major one would be combing the test cases of XOR, AND, NAND, OR, NOR since they are operations that are independent of the other bits, we just need to perform four test cases for all of them at every bit level. 
+
+We also adds ZERO test, and the test of all carryin and carryout for ADD to increase our test cases coverage. 
 
 ##Timing Analysis
 
