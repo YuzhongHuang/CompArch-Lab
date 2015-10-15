@@ -107,7 +107,7 @@ Above is our work plan as well as our estimated time for each job.
 We underestimate the design part. The design of the device actually takes a lot longer than we think. Part of the design involves consulting ninjas and communicating with teammates. And both the consulting and communication saves great amount of time for the coding part. So for the next time, we would separate these two actions from the design to make tasks more specific.
 
 We also underestimate the test bench design, which also include transform designs into code. So for the next time, we would add one more task to code for the test benches.
-
+Â
 What we have overestimate is the time we need to spent on setup work and study new stuff(for this lab, LUT and bit-slice method). But the overestimation is not significant. So we will probably keep them there.
 
 Also, in our original plan, we didn't include connection coding(for example, connect test cases with our ALU) and debugging for the whole system, which takes significant amount of time. So we will include these two for the next lab's work plan.
