@@ -1,7 +1,7 @@
-`define XOR xor #50
-`define AND and #50
-`define OR or #50
-`define NOT not #50
+`define XOR xor #10
+`define AND and #10
+`define OR or #10
+`define NOT not #10
 
 // 1-bit building block
 module oneBitAdder(
@@ -34,6 +34,7 @@ module FullAdder32bit(
 	input carryin
 	);
 
+	// Stores all the carried bits
 	wire [30:0] cOut;
 
 	oneBitAdder adderBefore(sum[0], cOut[0], a[0], b[0], carryin);
@@ -57,10 +58,12 @@ endmodule
 // 	FullAdder32bit adder(sum, carryout, overflow, a, b, carryin);
 
 // 	initial begin
-// 		a=32'd50; b=32'd29975; carryin=1; #100000000
+// 		$dumpfile("adder.vcd");
+// 		$dumpvars(0, testAdder);
+// 		a=32'b1001; b=32'b1111; carryin=1; #3500
 // 		$display("a:   %d\nb:   %d\nsum: %d\ncOut: %b, overflow: %b", adder.a, adder.b, adder.sum, carryout, overflow);
+// 		$finish;
 // 	end
-
 // endmodule
 
 

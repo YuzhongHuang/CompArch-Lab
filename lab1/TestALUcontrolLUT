@@ -1,3 +1,0 @@
-vlog -reportprogress 300 -work work ALUcontrolLUT.v
-vsim -voptargs="+acc" testALUcontrolLUT
-run 100
