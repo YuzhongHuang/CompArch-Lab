@@ -1,12 +1,12 @@
 Setup (0.5h) 10min
 
-Come up with a design of the ALU (1h) 2h
+Come up with a design of the ALU (1h) 3h
 
 come up with test benches (0.5h) 2h
 
-learn about Bitslice + Control Logic LUT and some new stuff (1.5h) 1h
+learn about Bitslice + Control Logic LUT and some new stuff (1.5h) 0.5h
 
-code and debug the design in verilog (4h)
+code and debug the design in verilog (4h) 5h
 
 run the code in vivado and get data to analyze (2h) NA
 
