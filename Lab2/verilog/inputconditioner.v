@@ -17,7 +17,7 @@ output reg  negativeedge    // 1 clk pulse at falling edge of conditioned
     parameter counterwidth = 3; // Counter size, in bits, >= log2(waittime)
     parameter waittime = 3;     // Debounce delay, in clock cycles
     
-    reg[counterwidth-1:0] counter = 0;
+    reg [counterwidth-1:0] counter = 0;
     reg synchronizer0 = 0;
     reg synchronizer1 = 0;
     
