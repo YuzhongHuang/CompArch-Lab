@@ -1,0 +1,33 @@
+Given that the initial signal is '0' for a long and stable time, during which the registers synchronizer0, synchronizer1 and conditioned will be 0. Suppose there is a glitch with a certain length 'l' at time T = 0, which inputs '1' to the noisy signal, and each clock cycle takes 't', we will exam step by step to see how long can 'l' be without disturbing the register conditioned.
+
+1. At T = 0, the noisy signal begins to input glitch '1'. At the same time, the clock arrives at its positive edge. In this case, synchronizer0 becomes 1, synchronizer1 and conditioned stays still.
+
+2. After the first clock cycle, both synchronizer0 and synchronizer1 becomes 1, and conditioned stays still.
+
+3. At the third clock cycle, both synchronizer0 and synchronizer1 is 1. And the code enters the 'else' statement since synchronizer1 is not equal to conditioned anymore. But the counter is still '0' at this point, so it increase the counter by 1.
+
+4. At T = 3t, the code increase the counter to 2 and do nothing.
+
+5. At T = 4t, the code increase the counter to 3 and do nothing.
+
+6. At T = 5t, the code increase the counter to 4 and do nothing.
+
+7. At T = 6t, the code increase the counter to 5 and do nothing.
+
+8. At T = 7t, the code increase the counter to 6 and do nothing.
+
+9. At T = 8t, the code increase the counter to 7 and do nothing.
+
+10. At T = 9t, the code increase the counter to 8 and do nothing.
+
+11. At T = 10t, the code increase the counter to 9 and do nothing.
+
+12. At T = 11t, the code increase the counter to 10 and do nothing.
+
+13. At T = 12t, counter == waittime and enters the code to change register conditioned to 1, which is bad.
+
+The above shows the steps need to take to allow the noisy signal disturb the input conditioner. Now, let's see which is the furtherest step we can go without disturbing the system. If the signal lasts to step 13, it will not be able to change the fact as well as step 12. Since it takes two clock cycle for the input signal to reach synchronizer1 and one more to check whether synchronizer1 == conditioned is true or not.
+
+However, if at step 11(at which T = 10t), synchronizer0 changes back to 0 at the end of the cycle and synchronizer1 is still '1'. And then, when counter becomes 10 at the next cycle, synchronizer1 becomes 0. And at the next cycle, the code finds synchronizer1 == conditioned is true and changes counter back to '0' and the disturb is stopped.
+
+So the longest length of glitch that we could stop is smaller than l = 10t = 10 * (1/50MHZ) = 2 * 10 ^ (-7). Therefore, we are able to filter out glitch shorter than 2 * 10 ^ (-7) at the given situation.

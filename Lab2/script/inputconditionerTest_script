@@ -1,0 +1,1 @@
+iverilog -o ../compile/inputconditionerTest ../verilog/inputconditioner.t.v ../verilog/inputconditioner.v
