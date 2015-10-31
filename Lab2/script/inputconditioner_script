@@ -1,1 +1,1 @@
-iverilog -o ../compile/inputconditioner ../verilog/inputconditioner.v 
+iverilog -o ../compile/inputconditioner ../verilog/inputconditioner.v && ./../compile/inputconditioner && ./../compile/inputconditioner
