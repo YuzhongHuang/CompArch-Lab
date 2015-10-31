@@ -25,9 +25,9 @@ output reg  negativeedge    // 1 clk pulse at falling edge of conditioned
         // make sure that positiveedge and negativeedge only last for one clock cycle
         positiveedge <= 0;
         negativeedge <= 0;
-        if(conditioned == synchronizer1)
+        if(conditioned == synchronizer1) begin
             counter <= 0;
-        else begin
+        end else begin
             if( counter == waittime) begin
                 counter <= 0;
                 conditioned <= synchronizer1;
@@ -36,8 +36,9 @@ output reg  negativeedge    // 1 clk pulse at falling edge of conditioned
                 negativeedge <= !synchronizer1;  // set negativeedge to the value of not synchronizer1 
                 // under the if statement that synchronizer1 is not equal to conditioned
             end
-            else 
+            else begin
                 counter <= counter+1;
+            end
         end
         synchronizer0 <= noisysignal;
         synchronizer1 <= synchronizer0;
