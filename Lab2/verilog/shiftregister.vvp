@@ -1,0 +1,84 @@
+#! /usr/local/Cellar/icarus-verilog/0.9.7/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x7fd1d8c05520 .scope module, "test" "test" 2 39;
+ .timescale 0 0;
+v0x7fd1d8c1cc40_0 .var "clk", 0 0;
+v0x7fd1d8c1ccf0_0 .var "parallelDataIn", 7 0;
+v0x7fd1d8c1cd70_0 .net "parallelDataOut", 7 0, L_0x7fd1d8c1d1b0; 1 drivers
+v0x7fd1d8c1ce30_0 .var "parallelLoad", 0 0;
+v0x7fd1d8c1ced0_0 .var "peripheralClkEdge", 0 0;
+v0x7fd1d8c1cf80_0 .var "serialDataIn", 0 0;
+v0x7fd1d8c1d020_0 .net "serialDataOut", 0 0, L_0x7fd1d8c1d0e0; 1 drivers
+S_0x7fd1d8c05600 .scope module, "shiftreg" "shiftregister" 2 45, 2 9, S_0x7fd1d8c05520;
+ .timescale 0 0;
+P_0x7fd1d8c0b2b8 .param/l "width" 2 10, +C4<01000>;
+L_0x7fd1d8c1d1b0 .functor BUFZ 8, v0x7fd1d8c1cbc0_0, C4<00000000>, C4<00000000>, C4<00000000>;
+v0x7fd1d8c0b1a0_0 .net "clk", 0 0, v0x7fd1d8c1cc40_0; 1 drivers
+v0x7fd1d8c1c810_0 .net "parallelDataIn", 7 0, v0x7fd1d8c1ccf0_0; 1 drivers
+v0x7fd1d8c1c8a0_0 .alias "parallelDataOut", 7 0, v0x7fd1d8c1cd70_0;
+v0x7fd1d8c1c920_0 .net "parallelLoad", 0 0, v0x7fd1d8c1ce30_0; 1 drivers
+v0x7fd1d8c1c9b0_0 .net "peripheralClkEdge", 0 0, v0x7fd1d8c1ced0_0; 1 drivers
+v0x7fd1d8c1ca70_0 .net "serialDataIn", 0 0, v0x7fd1d8c1cf80_0; 1 drivers
+v0x7fd1d8c1cb00_0 .alias "serialDataOut", 0 0, v0x7fd1d8c1d020_0;
+v0x7fd1d8c1cbc0_0 .var "shiftregistermem", 7 0;
+E_0x7fd1d8c07b80 .event posedge, v0x7fd1d8c0b1a0_0;
+L_0x7fd1d8c1d0e0 .part v0x7fd1d8c1cbc0_0, 7, 1;
+    .scope S_0x7fd1d8c05600;
+T_0 ;
+    %wait E_0x7fd1d8c07b80;
+    %load/v 8, v0x7fd1d8c1c9b0_0, 1;
+    %mov 9, 0, 2;
+    %cmpi/u 8, 1, 3;
+    %jmp/0xz  T_0.0, 4;
+    %load/v 8, v0x7fd1d8c1c920_0, 1;
+    %mov 9, 0, 2;
+    %cmpi/u 8, 1, 3;
+    %jmp/0xz  T_0.2, 4;
+    %load/v 8, v0x7fd1d8c1ca70_0, 1;
+    %mov 9, 0, 7;
+    %set/v v0x7fd1d8c1cbc0_0, 8, 8;
+    %jmp T_0.3;
+T_0.2 ;
+    %load/v 8, v0x7fd1d8c1cbc0_0, 8;
+    %ix/load 0, 1, 0;
+    %mov 4, 0, 1;
+    %shiftl/i0  8, 8;
+    %set/v v0x7fd1d8c1cbc0_0, 8, 8;
+    %load/v 8, v0x7fd1d8c1ca70_0, 1;
+    %ix/load 0, 0, 0;
+    %set/x0 v0x7fd1d8c1cbc0_0, 8, 1;
+T_0.3 ;
+T_0.0 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x7fd1d8c05520;
+T_1 ;
+    %set/v v0x7fd1d8c1cc40_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x7fd1d8c1cc40_0, 1, 1;
+    %set/v v0x7fd1d8c1ced0_0, 1, 1;
+    %set/v v0x7fd1d8c1ce30_0, 0, 1;
+    %movi 8, 115, 8;
+    %set/v v0x7fd1d8c1ccf0_0, 8, 8;
+    %set/v v0x7fd1d8c1cf80_0, 1, 1;
+    %delay 10, 0;
+    %set/v v0x7fd1d8c1cc40_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x7fd1d8c1cc40_0, 1, 1;
+    %delay 10, 0;
+    %set/v v0x7fd1d8c1cc40_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x7fd1d8c1cc40_0, 1, 1;
+    %delay 10, 0;
+    %vpi_call 2 51 "$display", "Parallel-in: %b | Serial-out: %b | Parallel-out: %b", v0x7fd1d8c1c810_0, v0x7fd1d8c1cb00_0, v0x7fd1d8c1c8a0_0;
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "shiftregister.v";
