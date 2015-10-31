@@ -23,7 +23,7 @@ module shiftregister
     always @(posedge clk) begin
         if (peripheralClkEdge == 1) begin
         	if (parallelLoad == 1) begin
-        		shiftregistermem = serialDataIn;
+        		shiftregistermem = parallelDataIn;
         	end else begin
         		shiftregistermem = shiftregistermem << 1;
         		shiftregistermem[0] = serialDataIn;
@@ -36,21 +36,21 @@ module shiftregister
 
 endmodule
 
-module test();
-	reg clk, peripheralClkEdge, parallelLoad, serialDataIn;
-	reg [7:0] parallelDataIn;
-	wire [7:0] parallelDataOut;
-	wire serialDataOut;
+// module test();
+// 	reg clk, peripheralClkEdge, parallelLoad, serialDataIn;
+// 	reg [7:0] parallelDataIn;
+// 	wire [7:0] parallelDataOut;
+// 	wire serialDataOut;
 
-	shiftregister shiftreg(clk, peripheralClkEdge, parallelLoad, parallelDataIn, serialDataIn, parallelDataOut, serialDataOut);
+// 	shiftregister shiftreg(clk, peripheralClkEdge, parallelLoad, parallelDataIn, serialDataIn, parallelDataOut, serialDataOut);
 
-	initial begin
-		clk = 0; #10
-		clk = 1; peripheralClkEdge = 1; parallelLoad = 0; parallelDataIn = 8'b01110011; serialDataIn = 1; #10 
-		clk = 0; #10 clk = 1; #10 clk = 0; #10 clk = 1; #10
-		$display("Parallel-in: %b | Serial-out: %b | Parallel-out: %b", shiftreg.parallelDataIn, shiftreg.serialDataOut, shiftreg.parallelDataOut);
-	end
-endmodule
+// 	initial begin
+// 		clk = 0; #10
+// 		clk = 1; peripheralClkEdge = 1; parallelLoad = 0; parallelDataIn = 8'b01110011; serialDataIn = 1; #10 
+// 		clk = 0; #10 clk = 1; #10 clk = 0; #10 clk = 1; #10
+// 		$display("Parallel-in: %b | Serial-out: %b | Parallel-out: %b", shiftreg.parallelDataIn, shiftreg.serialDataOut, shiftreg.parallelDataOut);
+// 	end
+// endmodule
 
 
 

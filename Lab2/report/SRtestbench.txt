@@ -1,12 +1,12 @@
-In the test bench for our shift register, we implements two test cases. The two test cases are to test the serial-in-paralell-out and paralell-in-serial-out modes respectively. In the first test case, we write our serial input every clock cycle to be 1, 0, 0, 1, 0, 0, 1, 0. We also set the paralell input data to be 8b`10010010(same as serial, but will be opposite in the shift register). We set '0' to parallelLoad and '1' to peripheralClkEdge, which allows serial input and disables paralell input. After setting all the serial inputs, we begins reading. We verify serial ouput and paralell output at every clock cycle. If a single output is not expected, a error will be reported and test fails. 
+In the test bench for our shift register, I implements three test cases. The three test cases are to test the serial-in-paralell-out, paralell-in-serial-out modes and peripheralClkEdge respectively. In the first test case, I write our serial input every clock cycle to be 1, 0, 0, 1, 0, 0, 1, 0. I also set the paralell input data to be 8b`01001001(opposite as the serial input). I set '0' to parallelLoad and '1' to peripheralClkEdge, which allows serial input and disables paralell input. After setting all the serial inputs, I begins reading. I verify serial ouput and paralell output at every clock cycle. If a single output is not expected, a error will be reported and test fails. 
 
 In that test, the following broken devices will be detected:
-  1. broken peripheralClkEdge or broken parallelLoad (always set to '0' or '1')
+  1. broken parallelLoad (always set to '1')
   2. broken data input (choosing wrong data input)
   3. registers cannot shift correctly 
   4. serial output not outputing LSB
   5. broken paralell output
 
-And for the second case, we write our serial input every clock cycle to be 0, 0, 1, 1, 1, 0, 1, 1. We also set the paralell input data to be 8b`00111011(same as serial, but will be opposite in the shift register). We set '1' to parallelLoad and '0' to peripheralClkEdge, which disables serial input and enables paralell input. After setting all the paralell inputs, we begins reading. We verify serial ouput and paralell output at every clock cycle. If a single output is not expected, a error will be reported and test fails. 
+And for the second case, I write our serial input every clock cycle to be 1. I also set the paralell input data to be 8b`00111011(will be different in MSB with serial input). I set '1' to parallelLoad and '1' to peripheralClkEdge, which disables serial input and enables paralell input. After setting all the paralell inputs, It begins reading. I verify serial ouput and paralell output. If a single output is not expected, a error will be reported and test fails. 
 
-Notice that we intentionally set the LSB and MSB to be different so that the serial-in and paralell-in will actually make differece.
+The third test simulate the case that the positive edge is not triggered. In this case, the shift register should not write anything to its memory. And the output should be the same as that in test 2. Notice that I intentionally set the LSB and MSB to be different in the input of test 2 and test 3, so that it will actually make differece.
