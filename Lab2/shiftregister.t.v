@@ -84,7 +84,8 @@ output reg             serialDataIn        // Load shift reg serially
         // Test Case 1: 
         //  Write 1 - 0 - 0 - 1 - 0 - 0 - 1 - 0 to the serial input
         //  Verify with the serivalDataout and ParallelDataout
-        //  In this test,  
+        //  In this test, DUT with broken peripheralClkEdge will be reported as error
+        //    
         peripheralClkEdge = 1;
         parallelLoad = 0;
         parallelDataIn = 0;
