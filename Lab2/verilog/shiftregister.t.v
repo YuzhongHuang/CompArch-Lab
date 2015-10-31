@@ -68,6 +68,8 @@ output reg             serialDataIn        // Load shift reg serially
 
     // Initialize register driver signals
     initial begin
+        $dumpfile("testShiftRegister.vcd");
+        $dumpvars(0, shiftregtestbench);
         clk = 0;
         peripheralClkEdge = 0;
         parallelLoad = 0;

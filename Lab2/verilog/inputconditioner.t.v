@@ -67,6 +67,8 @@ module inputcondtestbench (
     input           falling);
 
     initial begin
+        $dumpfile("testConditioner.vcd");
+        $dumpvars(0, inputcondtestbench);
         clk = 0;
         pin = 1;
     end
