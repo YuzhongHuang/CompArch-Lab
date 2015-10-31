@@ -82,18 +82,48 @@ output reg             serialDataIn        // Load shift reg serially
         #10
 
         // Test Case 1: 
-        //   Write '42' to register 2, verify with Read Ports 1 and 2
-        //   (Passes because example register file is hardwired to return 42)
+        //  Write 1 - 0 - 0 - 1 - 0 - 0 - 1 - 0 to the serial input
+        //  Verify with the serivalDataout and ParallelDataout
+        //  In this test,  
         peripheralClkEdge = 1;
         parallelLoad = 0;
         parallelDataIn = 0;
         serialDataIn = 1;
 
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 0;
+
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 0;
+
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 1;
+
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 0;
+
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 0;
+
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 1;
+
+        #5 clk=1; #5 clk=0;   // Generate single clock pulse
+
+        serialDataIn = 0;
 
         #5 clk=1; #5 clk=0;   // Generate single clock pulse
 
         // Verify expectations and report test result
-        if((serialDataOut != 0) || (parallelDataOut != 0)) begin
+        //   at this point, the serial output should be 1, the first number we write
+        //   the parallel output should be 01001001, which is 73
+        if((serialDataOut != 1) || (parallelDataOut != 73)) begin  
           dutpassed = 0;  
           $display("Test Case 1 Failed");
         end
