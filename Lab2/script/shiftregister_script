@@ -1,1 +1,1 @@
-iverilog -o ../compile/shiftregister ../verilog/shiftregister.v
+iverilog -o ../compile/shiftregister ../verilog/shiftregister.v && ./../compile/shiftregister
