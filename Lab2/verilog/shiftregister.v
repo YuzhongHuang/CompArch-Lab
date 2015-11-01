@@ -21,7 +21,6 @@ module shiftregister
     reg [width-1:0] shiftregistermem;
 
     always @(posedge clk) begin
-
         if (parallelLoad == 1) begin
             shiftregistermem <= parallelDataIn;
         end else begin
@@ -29,6 +28,7 @@ module shiftregister
         		shiftregistermem <= shiftregistermem << 1;
                 shiftregistermem[0] <= serialDataIn;
             end
+        end
     end
 
     assign serialDataOut = shiftregistermem[7];
