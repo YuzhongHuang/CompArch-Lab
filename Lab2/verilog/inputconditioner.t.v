@@ -1,6 +1,9 @@
 //------------------------------------------------------------------------
 // Input Conditioner test bench
 //------------------------------------------------------------------------
+
+`include "inputconditioner.v"
+
 module testConditioner();
 
     wire clk;
@@ -71,7 +74,7 @@ module inputcondtestbench (
     end
 
     /* Will test for the following:
-        1. Synchronization - 
+        1. Synchronization - change inputs at frequency that is not a multiple of 10. 
         2. Clean - change inputs many times within 3 clock cycles, should output the final value
         3. Preprocess - Change inputs so that we can detect edge changes in conditioned
     */
@@ -120,6 +123,14 @@ module inputcondtestbench (
         if ((conditioned != 0) || (rising != 0) || (falling != 1)) begin
             dutpassed = 0;
             $display("Test Case 3 Failed"); 
+        end
+
+        // Test Case 1: Change input at frequency of 3
+        #3 pin = 0; #3 pin = 1; #3 pin = 0; #3 pin = 1; #3 pin = 0; #3 pin = 1; #57 // wait in total 75 seconds
+
+        if ((conditioned != 1)) begin
+            dutpassed = 0;
+            $display("Test Case 1 Failed"); 
         end
 
         #5 endtest = 1;
