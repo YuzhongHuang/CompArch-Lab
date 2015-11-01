@@ -1,0 +1,11 @@
+We will use 10111011 as the input. Two main tests: 
+
+1. Serial in -> parallel out:
+	- Parallel load needs to be zero, so Button0 goes from 0 to 1.
+	- ClkEdge needs to be 1, so Switch1 goes from 0 to 1.
+	- Pass the data into ParallelIn parameter of midpoint module
+
+2. Parallel in -> serial out:
+	- Parallel load needs to be one, so Button0 goes from 1 to 0.
+	- ClkEdge needs to be 1, so Switch1 goes from 0 to 1.
+	- Switch 0 goes as follows: on, off, on, on, on, off, on, on (10111011)
