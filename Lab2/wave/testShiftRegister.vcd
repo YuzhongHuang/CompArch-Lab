@@ -1,0 +1,157 @@
+$date
+	Sun Nov  1 00:52:26 2015
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module testshiftregister $end
+$scope module test $end
+$var wire 1 ! begintest $end
+$var wire 8 " parallelDataOut [7:0] $end
+$var wire 1 # serialDataOut $end
+$var reg 1 $ clk $end
+$var reg 1 % dutpassed $end
+$var reg 1 & endtest $end
+$var reg 8 ' parallelDataIn [7:0] $end
+$var reg 1 ( parallelLoad $end
+$var reg 1 ) peripheralClkEdge $end
+$var reg 1 * serialDataIn $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0*
+0)
+0(
+b0 '
+x&
+x%
+0$
+x#
+bx "
+0!
+$end
+#5
+1$
+#10
+1%
+0&
+0$
+1!
+#15
+1$
+#20
+0$
+1*
+b10010010 '
+1)
+#25
+bx1 "
+1$
+#30
+0$
+0*
+#35
+bx10 "
+1$
+#40
+0$
+#45
+bx100 "
+1$
+#50
+0$
+1*
+#55
+bx1001 "
+1$
+#60
+0$
+0*
+#65
+bx10010 "
+1$
+#70
+0$
+#75
+bx100100 "
+1$
+#80
+0$
+1*
+#85
+bx1001001 "
+1$
+#90
+0$
+0*
+#95
+1#
+b10010010 "
+1$
+#100
+0$
+#105
+0#
+b100100 "
+1$
+#110
+0$
+#115
+b1001000 "
+1$
+#120
+0$
+#125
+1#
+b10010000 "
+1$
+#130
+0$
+#135
+0#
+b100000 "
+1$
+#140
+0$
+#145
+b1000000 "
+1$
+#150
+0$
+#155
+1#
+b10000000 "
+1$
+#160
+0$
+#165
+0#
+b0 "
+1$
+#170
+0$
+#175
+b111011 "
+1$
+1*
+b111011 '
+1(
+#180
+0$
+#185
+1$
+b10000000 '
+0(
+0)
+#190
+0$
+#195
+1$
+#200
+0$
+1&
