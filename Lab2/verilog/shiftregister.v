@@ -21,14 +21,14 @@ module shiftregister
     reg [width-1:0] shiftregistermem;
 
     always @(posedge clk) begin
-        if (peripheralClkEdge == 1) begin
-        	if (parallelLoad == 1) begin
-        		shiftregistermem = parallelDataIn;
-        	end else begin
-        		shiftregistermem = shiftregistermem << 1;
-        		shiftregistermem[0] = serialDataIn;
-        	end
-        end
+
+        if (parallelLoad == 1) begin
+            shiftregistermem <= parallelDataIn;
+        end else begin
+            if (peripheralClkEdge == 1) begin
+        		shiftregistermem <= shiftregistermem << 1;
+                shiftregistermem[0] <= serialDataIn;
+            end
     end
 
     assign serialDataOut = shiftregistermem[7];
