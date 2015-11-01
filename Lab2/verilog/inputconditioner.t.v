@@ -1,9 +1,6 @@
 //------------------------------------------------------------------------
 // Input Conditioner test bench
 //------------------------------------------------------------------------
-
-`include "inputconditioner.v"
-
 module testConditioner();
 
     wire clk;
@@ -67,7 +64,7 @@ module inputcondtestbench (
     input           falling);
 
     initial begin
-        $dumpfile("testConditioner.vcd");
+        $dumpfile("../wave/testConditioner.vcd");
         $dumpvars(0, inputcondtestbench);
         clk = 0;
         pin = 1;
@@ -102,7 +99,7 @@ module inputcondtestbench (
             - sync0 = 1, sync1 = 1, conditioned = x, counter = 3
             - sync0 = 1, sync1 = 1, conditioned = 1, counter = 0
         */
-        $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
+        // $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
         if ((conditioned != 0) || (rising != 0) || (falling != 0)) begin
             dutpassed = 0;
             $display("Test Case 1 Failed"); 
@@ -111,15 +108,15 @@ module inputcondtestbench (
         // Test Case 3: Change input as follows: 0 then hold until conditioned changes, then input = 1 then hold until conditioned changes
         #5 pin = 1; #65 // wait until correct clock rise
 
-        $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
+        // $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
         if ((conditioned != 1) || (rising != 1) || (falling != 0)) begin
             dutpassed = 0;
-            $display("Test Case 3 Failed"); 
+            $display("Test Case 2 Failed"); 
         end
 
         #5 pin = 0; #65 // wait until correct clock rise
 
-        $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
+        // $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
         if ((conditioned != 0) || (rising != 0) || (falling != 1)) begin
             dutpassed = 0;
             $display("Test Case 3 Failed"); 

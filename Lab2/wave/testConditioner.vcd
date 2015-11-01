@@ -1,0 +1,149 @@
+$date
+	Sun Nov  1 00:52:34 2015
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module testConditioner $end
+$scope module test $end
+$var wire 1 ! begintest $end
+$var wire 1 " conditioned $end
+$var wire 1 # falling $end
+$var wire 1 $ rising $end
+$var reg 1 % clk $end
+$var reg 1 & dutpassed $end
+$var reg 1 ' endtest $end
+$var reg 1 ( pin $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+1(
+x'
+x&
+0%
+x$
+x#
+x"
+0!
+$end
+#5
+0#
+0$
+1%
+#10
+1&
+0'
+0%
+1!
+#15
+0(
+1%
+#20
+1(
+0%
+#25
+1%
+#30
+0(
+0%
+#35
+1#
+0"
+1%
+#40
+0%
+#45
+0#
+1%
+#50
+0%
+#55
+1%
+#60
+0%
+#65
+1%
+#70
+0%
+#75
+1%
+#80
+0%
+#85
+1%
+#90
+0%
+#95
+1%
+#100
+0%
+1(
+#105
+1%
+#110
+0%
+#115
+1%
+#120
+0%
+#125
+1%
+#130
+0%
+#135
+1%
+#140
+0%
+#145
+1%
+#150
+0%
+#155
+1$
+1"
+1%
+#160
+0%
+#165
+0$
+1%
+#170
+0%
+0(
+#175
+1%
+#180
+0%
+#185
+1%
+#190
+0%
+#195
+1%
+#200
+0%
+#205
+1%
+#210
+0%
+#215
+1%
+#220
+0%
+#225
+1#
+0"
+1%
+#230
+0%
+#235
+0#
+1%
+#240
+0%
+1'

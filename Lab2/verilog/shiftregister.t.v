@@ -45,7 +45,11 @@ module testshiftregister();
 
     // Display test results ('dutpassed' signal) once 'endtest' goes high
     always @(posedge endtest) begin
-        $display("DUT passed?: %b", dutpassed);
+        if (dutpassed == 1) begin
+            $display("\n\033[32mDUT passed?: %b\033[37m\n", dutpassed);
+        end else begin
+            $display("\n\033[31mDUT passed?: %b\033[37m\n", dutpassed);
+        end
     end
 
 endmodule
@@ -68,7 +72,7 @@ output reg             serialDataIn        // Load shift reg serially
 
     // Initialize register driver signals
     initial begin
-        $dumpfile("testShiftRegister.vcd");
+        $dumpfile("../wave/testShiftRegister.vcd");
         $dumpvars(0, shiftregtestbench);
         clk = 0;
         peripheralClkEdge = 0;
@@ -235,8 +239,9 @@ output reg             serialDataIn        // Load shift reg serially
         //
         //  Device described as the following will be reported as error:
         //  1. broken peripheralClkEdge (always set to '1')
+        //  2. broken parallelLoad (always set to '1')
         peripheralClkEdge = 0;
-        parallelLoad = 1;
+        parallelLoad = 0;
         parallelDataIn = 128;
         serialDataIn = 1;
 
