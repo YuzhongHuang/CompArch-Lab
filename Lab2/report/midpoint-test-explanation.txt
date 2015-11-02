@@ -1,11 +1,29 @@
-We will use 10111011 as the input. Two main tests: 
+For the FPGA, we will perform two kinds of test: one for serial-in-paralell-out, 
+and the other for parallel-in-serial-out mode. Since the LED can only show four
+bits, we choose to display the four least significant bit, which is from 0 to 3.
+So you can think it as an 4-bit shift register. Also, for the midpoint checkin,
+we hard-coded paralell input to be xA5(8b'10100101). But for the LEDs, only the 
+last four bit will show up, which is 0101.
 
-1. Serial in -> parallel out:
-	- Parallel load needs to be zero, so Button0 goes from 0 to 1.
-	- ClkEdge needs to be 1, so Switch1 goes from 0 to 1.
-	- Pass the data into ParallelIn parameter of midpoint module
+Following are the units we will be using for the test:
 
-2. Parallel in -> serial out:
-	- Parallel load needs to be one, so Button0 goes from 1 to 0.
-	- ClkEdge needs to be 1, so Switch1 goes from 0 to 1.
-	- Switch 0 goes as follows: on, off, on, on, on, off, on, on (10111011)
+	-button 0, which is denoted as btn[0], will enable parallel input when pressed
+
+	-switch 0, which is denoted as sw[0], represents the value of serial data input
+
+	-switch 1, which is denoted as sw[1], will allows the value in sw[0] to be written to the shift register on its rising edge
+
+	-LED(0 to 3), which is denoted as led[3:0], will display the shift register memory(right-most four bits)
+
+
+1. Serial in -> :
+	- The shift register will write serial input on the positive edge of sw[1], so we initially set sw[1] to be 0
+	- Change the value of sw[0] to whatever you want to write into the register
+	- Pass the data into shift register by changing sw[1] from 0 to 1, and you will see the value you wrote was loaded onto the LED above sw[0]
+	- Repeat the process, and the original bits will shift to left, and the new value will appear on led[0]
+
+2. Parallel in -> :
+	- Click btn[0] to enable parallel input
+	- 0101 should appear on the LEDs
+
+Done
