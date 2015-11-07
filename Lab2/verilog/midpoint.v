@@ -1,6 +1,9 @@
+`include "inputconditioner.v"
+`include "shiftregister.v"
+
 module midpoint(
 	// input button, switches and LEDs for FPGA testing
-	input[0:0] btn,
+	input btn,
 	input[1:0] sw, 
 	output[3:0] led,
 	input clk
@@ -15,7 +18,7 @@ module midpoint(
 	assign led = parallelOut[3:0];
 
 	// provides inputs to the three input conditioner
-	inputconditioner cond0(clk, btn[0], conditioned[0], rising[0], falling[0]);
+	inputconditioner cond0(clk, btn, conditioned[0], rising[0], falling[0]);
 	inputconditioner cond1(clk, sw[0], conditioned[1], rising[1], falling[1]);
 	inputconditioner cond2(clk, sw[1], conditioned[2], rising[2], falling[2]);
 
