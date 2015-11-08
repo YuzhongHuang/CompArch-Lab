@@ -5,8 +5,8 @@
 module MISObuffer
 (
 	input d,
-	output q,
 	input enable,
+	output q
 );
 	assign q = enable? d : 'bz;
 endmodule

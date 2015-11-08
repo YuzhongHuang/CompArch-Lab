@@ -3,14 +3,14 @@
  */
 module finitestatemachine 
 (
-	input cs; // conditioned output from chip select
-	input sclk; // positive edge of the serial clock 
-	input rw; // shift register out[0], the R/W bit to decide between read1 & write 1
+	input cs, // conditioned output from chip select
+	input sclk, // positive edge of the serial clock 
+	input rw, // shift register out[0], the R/W bit to decide between read1 & write 1
 
-	output MISO_BUFF; // MISO enable, 0 if it is write, which will produce a tri-state MISO
-	output DM_WE; // data memory write enable
-	output ADDR_WE; // address latch write enable, will be 1 if got
-	output SR_WE; // shift register write from data memory enable
+	output reg MISO_BUFF, // MISO enable, 0 if it is write, which will produce a tri-state MISO
+	output reg DM_WE, // data memory write enable
+	output reg ADDR_WE, // address latch write enable, will be 1 if got
+	output reg SR_WE // shift register write from data memory enable
 );
 
 /*

@@ -25,8 +25,8 @@ module spiMemory
     wire CS_conditioned;
     wire[7:0] Paralell_out;
     wire Serial_out;
-    wire memory_out;
-    wire address_out;
+    wire[7:0] memory_out;
+    wire[7:0] address_out;
     wire dff_out;
 
     // MOSI input conditioner
@@ -71,7 +71,7 @@ module spiMemory
     finitestatemachine fsm(
                            .cs(CS_conditioned),
                            .sclk(SCLK_poeg),
-                           .rw(Serial_out),
+                           .rw(Paralell_out[0]),
                            .MISO_BUFF(MISO_BUFF),
                            .DM_WE(DM_WE),
                            .ADDR_WE(ADDR_WE),
@@ -81,10 +81,10 @@ module spiMemory
     // data memory
     datamemory memory(
                       .clk(clk),
-                      .dataout(memory_out),
-                      .address(address_out),
+                      .dataOut(memory_out),
+                      .address(address_out[6:0]),
                       .writeEnable(DM_WE),
-                      .datain(Paralell_out)
+                      .dataIn(Paralell_out)
                       );
 
     // address latch

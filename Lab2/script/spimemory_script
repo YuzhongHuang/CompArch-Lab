@@ -1,0 +1,1 @@
+iverilog -o ../compile/spimemory ../verilog/spimemory.v ../verilog/MISObuffer.v ../verilog/addresslatch.v ../verilog/datamemory.v ../verilog/dff.v ../verilog/finitestatemachine.v ../verilog/inputconditioner.v ../verilog/shiftregister.v && ./../compile/spimemory
