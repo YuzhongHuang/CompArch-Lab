@@ -7,11 +7,6 @@ module MISObuffer
 	input d,
 	output q,
 	input enable,
-	input clk
 );
-
-	always @(posedge clk) begin
-		assign q = enable? d : 'bz;
-	end
-
+	assign q = enable? d : 'bz;
 endmodule
