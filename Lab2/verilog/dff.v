@@ -4,12 +4,12 @@
 
 module dff
 (
-    input trigger,
+    input clk,
     input enable,
     input       d,
     output reg  q
 );
-    always @(posedge trigger) begin
+    always @(posedge clk) begin
         if(enable) begin
             q <= d;
         end

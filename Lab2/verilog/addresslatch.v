@@ -1,4 +1,4 @@
-module addrlatch (q, d, wrenable, clk);
+module addresslatch (q, d, wrenable, clk);
 	parameter W = 8;
 
 	output reg [W-1:0] q;
