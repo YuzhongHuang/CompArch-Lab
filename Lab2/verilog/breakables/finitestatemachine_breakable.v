@@ -1,13 +1,12 @@
 /*
  * simple finite state machine to encode control signals based on states
  */
-
-module finitestatemachine 
+module finitestatemachine_breakable 
 (
 	input cs, // conditioned output from chip select
 	input sclk, // positive edge of the serial clock 
 	input rw, // shift register out[0], the R/W bit to decide between read1 & write 1
-
+	input fault_pin,
 	output reg MISO_BUFF, // MISO enable, 0 if it is write, which will produce a tri-state MISO
 	output reg DM_WE, // data memory write enable
 	output reg ADDR_WE, // address latch write enable, will be 1 if got
@@ -98,7 +97,11 @@ localparam STATE_Get = 0,
  			end
 
  			STATE_Done: begin // done and reset counter
- 				counter <= 0;
+ 				if (fault_pin) begin
+ 					counter <= 1;
+ 				end else begin
+ 					counter <= 0;
+ 				end			
  			end
  		endcase
  	end

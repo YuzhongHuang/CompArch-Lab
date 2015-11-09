@@ -1,0 +1,2 @@
+inputcond posedge always 1
+never write to datamemory
