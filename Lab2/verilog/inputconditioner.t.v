@@ -2,8 +2,6 @@
 // Input Conditioner test bench
 //------------------------------------------------------------------------
 
-`include "inputconditioner.v"
-
 module testConditioner();
 
     wire clk;

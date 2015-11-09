@@ -1,2 +1,5 @@
-inputcond posedge always 1
+/*
+ * this text file described the broken parts when fault-pin is set to high
+ */
+inputcond posedge always 0
 never write to datamemory

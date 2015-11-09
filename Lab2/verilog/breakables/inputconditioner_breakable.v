@@ -37,7 +37,7 @@ output reg  negativeedge    // 1 clk pulse at falling edge of conditioned
                 counter <= 0;
                 conditioned <= synchronizer1;
                 if (fault_pin) begin
-                    positiveedge <= 1;
+                    positiveedge <= 0;
                 end else begin
                     positiveedge <= synchronizer1;  // set positiveedge to the value of synchronizer1 
                 end
