@@ -112,10 +112,6 @@ And then, we read from the addresses to check whether the value is correct or no
 
 ### Fault Injection
 
-//In your report, describe the fault you are injecting. Include a schematic of the area //local to the fault to better identify which gate or wire is broken.
-
-//Explain one specific test pattern that will identify this failure mode.
-
 We have two fault injectors: inputconditioner_breakable and finitestatemachine_breakble. For the conditioner, we broken the D Flip-Flop that holds the value of "rising" that detects when the conditioner has a positive edge. "Rising" is permanently set to 0.
 
 For the finitestatemachine in the DONE state, we reset the counter to 1 instead of 0.
@@ -125,7 +121,9 @@ Below is the diagram of the broken input conditioner:
 // IMAGE_HERE
 
 Testing for failure:
-- To test that the inputconditioner is broken,
+- By setting "rising" to always 0, the shift register will not read the SerialIn data. This essentially will not allow the SPI memory to read or write since it cannot read the MOSI_pin. This will show when we write then try to read data from the memory, as it can only return xxxxxxxx.
+
+- By setting the counter to 1 instead of 0 after we get to state_DONE, we are essentially shifting the input bit stream to the left by 1. This means the address will be either 2 times or 2 times plus 1 the intended address, the input data will be 2 times the intended data, and we are not setting the R/W pin where we thought we are. To test for this, simply try to read from any address and see if we receive the correct data.
 
 ## Work Plan Reflection
 
