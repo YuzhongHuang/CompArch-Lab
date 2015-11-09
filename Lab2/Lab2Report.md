@@ -18,7 +18,7 @@ We read through the whole lab before coming up with an work plan. Compared to wh
 
 The schematic of our input conditioner design is shown below:
 
-![enter image description here](https://lh3.googleusercontent.com/-1bx1P7GBgrM/ViAqvHFxOmI/AAAAAAAAAHs/CvuLt6iUeks/s0/ALU.JPG "ALU.JPG")
+![enter image description here](https://lh3.googleusercontent.com/-8ohC_UM_7hg/VkENLHl_J2I/AAAAAAAAAKY/jN18Fa8jmwM/s0/inputconditioner.jpg "inputconditioner.jpg")
 
 In our input conditioner, there is a counter which wait for three times before output to the conditioned port. The main purpose of the counter is to get rid of the noisy signal in the input. And the clock analysis is included below:
 
@@ -118,7 +118,7 @@ For the finitestatemachine in the DONE state, we reset the counter to 1 instead 
 
 Below is the diagram of the broken input conditioner:
 
-// IMAGE_HERE
+![enter image description here](https://lh3.googleusercontent.com/-q8-y2AXxRnE/VkENSg_yJtI/AAAAAAAAAKk/F93c1r0CQ7A/s0/inputconditioner_broken.jpg "inputconditioner_broken.jpg")
 
 Testing for failure:
 - By setting "rising" to always 0, the shift register will not read the SerialIn data. This essentially will not allow the SPI memory to read or write since it cannot read the MOSI_pin. This will show when we write then try to read data from the memory, as it can only return xxxxxxxx.
