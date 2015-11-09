@@ -1,2 +1,5 @@
+/*
+ * this text file described the broken parts when fault-pin is set to high
+ */
 inputcond posedge always 1
 never write to datamemory
