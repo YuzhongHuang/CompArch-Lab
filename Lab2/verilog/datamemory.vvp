@@ -1,0 +1,88 @@
+#! /usr/local/Cellar/icarus-verilog/0.9.7/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x7ff548c055b0 .scope module, "testDM" "testDM" 2 32;
+ .timescale 0 0;
+v0x7ff548c1d2f0_0 .var "addr", 6 0;
+v0x7ff548c1d380_0 .var "clk", 0 0;
+v0x7ff548c1d420_0 .var "dIn", 7 0;
+v0x7ff548c1d4e0_0 .net "dOut", 7 0, v0x7ff548c1d120_0; 1 drivers
+v0x7ff548c1d580_0 .var "wr_en", 0 0;
+S_0x7ff548c0d100 .scope module, "DM" "datamemory" 2 39, 2 8, S_0x7ff548c055b0;
+ .timescale 0 0;
+P_0x7ff548c058c8 .param/l "addresswidth" 2 10, +C4<0111>;
+P_0x7ff548c058f0 .param/l "depth" 2 11, +C4<010000000>;
+P_0x7ff548c05918 .param/l "width" 2 12, +C4<01000>;
+v0x7ff548c0d220_0 .net "address", 6 0, v0x7ff548c1d2f0_0; 1 drivers
+v0x7ff548c1d010_0 .net "clk", 0 0, v0x7ff548c1d380_0; 1 drivers
+v0x7ff548c1d0a0_0 .net "dataIn", 7 0, v0x7ff548c1d420_0; 1 drivers
+v0x7ff548c1d120_0 .var "dataOut", 7 0;
+v0x7ff548c1d1b0 .array "memory", 0 127, 7 0;
+v0x7ff548c1d260_0 .net "writeEnable", 0 0, v0x7ff548c1d580_0; 1 drivers
+E_0x7ff548c07420 .event posedge, v0x7ff548c1d010_0;
+    .scope S_0x7ff548c0d100;
+T_0 ;
+    %wait E_0x7ff548c07420;
+    %load/v 8, v0x7ff548c1d260_0, 1;
+    %jmp/0xz  T_0.0, 8;
+    %load/v 8, v0x7ff548c1d0a0_0, 8;
+    %ix/getv 3, v0x7ff548c0d220_0;
+    %jmp/1 t_0, 4;
+    %ix/load 0, 8, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v0x7ff548c1d1b0, 0, 8;
+t_0 ;
+T_0.0 ;
+    %ix/getv 3, v0x7ff548c0d220_0;
+    %load/av 8, v0x7ff548c1d1b0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v0x7ff548c1d120_0, 0, 8;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x7ff548c055b0;
+T_1 ;
+    %delay 5, 0;
+    %load/v 8, v0x7ff548c1d380_0, 1;
+    %inv 8, 1;
+    %set/v v0x7ff548c1d380_0, 8, 1;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_0x7ff548c055b0;
+T_2 ;
+    %set/v v0x7ff548c1d380_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x7ff548c1d580_0, 1, 1;
+    %movi 8, 20, 7;
+    %set/v v0x7ff548c1d2f0_0, 8, 7;
+    %movi 8, 104, 8;
+    %set/v v0x7ff548c1d420_0, 8, 8;
+    %delay 10, 0;
+    %vpi_call 2 47 "$display", "dIn: %b | addr: %b | wr_en: %b | dOut: %b", v0x7ff548c1d0a0_0, v0x7ff548c0d220_0, v0x7ff548c1d260_0, &A<v0x7ff548c1d1b0, v0x7ff548c0d220_0 >;
+    %set/v v0x7ff548c1d580_0, 1, 1;
+    %movi 8, 40, 7;
+    %set/v v0x7ff548c1d2f0_0, 8, 7;
+    %movi 8, 52, 8;
+    %set/v v0x7ff548c1d420_0, 8, 8;
+    %delay 10, 0;
+    %vpi_call 2 49 "$display", "dIn: %b | addr: %b | wr_en: %b | dOut: %b", v0x7ff548c1d0a0_0, v0x7ff548c0d220_0, v0x7ff548c1d260_0, &A<v0x7ff548c1d1b0, v0x7ff548c0d220_0 >;
+    %set/v v0x7ff548c1d580_0, 0, 1;
+    %movi 8, 20, 7;
+    %set/v v0x7ff548c1d2f0_0, 8, 7;
+    %delay 10, 0;
+    %vpi_call 2 51 "$display", "dIn: %b | addr: %b | wr_en: %b | dOut: %b", v0x7ff548c1d0a0_0, v0x7ff548c0d220_0, v0x7ff548c1d260_0, &A<v0x7ff548c1d1b0, v0x7ff548c0d220_0 >;
+    %set/v v0x7ff548c1d580_0, 0, 1;
+    %movi 8, 40, 7;
+    %set/v v0x7ff548c1d2f0_0, 8, 7;
+    %delay 10, 0;
+    %vpi_call 2 53 "$display", "dIn: %b | addr: %b | wr_en: %b | dOut: %b", v0x7ff548c1d0a0_0, v0x7ff548c0d220_0, v0x7ff548c1d260_0, &A<v0x7ff548c1d1b0, v0x7ff548c0d220_0 >;
+    %vpi_call 2 54 "$finish";
+    %end;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "datamemory.v";
