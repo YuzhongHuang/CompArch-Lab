@@ -1,6 +1,15 @@
 //------------------------------------------------------------------------
 // SPI Memory
 //------------------------------------------------------------------------
+`include "addresslatch.v"
+`include "MISObuffer.v"
+`include "dff.v"
+`include "inputconditioner.v"
+`include "shiftregister.v"
+`include "finitestatemachine.v"
+`include "datamemory.v"
+`include "breakables/inputconditioner_breakable.v"
+`include "breakables/finitestatemachine_breakable.v"
 
 module spiMemory
 (
@@ -23,34 +32,37 @@ module spiMemory
     wire SCLK_poeg;
     wire SCLK_neeg;
     wire CS_conditioned;
-    wire[7:0] Paralell_out;
+    wire[7:0] ParallelOut;
     wire Serial_out;
     wire[7:0] memory_out;
     wire[7:0] address_out;
     wire dff_out;
 
     // MOSI input conditioner
-    inputconditioner MOSI(
+    inputconditioner_breakable MOSI(
                           .clk(clk),
                           .noisysignal(mosi_pin),
+                          .fault_pin(fault_pin),
                           .conditioned(MOSI_conditioned),
                           .positiveedge(),
                           .negativeedge()
                           );
 
     // SCLK input conditioner
-    inputconditioner SCLK(
+    inputconditioner_breakable SCLK(
                           .clk(clk),
                           .noisysignal(sclk_pin),
+                          .fault_pin(fault_pin),
                           .conditioned(),
                           .positiveedge(SCLK_poeg),
                           .negativeedge(SCLK_neeg)
                           ); 
 
     // CS input conditioner 
-    inputconditioner CS(
+    inputconditioner_breakable CS(
                         .clk(clk),
                         .noisysignal(sclk_pin),
+                        .fault_pin(fault_pin),
                         .conditioned(),
                         .positiveedge(SCLK_poeg),
                         .negativeedge(SCLK_neeg)
@@ -63,15 +75,15 @@ module spiMemory
                                 .parallelLoad(SR_WE),
                                 .parallelDataIn(memory_out),
                                 .serialDataIn(MOSI_conditioned),
-                                .parallelDataOut(Paralell_out),
+                                .parallelDataOut(ParallelOut),
                                 .serialDataOut(Serial_out)
                                 );
 
     // finite state machine
-    finitestatemachine fsm(
+    finitestatemachine_breakable fsm(
                            .cs(CS_conditioned),
                            .sclk(SCLK_poeg),
-                           .rw(Paralell_out[0]),
+                           .rw(ParallelOut[0]),
                            .MISO_BUFF(MISO_BUFF),
                            .DM_WE(DM_WE),
                            .ADDR_WE(ADDR_WE),
@@ -84,13 +96,13 @@ module spiMemory
                       .dataOut(memory_out),
                       .address(address_out[6:0]),
                       .writeEnable(DM_WE),
-                      .dataIn(Paralell_out)
+                      .dataIn(ParallelOut)
                       );
 
     // address latch
     addresslatch addresslatch(
                               .q(address_out),
-                              .d(Paralell_out),
+                              .d(ParallelOut),
                               .wrenable(ADDR_WE),
                               .clk(clk)
                               );
@@ -108,22 +120,28 @@ module spiMemory
                           .d(Serial_out),
                           .q(miso_pin),
                           .enable(MISO_BUFF));
-
-
 endmodule
    
-// module testSpi();
+module testSpi();
 
-//  reg clk, sclk_pin, cs_pin, mosi_pin, fault_pin;
-//  wire miso_pin;
-//  wire [3:0] leds;
+    reg clk, sclk_pin, cs_pin, mosi_pin, fault_pin;
+    wire miso_pin;
+    wire [3:0] leds;
 
-//  spiMemory spi(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, fault_pin, leds);
+    spiMemory spi(clk, sclk_pin, cs_pin, miso_pin, mosi_pin, fault_pin, leds);
 
-//  initial begin
-//      clk = 0; #10
-//      clk = 1; sclk_pin = 1; cs_pin = 0; #10
-//      // $display("Sclk: %b | CS: %b | Concatenation: %b | Expected: %b", spi.sclk_pin, spi.cs_pin, spi.switches);
-//  end
+    initial begin
+        clk = 0; sclk_pin = 1; #10
+        clk = 1; cs_pin = 0; sclk_pin = 0; 
+    end
 
-// endmodule
+endmodule
+
+
+
+
+
+
+
+
+

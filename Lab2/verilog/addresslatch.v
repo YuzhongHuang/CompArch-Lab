@@ -8,7 +8,7 @@ module addresslatch (q, d, wrenable, clk);
 
 	always @(posedge clk) begin
 		if (wrenable) begin
-			q = d;
+			q <= d;
 		end
 	end
 endmodule
