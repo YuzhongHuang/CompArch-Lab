@@ -101,7 +101,7 @@ module inputcondtestbench (
             - sync0 = 1, sync1 = 1, conditioned = 1, counter = 0
         */
         // $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
-        if ((conditioned != 0) || (rising != 0) || (falling != 0)) begin
+        if ((conditioned != 0) && (rising != 0) && (falling != 0)) begin
             dutpassed = 0;
             $display("Test Case 1 Failed"); 
         end
@@ -110,7 +110,7 @@ module inputcondtestbench (
         #5 pin = 1; #65 // wait until correct clock rise
 
         // $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
-        if ((conditioned != 1) || (rising != 1) || (falling != 0)) begin
+        if ((conditioned != 1) && (rising != 1) && (falling != 0)) begin
             dutpassed = 0;
             $display("Test Case 2 Failed"); 
         end
@@ -118,7 +118,7 @@ module inputcondtestbench (
         #5 pin = 0; #65 // wait until correct clock rise
 
         // $display("CONDITIONED: %b | RISING: %b | FALLING: %b", conditioned, rising, falling);
-        if ((conditioned != 0) || (rising != 0) || (falling != 1)) begin
+        if ((conditioned != 0) && (rising != 0) && (falling != 1)) begin
             dutpassed = 0;
             $display("Test Case 3 Failed"); 
         end

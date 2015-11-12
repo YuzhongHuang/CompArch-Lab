@@ -4,13 +4,14 @@
 
 module fsm 
 (
-	input clk, // positive edge of the serial clock 
-	input [3:0] nextstate,
-	input zeroflag,
-	output reg PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
+	input 		clk, // positive edge of the serial clock 
+	input 		zeroflag,
+	input [3:0] instr,
+	input [3:0] currState,
+	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN,
-	output reg [1:0] ALU_SRCB, PC_SRC, DST,
-	output reg [2:0] ALU_OP
+	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
+	output reg 	[2:0] ALU_OP
 );
 
 /*
@@ -75,7 +76,7 @@ reg[3:0] counter;
 			end
 
 			STATE_EX_OP_IMM: begin
-				// SET ALU_OP
+				ALU_OP <= 2;
 			end
 
 			STATE_EX_ADDI: begin
@@ -134,31 +135,30 @@ reg[3:0] counter;
 endmodule
 
 
-module testfsm();
+// module testfsm();
 
-	reg clk, zeroflag;
-	reg [3:0] nextState;
-	wire PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-				A_WE, B_WE, REG_WE, REG_IN;
-	wire [1:0] ALU_SRCB, PC_SRC, DST;
-	wire [2:0] ALU_OP;
+// 	reg clk, zeroflag;
+// 	wire PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
+// 				A_WE, B_WE, REG_WE, REG_IN;
+// 	wire [1:0] ALU_SRCB, PC_SRC, DST;
+// 	wire [2:0] ALU_OP;
 
-	fsm myFsm(clk, nextState, zeroflag, PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-				A_WE, B_WE, REG_WE, REG_IN, ALU_SRCB, PC_SRC, DST, ALU_OP);
+// 	fsm myFsm(clk, zeroflag, PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
+// 				A_WE, B_WE, REG_WE, REG_IN, ALU_SRCB, PC_SRC, DST, ALU_OP);
 
-	always begin
-		#5 clk = !clk;
-	end
+// 	always begin
+// 		#5 clk = !clk;
+// 	end
 
-	always @(myFsm.state) begin
-		$display("STATE: %b", myFsm.state);
-	end
+// 	always @(myFsm.state, myFsm.clk) begin
+// 		$display("STATE: %b", myFsm.state);
+// 	end
 
-	initial begin 
-		clk=0; #20;
-		$display("PC_WE: %b", myFsm.PC_WE);
-		$finish;
-	end
+// 	initial begin 
+// 		clk=0; #20;
+// 		$display("PC_WE: %b", myFsm.PC_WE);
+// 		$finish;
+// 	end
 
-endmodule
+// endmodule
  
