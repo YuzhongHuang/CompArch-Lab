@@ -140,7 +140,7 @@ module fsmtestbench (
         end else if ((currState == 5) && (outputs != 18'b00_0000_0001_0000_0000)) begin
         	dutpassed = 0;
         	$display("LW EX phase broken.");
-       	end else if ((currState == 9) && (outputs != 18'b00_1000_0000_0000_0000)) begin
+       	end else if ((currState == 9) && (outputs != 0)) begin
        		dutpassed = 0;
        		$display("LW MEM phase broken.");
    		end	else if ((currState == 12) && (outputs != 18'b00_0000_0110_0000_0000)) begin
@@ -148,7 +148,121 @@ module fsmtestbench (
    			$display("LW WB phase broken.");
    		end
 
-   		
+   		// SW
+   		instr = 2; #10;
+   		if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 1) && (outputs != 18'b00_0001_1000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SW ID phase broken.");
+        end else if ((currState == 5) && (outputs != 18'b00_0000_0001_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SW EX phase broken.");
+        end else if ((currState == 10) && (outputs != 18'b00_0000_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SW MEM phase broken.");
+        end
+
+        // ADD
+        instr = 3; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 1) && (outputs != 18'b00_0001_1000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("ADD ID phase broken.");
+        end else if ((currState == 6) && (outputs != 18'b00_0000_0001_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("ADD EX phase broken.");
+        end else if ((currState == 13) && (outputs != 18'b00_0000_0100_0000_1000)) begin
+        	dutpassed = 0;
+        	$display("ADD WB phase broken.");
+        end
+
+        // SUB
+        instr = 4; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 1) && (outputs != 18'b00_0001_1000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SUB ID phase broken.");
+        end else if ((currState == 6) && (outputs != 18'b00_0000_0001_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SUB EX phase broken.");
+        end else if ((currState == 13) && (outputs != 18'b00_0000_0100_0000_1000)) begin
+        	dutpassed = 0;
+        	$display("SUB WB phase broken.");
+        end
+
+        // SLT
+        instr = 5; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 1) && (outputs != 18'b00_0001_1000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SLT ID phase broken.");
+        end else if ((currState == 6) && (outputs != 18'b00_0000_0001_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("SLT EX phase broken.");
+        end else if ((currState == 13) && (outputs != 18'b00_0000_0100_0000_1000)) begin
+        	dutpassed = 0;
+        	$display("SLT WB phase broken.");
+        end
+
+        // JUMP
+        instr = 6; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 2) && (outputs != 18'b10_0000_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("JUMP ID phase broken.");
+        end
+
+        // JUMP AND LINK
+        instr = 7; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 2) && (outputs != 18'b10_0000_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("JAL ID phase broken.");
+        end else if ((currState == 14) && (outputs != 18'b00_0000_0110_0001_0000)) begin
+        	dutpassed = 0;
+        	$display("JAL WB phase broken.");
+        end
+
+        // JUMP REGISTER
+        instr = 8; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 1) && (outputs != 18'b00_0001_1000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("JR ID phase broken.");
+        end else if ((currState == 7) && (outputs != 0)) begin
+        	dutpassed = 0;
+        	$display("JR EX phase broken.");
+        end else if ((currState == 15) && (outputs != 18'b10_0000_0000_0100_0000)) begin
+        	dutpassed = 0;
+        	$display("JR WB phase broken.");
+        end
+
+        // BNE
+        instr = 9; #10;
+        if ((currState == 0) && (outputs != 18'b11_0110_0000_0000_0000)) begin
+        	dutpassed = 0;
+        	$display("IF phase broken.");
+        end else if ((currState == 3) && (outputs != 18'b00_0011_1001_0010_0000)) begin
+        	dutpassed = 0;
+        	$display("BNE ID phase broken.");
+        end else if ((currState == 8) && (outputs != {!zeroflag, 17'b0_0000_0000_1100_0011})) begin
+        	dutpassed = 0;
+        	$display("BNE EX phase broken.");
+        end
 
         $finish;
     end
