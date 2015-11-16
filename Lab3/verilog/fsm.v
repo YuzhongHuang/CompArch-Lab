@@ -6,8 +6,8 @@ module fsm
 (
 	input 		clk, // positive edge of the serial clock 
 	input 		zeroflag,
-	input [3:0] instr,
-	input [3:0] currState,
+	input [5:0] instr,
+	output reg 	[3:0] currState,
 	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN,
 	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
@@ -40,13 +40,29 @@ localparam  STATE_IF = 0,
 
 // TODO: Decode Instruction Sequence for ALU Operation
 
-reg[3:0] state = 3'b0;
+
+
+reg[3:0] state;
+wire [3:0] next_state;
 reg[3:0] counter;
+reg[5:0] opcode;
+
+initial begin
+	state = 4'b0;
+end
+
+fsmCommand LUT(.next_state(next_state), 
+			   .state(state), 
+			   .opcode(instr),
+			   .clk(clk));
 
 	always @(posedge clk) begin
 	 	PC_WE <= 0; MEM_IN <= 0; MEM_WE <= 0; IR_WE <= 0;
 		ALU_SRCA <= 0; ALU_OP <= 0; A_WE <= 0; B_WE <= 0; REG_WE <= 0; REG_IN <= 0; DST <= 0;
 		ALU_SRCB <= 0; PC_SRC <= 0;
+		// $display("Instruction: %b", instr);
+		// $display("state: %b", state);
+		// $display("next state: %b", next_state);
 		/*
 		 * case statement to change around states given the situation
 		 */
@@ -131,6 +147,9 @@ reg[3:0] counter;
 				PC_SRC <= 2;
 			end
 		endcase
+
+		state <= next_state;
+		currState <= state;
 	end	
 endmodule
 

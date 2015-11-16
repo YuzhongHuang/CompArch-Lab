@@ -1,0 +1,1 @@
+iverilog -o ../compile/fsmTest ../verilog/fsm.t.v ../verilog/fsm.v ../verilog/fsmCommand.v
