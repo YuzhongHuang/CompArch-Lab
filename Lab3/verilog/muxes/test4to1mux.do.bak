@@ -1,0 +1,13 @@
+vdel - lib work - all
+vlib work
+vlog -reportprogress 300 -work work test4to1mux.t.v
+vsim -voptargs="+acc" test4to1mux
+add wave -position insertpoint  \
+sim:/testMuxes/out \
+sim:/testMuxes/address \
+sim:/testMuxes/in0 \
+sim:/testMuxes/in1 \
+sim:/testMuxes/in2 \
+sim:/testMuxes/in3 
+run -all
+wave zoom full

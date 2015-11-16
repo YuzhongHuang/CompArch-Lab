@@ -1,0 +1,17 @@
+module PC
+(
+output reg	pc,
+input		d,
+input		pc_we,
+input		clk
+);
+    initial begin
+      pc <= 0;
+    end
+    always @(posedge clk) begin
+        if (pc_we) begin
+            pc <= d;
+        end
+    end
+endmodule
+
