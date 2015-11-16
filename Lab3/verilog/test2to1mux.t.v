@@ -4,8 +4,11 @@
 `include "muxes.v"
 module test2to1mux();
 	wire[31:0]    	out;	
-	reg 		address;
-	reg[31:0]	in0, in1;
+	wire 		address;
+	wire[31:0]	in0, in1;
+
+	reg		begintest;
+	wire		dutpassed;
 
 	mux2to1 dut1(.out(out),
 			.address(address),
@@ -22,3 +25,19 @@ module test2to1mux();
 	end
 
 endmodule
+
+module mux2to1testbench(
+	input	begintest,
+	output reg endtest,
+	output reg dutpassed,
+
+	output reg addr,
+	output [31:0] reg, in0, in1
+	input [31:0] out
+);
+
+	always @(posedge begintest) begin
+		endtest = 0;
+		dutpassed = 1;
+
+
