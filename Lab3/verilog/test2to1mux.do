@@ -1,5 +1,4 @@
-vdel - lib work - all
-vlib work
+
 vlog -reportprogress 300 -work work test2to1mux.t.v
 vsim -voptargs="+acc" test2to1mux
 add wave -position insertpoint  \

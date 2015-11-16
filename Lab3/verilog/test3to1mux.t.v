@@ -1,3 +1,6 @@
+//------------------------------------------------------------------------
+// 3:1 mux test bench
+//------------------------------------------------------------------------
 `include "muxes.v"
 
 module test3to1mux();	
@@ -8,7 +11,7 @@ module test3to1mux();
 	reg		begintest;
 	wire		dutpassed;
 
-	mux3to1 dut2(.out(out),
+	mux3to1 dut(.out(out),
 			.address(address),
 			.in0(in0),
 			.in1(in1),
@@ -55,24 +58,24 @@ module mux3to1testbench (
 		dutpassed = 1;
 
 		// Test Case 1 (picks in0)
-		in0=32'd126; in1=32'd53; in2=32'd178; address=0; #1
+		in0=32'd126; in1=32'd53; in2=32'd178; address=2'b00; #1
 		if (out != in0) begin
 			dutpassed = 0;
-			$display("Select in0 broken.");
+			$display("3 to 1 Mux: Select in0 broken.");
 		end
 
 		// Test Case 2 (picks in1)
-		address=1; #1
+		address=2'b01; #1
 		if (out != in1) begin
 			dutpassed = 0;
-			$display("Select in0 broken.");
+			$display("3 to 1 Mux: Select in1 broken.");
 		end
 
 		// Test Case 3 (picks in2)
-		address=2; #1
+		address=2'b10; #1
 		if (out != in2) begin
 			dutpassed = 0;
-			$display("Select in0 broken.");
+			$display("3 to 1 Mux: Select in2 broken.");
 		end
 
 		endtest = 1;

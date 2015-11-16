@@ -1,10 +1,10 @@
 module shifter
 (
 output[31:0] out,
-input[29:0] in
+input[31:0] in
 );
 
-assign out = in << 2;
+assign out = in <<< 2;
 
 endmodule
 
