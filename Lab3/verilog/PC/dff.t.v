@@ -1,29 +1,29 @@
 //------------------------------------------------------------------------
 // PC test bench
 //------------------------------------------------------------------------
-`include "pc.v"
+`include "dff.v"
 
-module testPC();	
-	wire[31:0]    	pc;	
+module testDFF();	
+	wire[31:0]    	q;	
 	wire[31:0]	in;
-	wire		pc_we,
-	wire		clk
+	wire		wr_enable;
+	wire		clk;
 
 	reg		begintest;
 	wire		dutpassed;
 
-	PC dut(.pc(pc),
+	DFF dut(.q(q),
 		.in(in),
-		.pc_we(pc_we),
+		.wr_enable(wr_enable),
 		.clk(clk));
 
 	PCtestbench test(.begintest(begintest),
 							.endtest(endtest),
 							.dutpassed(dutpassed),
 							.in(in),
-							.pc_we(pc_we),
-							.clk(clk)
-							.pc(pc));
+							.wr_enable(wr_enable),
+							.clk(clk),
+							.q(q));
 
 	initial begin
         begintest = 0;
@@ -48,17 +48,27 @@ module PCtestbench (
 	output reg dutpassed,
 
 	output reg [31:0] in,
-	output reg pc_we,
+	output reg wr_enable,
 	output reg clk,
-	input [31:0] pc
+	input [31:0] q
 );
+
+	always begin
+		#5 clk = !clk;
+	end
 
 	always @(posedge begintest) begin
 		endtest = 0;
 		dutpassed = 1;
 
-		in=32'd126; #10
-		if (out != in) begin
+		clk=0; wr_enable=1; in=126; #10
+		if (q != in) begin
+			dutpassed = 0;
+			$display("PC broken.");
+		end
+
+		wr_enable=0; in=4000; #10
+		if (q != 126) begin
 			dutpassed = 0;
 			$display("PC broken.");
 		end

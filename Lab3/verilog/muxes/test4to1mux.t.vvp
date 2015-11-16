@@ -1,0 +1,168 @@
+#! /usr/local/Cellar/icarus-verilog/0.9.7/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x7f9ec2d0ff10 .scope module, "mux2to1" "mux2to1" 2 28;
+ .timescale 0 0;
+L_0x7f9ec2d237c0 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23820 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23910 .functor BUFZ 32, L_0x7f9ec2d23880, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x7f9ec2d0f640_0 .net *"_s6", 31 0, L_0x7f9ec2d23880; 1 drivers
+v0x7f9ec2d21cc0_0 .net "address", 0 0, C4<z>; 0 drivers
+v0x7f9ec2d21d50_0 .net "in0", 31 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v0x7f9ec2d21dd0_0 .net "in1", 31 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v0x7f9ec2d21e60 .array "inputs", 0 1;
+v0x7f9ec2d21e60_0 .net v0x7f9ec2d21e60 0, 31 0, L_0x7f9ec2d237c0; 1 drivers
+v0x7f9ec2d21e60_1 .net v0x7f9ec2d21e60 1, 31 0, L_0x7f9ec2d23820; 1 drivers
+v0x7f9ec2d21f40_0 .net "out", 31 0, L_0x7f9ec2d23910; 1 drivers
+L_0x7f9ec2d23880 .array/port v0x7f9ec2d21e60, C4<z>;
+S_0x7f9ec2d0fb60 .scope module, "mux3to1" "mux3to1" 2 15;
+ .timescale 0 0;
+L_0x7f9ec2d239d0 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23a70 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23b10 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23c80 .functor BUFZ 32, L_0x7f9ec2d23bb0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x7f9ec2d21fd0_0 .net *"_s9", 31 0, L_0x7f9ec2d23bb0; 1 drivers
+v0x7f9ec2d22070_0 .net "address", 1 0, C4<zz>; 0 drivers
+v0x7f9ec2d22100_0 .net "in0", 31 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v0x7f9ec2d22180_0 .net "in1", 31 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v0x7f9ec2d22210_0 .net "in2", 31 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v0x7f9ec2d222d0 .array "inputs", 0 2;
+v0x7f9ec2d222d0_0 .net v0x7f9ec2d222d0 0, 31 0, L_0x7f9ec2d239d0; 1 drivers
+v0x7f9ec2d222d0_1 .net v0x7f9ec2d222d0 1, 31 0, L_0x7f9ec2d23a70; 1 drivers
+v0x7f9ec2d222d0_2 .net v0x7f9ec2d222d0 2, 31 0, L_0x7f9ec2d23b10; 1 drivers
+v0x7f9ec2d22380_0 .net "out", 31 0, L_0x7f9ec2d23c80; 1 drivers
+L_0x7f9ec2d23bb0 .array/port v0x7f9ec2d222d0, C4<zz>;
+S_0x7f9ec2d0ebe0 .scope module, "test4to1mux" "test4to1mux" 3 6;
+ .timescale 0 0;
+v0x7f9ec2d23130_0 .net "address", 1 0, v0x7f9ec2d225a0_0; 1 drivers
+v0x7f9ec2d231f0_0 .var "begintest", 0 0;
+v0x7f9ec2d23270_0 .net "dutpassed", 0 0, v0x7f9ec2d226d0_0; 1 drivers
+v0x7f9ec2d23310_0 .net "endtest", 0 0, v0x7f9ec2d22770_0; 1 drivers
+v0x7f9ec2d233b0_0 .net "in0", 31 0, v0x7f9ec2d22800_0; 1 drivers
+v0x7f9ec2d23470_0 .net "in1", 31 0, v0x7f9ec2d228c0_0; 1 drivers
+v0x7f9ec2d23530_0 .net "in2", 31 0, v0x7f9ec2d22950_0; 1 drivers
+v0x7f9ec2d23630_0 .net "in3", 31 0, v0x7f9ec2d22a10_0; 1 drivers
+v0x7f9ec2d236f0_0 .net "out", 31 0, L_0x7f9ec2d23fd0; 1 drivers
+E_0x7f9ec2d22290 .event posedge, v0x7f9ec2d22770_0;
+S_0x7f9ec2d22b60 .scope module, "dut" "mux4to1" 3 14, 2 1, S_0x7f9ec2d0ebe0;
+ .timescale 0 0;
+L_0x7f9ec2d23d40 .functor BUFZ 32, v0x7f9ec2d22800_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23da0 .functor BUFZ 32, v0x7f9ec2d228c0_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23e20 .functor BUFZ 32, v0x7f9ec2d22950_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23ec0 .functor BUFZ 32, v0x7f9ec2d22a10_0, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+L_0x7f9ec2d23fd0 .functor BUFZ 32, L_0x7f9ec2d23f20, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x7f9ec2d22c40_0 .net *"_s12", 31 0, L_0x7f9ec2d23f20; 1 drivers
+v0x7f9ec2d22cc0_0 .alias "address", 1 0, v0x7f9ec2d23130_0;
+v0x7f9ec2d22d60_0 .alias "in0", 31 0, v0x7f9ec2d233b0_0;
+v0x7f9ec2d22de0_0 .alias "in1", 31 0, v0x7f9ec2d23470_0;
+v0x7f9ec2d22e80_0 .alias "in2", 31 0, v0x7f9ec2d23530_0;
+v0x7f9ec2d22f30_0 .alias "in3", 31 0, v0x7f9ec2d23630_0;
+v0x7f9ec2d22fd0 .array "inputs", 0 3;
+v0x7f9ec2d22fd0_0 .net v0x7f9ec2d22fd0 0, 31 0, L_0x7f9ec2d23d40; 1 drivers
+v0x7f9ec2d22fd0_1 .net v0x7f9ec2d22fd0 1, 31 0, L_0x7f9ec2d23da0; 1 drivers
+v0x7f9ec2d22fd0_2 .net v0x7f9ec2d22fd0 2, 31 0, L_0x7f9ec2d23e20; 1 drivers
+v0x7f9ec2d22fd0_3 .net v0x7f9ec2d22fd0 3, 31 0, L_0x7f9ec2d23ec0; 1 drivers
+v0x7f9ec2d23090_0 .alias "out", 31 0, v0x7f9ec2d236f0_0;
+L_0x7f9ec2d23f20 .array/port v0x7f9ec2d22fd0, v0x7f9ec2d225a0_0;
+S_0x7f9ec2d22470 .scope module, "test" "mux4to1testbench" 3 21, 3 48, S_0x7f9ec2d0ebe0;
+ .timescale 0 0;
+v0x7f9ec2d225a0_0 .var "address", 1 0;
+v0x7f9ec2d22640_0 .net "begintest", 0 0, v0x7f9ec2d231f0_0; 1 drivers
+v0x7f9ec2d226d0_0 .var "dutpassed", 0 0;
+v0x7f9ec2d22770_0 .var "endtest", 0 0;
+v0x7f9ec2d22800_0 .var "in0", 31 0;
+v0x7f9ec2d228c0_0 .var "in1", 31 0;
+v0x7f9ec2d22950_0 .var "in2", 31 0;
+v0x7f9ec2d22a10_0 .var "in3", 31 0;
+v0x7f9ec2d22a90_0 .alias "out", 31 0, v0x7f9ec2d236f0_0;
+E_0x7f9ec2d22550 .event posedge, v0x7f9ec2d22640_0;
+    .scope S_0x7f9ec2d22470;
+T_0 ;
+    %wait E_0x7f9ec2d22550;
+    %set/v v0x7f9ec2d22770_0, 0, 1;
+    %set/v v0x7f9ec2d226d0_0, 1, 1;
+    %movi 8, 126, 32;
+    %set/v v0x7f9ec2d22800_0, 8, 32;
+    %movi 8, 53, 32;
+    %set/v v0x7f9ec2d228c0_0, 8, 32;
+    %movi 8, 178, 32;
+    %set/v v0x7f9ec2d22950_0, 8, 32;
+    %movi 8, 579, 32;
+    %set/v v0x7f9ec2d22a10_0, 8, 32;
+    %set/v v0x7f9ec2d225a0_0, 0, 2;
+    %delay 1, 0;
+    %load/v 8, v0x7f9ec2d22a90_0, 32;
+    %load/v 40, v0x7f9ec2d22800_0, 32;
+    %cmp/u 8, 40, 32;
+    %inv 4, 1;
+    %jmp/0xz  T_0.0, 4;
+    %set/v v0x7f9ec2d226d0_0, 0, 1;
+    %vpi_call 3 66 "$display", "4 to 1 Mux: Select in0 broken.";
+T_0.0 ;
+    %movi 8, 1, 2;
+    %set/v v0x7f9ec2d225a0_0, 8, 2;
+    %delay 1, 0;
+    %load/v 8, v0x7f9ec2d22a90_0, 32;
+    %load/v 40, v0x7f9ec2d228c0_0, 32;
+    %cmp/u 8, 40, 32;
+    %inv 4, 1;
+    %jmp/0xz  T_0.2, 4;
+    %set/v v0x7f9ec2d226d0_0, 0, 1;
+    %vpi_call 3 73 "$display", "4 to 1 Mux: Select in1 broken.";
+T_0.2 ;
+    %movi 8, 2, 2;
+    %set/v v0x7f9ec2d225a0_0, 8, 2;
+    %delay 1, 0;
+    %load/v 8, v0x7f9ec2d22a90_0, 32;
+    %load/v 40, v0x7f9ec2d22950_0, 32;
+    %cmp/u 8, 40, 32;
+    %inv 4, 1;
+    %jmp/0xz  T_0.4, 4;
+    %set/v v0x7f9ec2d226d0_0, 0, 1;
+    %vpi_call 3 80 "$display", "4 to 1 Mux: Select in2 broken.";
+T_0.4 ;
+    %set/v v0x7f9ec2d225a0_0, 1, 2;
+    %delay 1, 0;
+    %load/v 8, v0x7f9ec2d22a90_0, 32;
+    %load/v 40, v0x7f9ec2d22a10_0, 32;
+    %cmp/u 8, 40, 32;
+    %inv 4, 1;
+    %jmp/0xz  T_0.6, 4;
+    %set/v v0x7f9ec2d226d0_0, 0, 1;
+    %vpi_call 3 87 "$display", "4 to 1 Mux: Select in3 broken.";
+T_0.6 ;
+    %set/v v0x7f9ec2d22770_0, 1, 1;
+    %vpi_call 3 90 "$finish";
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x7f9ec2d0ebe0;
+T_1 ;
+    %set/v v0x7f9ec2d231f0_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x7f9ec2d231f0_0, 1, 1;
+    %delay 10000, 0;
+    %end;
+    .thread T_1;
+    .scope S_0x7f9ec2d0ebe0;
+T_2 ;
+    %wait E_0x7f9ec2d22290;
+    %load/v 8, v0x7f9ec2d23270_0, 1;
+    %mov 9, 0, 2;
+    %cmpi/u 8, 1, 3;
+    %jmp/0xz  T_2.0, 4;
+    %vpi_call 3 40 "$display", "\012\033[32mDUT passed: %b\033[37m\012", v0x7f9ec2d23270_0;
+    %jmp T_2.1;
+T_2.0 ;
+    %vpi_call 3 42 "$display", "\012\033[31mDUT passed: %b\033[37m\012", v0x7f9ec2d23270_0;
+T_2.1 ;
+    %jmp T_2;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "./muxes.v";
+    "test4to1mux.t.v";

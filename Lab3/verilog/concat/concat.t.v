@@ -40,14 +40,14 @@ module testconcat();
 	
 endmodule
 
-module mux2to1testbench (
+module concattestbench (
 	input begintest,
 	output reg endtest,
 	output reg dutpassed,
 
 	output reg [3:0] PC,
 	output reg [25:0] dout,
-	input[31:0] concat,
+	input[31:0] concat
 );
 
 	always @(posedge begintest) begin

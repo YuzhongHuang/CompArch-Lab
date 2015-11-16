@@ -68,6 +68,8 @@ module mux2to1testbench (
 			dutpassed = 0;
 			$display("2 to 1 Mux: Select in1 broken.");
 		end
+
+		endtest = 1;
 		$finish;
 	end
 

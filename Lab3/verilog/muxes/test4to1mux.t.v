@@ -52,7 +52,7 @@ module mux4to1testbench (
 
 	output reg [1:0] address,
 	output reg [31:0] in0, in1, in2, in3,
-	input [31:0] out,
+	input [31:0] out
 );
 
 	always @(posedge begintest) begin

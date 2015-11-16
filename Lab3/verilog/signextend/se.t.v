@@ -1,23 +1,20 @@
-//------------------------------------------------------------------------
-// Shifter test bench
-//------------------------------------------------------------------------
-`include "shifter.v"
+`include "se.v"
 
-module testshifter();	
-	wire[31:0]    	out;	
-	wire[31:0]	in;
+module testse();	
+	wire [31:0] se;	
+	wire [15:0] imm;
 
-	reg		begintest;
-	wire		dutpassed;
+	reg	begintest;
+	wire dutpassed;
 
-	shifter dut(.out(out),
-			.in(in));
+	signextend dut(.se(se),
+			.imm(imm));
 
-	shiftertestbench test(.begintest(begintest),
+	setestbench test(.begintest(begintest),
 							.endtest(endtest),
 							.dutpassed(dutpassed),
-							.in(in),
-							.out(out));
+							.imm(imm),
+							.out(se));
 
 	initial begin
         begintest = 0;
@@ -36,24 +33,32 @@ module testshifter();
 	
 endmodule
 
-module shiftertestbench (
+module setestbench (
 	input begintest,
 	output reg endtest,
 	output reg dutpassed,
 
-	output reg [31:0] in,
+	output reg [15:0] imm,
 	input [31:0] out
 );
+
 
 	always @(posedge begintest) begin
 		endtest = 0;
 		dutpassed = 1;
 
-		in=32'd126; #1
-		if (out != 32'd504) begin
+		// Write a bunch of data to separate memory addresses
+		imm = 2**15; #1
+		if (out != {16'b1111_1111_1111_1111, imm}) begin
 			dutpassed = 0;
-			$display("Shifter broken.");
+			$display("Sign-Extend 1 failed.");
 		end
+		imm = 2**14+2**8; #1
+		if (out != {16'b0, imm}) begin
+			dutpassed = 0;
+			$display("Sign-Extend 0 failed.");
+		end
+
 		endtest = 1;
 		$finish;
 	end

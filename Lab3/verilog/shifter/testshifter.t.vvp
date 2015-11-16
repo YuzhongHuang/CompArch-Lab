@@ -1,0 +1,77 @@
+#! /usr/local/Cellar/icarus-verilog/0.9.7/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x7f9390405530 .scope module, "testshifter" "testshifter" 2 6;
+ .timescale 0 0;
+v0x7f939041ca50_0 .var "begintest", 0 0;
+v0x7f939041caf0_0 .net "dutpassed", 0 0, v0x7f939041c4a0_0; 1 drivers
+v0x7f939041cb90_0 .net "endtest", 0 0, v0x7f939041c530_0; 1 drivers
+v0x7f939041cc50_0 .net "in", 31 0, v0x7f939041c5b0_0; 1 drivers
+v0x7f939041cd10_0 .net "out", 31 0, L_0x7f939041ced0; 1 drivers
+E_0x7f939040c660 .event posedge, v0x7f939041c530_0;
+S_0x7f939041c700 .scope module, "dut" "shifter" 2 13, 3 1, S_0x7f9390405530;
+ .timescale 0 0;
+v0x7f939041c7e0_0 .net *"_s2", 29 0, L_0x7f939041ce00; 1 drivers
+v0x7f939041c880_0 .net *"_s4", 1 0, C4<00>; 1 drivers
+v0x7f939041c910_0 .alias "in", 31 0, v0x7f939041cc50_0;
+v0x7f939041c9b0_0 .alias "out", 31 0, v0x7f939041cd10_0;
+L_0x7f939041ce00 .part v0x7f939041c5b0_0, 0, 30;
+L_0x7f939041ced0 .concat [ 2 30 0 0], C4<00>, L_0x7f939041ce00;
+S_0x7f9390405610 .scope module, "test" "shiftertestbench" 2 16, 2 39, S_0x7f9390405530;
+ .timescale 0 0;
+v0x7f939040c4d0_0 .net "begintest", 0 0, v0x7f939041ca50_0; 1 drivers
+v0x7f939041c4a0_0 .var "dutpassed", 0 0;
+v0x7f939041c530_0 .var "endtest", 0 0;
+v0x7f939041c5b0_0 .var "in", 31 0;
+v0x7f939041c640_0 .alias "out", 31 0, v0x7f939041cd10_0;
+E_0x7f9390406110 .event posedge, v0x7f939040c4d0_0;
+    .scope S_0x7f9390405610;
+T_0 ;
+    %wait E_0x7f9390406110;
+    %set/v v0x7f939041c530_0, 0, 1;
+    %set/v v0x7f939041c4a0_0, 1, 1;
+    %movi 8, 126, 32;
+    %set/v v0x7f939041c5b0_0, 8, 32;
+    %delay 1, 0;
+    %load/v 8, v0x7f939041c640_0, 32;
+    %cmpi/u 8, 504, 32;
+    %inv 4, 1;
+    %jmp/0xz  T_0.0, 4;
+    %set/v v0x7f939041c4a0_0, 0, 1;
+    %vpi_call 2 55 "$display", "Shifter broken.";
+T_0.0 ;
+    %set/v v0x7f939041c530_0, 1, 1;
+    %vpi_call 2 58 "$finish";
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x7f9390405530;
+T_1 ;
+    %set/v v0x7f939041ca50_0, 0, 1;
+    %delay 10, 0;
+    %set/v v0x7f939041ca50_0, 1, 1;
+    %delay 10000, 0;
+    %end;
+    .thread T_1;
+    .scope S_0x7f9390405530;
+T_2 ;
+    %wait E_0x7f939040c660;
+    %load/v 8, v0x7f939041caf0_0, 1;
+    %mov 9, 0, 2;
+    %cmpi/u 8, 1, 3;
+    %jmp/0xz  T_2.0, 4;
+    %vpi_call 2 31 "$display", "\012\033[32mDUT passed: %b\033[37m\012", v0x7f939041caf0_0;
+    %jmp T_2.1;
+T_2.0 ;
+    %vpi_call 2 33 "$display", "\012\033[31mDUT passed: %b\033[37m\012", v0x7f939041caf0_0;
+T_2.1 ;
+    %jmp T_2;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "testshifter.t.v";
+    "./shifter.v";
