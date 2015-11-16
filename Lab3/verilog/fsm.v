@@ -17,7 +17,7 @@ module fsm
 /*
  * state encoding
  */
-localparam STATE_IF = 0,
+localparam  STATE_IF = 0,
 			STATE_ID_1 = 1,
 			STATE_ID_J = 2,
 			STATE_ID_BNE = 3,
