@@ -31,7 +31,7 @@ module mux2to1
 	input  		address,
 	input[31:0] 	in0, in1
 );
-wire[1:0] inputs[31:0];
+wire [31:0] inputs[1:0];
 assign inputs[0] = in0;
 assign inputs[1] = in1;
 assign out = inputs[address];
