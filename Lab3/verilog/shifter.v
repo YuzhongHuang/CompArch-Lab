@@ -1,10 +1,8 @@
-module shifter
-(
-output[31:0] out,
-input[29:0] in
-);
+module shifter (
+	output[5:0] out,
+	input[3:0] in
+	);
 
-assign out = in << 2;
-
+	assign out = in << 2;
 endmodule
 
