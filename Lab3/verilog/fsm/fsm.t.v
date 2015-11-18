@@ -393,15 +393,3 @@ module fsmtestbench (
     end
 
 endmodule
-
-
-
-
-
-
-
-
-
-
-
-
