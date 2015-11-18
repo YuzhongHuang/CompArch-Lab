@@ -7,11 +7,12 @@ module fsm
 	input 		clk, // positive edge of the serial clock 
 	input 		zeroflag,
 	input [5:0] instr,
+	input [5:0] IR_ALU_OP,
 	output reg 	[3:0] currState,
 	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN,
 	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
-	output reg 	[2:0] ALU_OP
+	output reg 	[5:0] ALU_OP
 );
 
 /*
@@ -92,25 +93,28 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_EX_OP_IMM: begin
-				ALU_OP <= 2;
+				ALU_OP <= 14;
 			end
 
 			STATE_EX_ADDI: begin
 				ALU_SRCB <= 2; //SE(Imm)
+				ALU_OP <= 32;
 			end
 
 			STATE_EX_A_OP_B: begin
 				ALU_SRCB <= 2; // SE(Imm)
+				ALU_OP <= IR_ALU_OP;
 			end
 
 			STATE_EX_A_ADD0: begin
+				ALU_OP <= 32;
 				// GO TO NEXT STATE
 			end
 
 			STATE_EX_BNE: begin
 				PC_WE <= !zeroflag;
 				ALU_SRCB <= 1;
-				ALU_OP <= 3;
+				ALU_OP <= 34;
 				PC_SRC <= 2; 
 			end
 
@@ -138,7 +142,6 @@ fsmCommand LUT(.next_state(next_state),
 
 			STATE_WB_JAL: begin
 				REG_WE <= 1;
-				REG_IN <= 1;
 				DST <= 2;
 			end
 
