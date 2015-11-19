@@ -1,9 +1,11 @@
+`include "fsm.v"
+`include "fsmCommand.v"
+
 module testFsm();
 
 	wire clk;
 	wire zeroflag;
 	wire [5:0] instr;
-    wire [5:0] IR_ALU_OP;
 	wire [3:0] currState;
 	reg begintest;
 
@@ -83,7 +85,6 @@ module fsmtestbench (
 
     output reg      clk, zeroflag,
     output reg[5:0] instr,
-    output reg[5:0] IR_ALU_OP,
     input [3:0]     currState,
     input           PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 					A_WE, B_WE, REG_WE, REG_IN,
@@ -94,18 +95,17 @@ module fsmtestbench (
         // $dumpfile("../wave/testConditioner.vcd");
         // $dumpvars(0, inputcondtestbench);
         instr = 6'b001110;
-        IR_ALU_OP = 6'b001110;
         zeroflag = 0;
         clk = 0;
         #10
-        // $display("XORI IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        $display("XORI IF");
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end
     end
 
-    reg [20:0] outputs; 
+    reg [17:0] outputs; 
 
     always begin
         #5 clk = !clk;
@@ -124,21 +124,21 @@ module fsmtestbench (
         dutpassed = 1;
         #10
         // $display("XORI ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
         	dutpassed = 0;
         	$display("XORI ID phase broken.");
         end
 
         #10;
         // $display("XORI EX");
-        if ((currState == 4) && (outputs != 21'b00_0000_0000_0000_0001110)) begin
+        if ((currState == 4) && (outputs != 21'b00_0000_0000_0000_0000_010)) begin
         	dutpassed = 0;
         	$display("XORI EX phase broken.");
        	end
 
         #10;
         // $display("XORI WB");
-        if ((currState == 11) && (outputs != 21'b00_0000_0100_0000_0000000)) begin
+        if ((currState == 11) && (outputs != 21'b00_0000_0100_0000_0000_000)) begin
        		dutpassed = 0;
        		$display("XORI WB phase broken.");
    		end
@@ -149,20 +149,20 @@ module fsmtestbench (
         instr = 6'b100011; 
         #10
         // $display("LW IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end
 
         #10
         // $display("LW ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
             dutpassed = 0;
             $display("LW ID phase broken.");
         end
         #10 
         // $display("LW EX");
-        if ((currState == 5) && (outputs != 21'b00_0000_0001_0000_0100000)) begin
+        if ((currState == 5) && (outputs != 21'b00_0000_0001_0000_0000_000)) begin
             dutpassed = 0;
             $display("LW EX phase broken.");
         end
@@ -174,7 +174,7 @@ module fsmtestbench (
         end 
         #10 
         // $display("LW WB");
-        if ((currState == 12) && (outputs != 21'b00_0000_0110_0000_0000000)) begin
+        if ((currState == 12) && (outputs != 21'b00_0000_0110_0000_0000_000)) begin
             dutpassed = 0;
             $display("LW WB phase broken.");
         end
@@ -185,25 +185,25 @@ module fsmtestbench (
         instr = 6'b101011; 
         #10
         // $display("SW IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("SW ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
             dutpassed = 0;
             $display("SW ID phase broken.");
         end 
         #10
         // $display("SW EX");
-        if ((currState == 5) && (outputs != 21'b00_0000_0001_0000_0100000)) begin
+        if ((currState == 5) && (outputs != 21'b00_0000_0001_0000_0000_000)) begin
             dutpassed = 0;
             $display("SW EX phase broken.");
         end 
         #10
         // $display("SW MEM");
-        if ((currState == 10) && (outputs != 21'b00_1000_0000_0000_0000000)) begin
+        if ((currState == 10) && (outputs != 21'b00_1000_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("SW MEM phase broken.");
         end
@@ -212,56 +212,54 @@ module fsmtestbench (
 
         // ADD
         instr = 6'b100000; 
-        IR_ALU_OP = 6'b100000;
         #10;
         // $display("ADD IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10;
         // $display("ADD ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
             dutpassed = 0;
             $display("ADD ID phase broken.");
         end 
         #10;
         // $display("ADD EX");
-        if ((currState == 6) && (outputs != 21'b00_0000_0001_0000_0100000)) begin
+        if ((currState == 6) && (outputs != 21'b00_0000_0001_0000_0000_000)) begin
             dutpassed = 0;
             $display("ADD EX phase broken.");
         end 
         #10;
         // $display("ADD WB");
-        if ((currState == 13) && (outputs != 21'b00_0000_0100_0000_1000000)) begin
+        if ((currState == 13) && (outputs != 21'b00_0000_0100_0000_1000_000)) begin
             dutpassed = 0;
             $display("ADD WB phase broken.");
         end
 
         // SUB
         instr = 6'b100010; 
-        IR_ALU_OP = 6'b100010;
         #10
         // $display("SUB IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("SUB ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
             dutpassed = 0;
             $display("SUB ID phase broken.");
         end 
         #10
         // $display("SUB EX");
-        if ((currState == 6) && (outputs != 21'b00_0000_0001_0000_0100010)) begin
+        if ((currState == 6) && (outputs != 21'b00_0000_0001_0000_0000_000)) begin
             dutpassed = 0;
             $display("SUB EX phase broken.");
         end 
         #10
         // $display("SUB WB");
-        if ((currState == 13) && (outputs != 21'b00_0000_0100_0000_1000000)) begin
+        if ((currState == 13) && (outputs != 21'b00_0000_0100_0000_1000_000)) begin
             dutpassed = 0;
             $display("SUB WB phase broken.");
         end
@@ -270,28 +268,27 @@ module fsmtestbench (
 
         // SLT
         instr = 6'b101010; 
-        IR_ALU_OP = 6'b101010;
         #10
         // $display("SLT IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("SLT ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
             dutpassed = 0;
             $display("SLT ID phase broken.");
         end 
         #10
         // $display("SLT EX");
-        if ((currState == 6) && (outputs != 21'b00_0000_0001_0000_0101010)) begin
+        if ((currState == 6) && (outputs != 21'b00_0000_0001_0000_0000_000)) begin
             dutpassed = 0;
             $display("SLT EX phase broken.");
         end 
         #10
         // $display("SLT WB");
-        if ((currState == 13) && (outputs != 21'b00_0000_0100_0000_1000000)) begin
+        if ((currState == 13) && (outputs != 21'b00_0000_0100_0000_1000_000)) begin
             dutpassed = 0;
             $display("SLT WB phase broken.");
         end
@@ -302,13 +299,13 @@ module fsmtestbench (
         instr = 6'b000010; 
         #10
         // $display("J IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("J ID");
-        if ((currState == 2) && (outputs != 21'b10_0000_0000_0000_0000000)) begin
+        if ((currState == 2) && (outputs != 21'b10_0000_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("JUMP ID phase broken.");
         end
@@ -319,19 +316,19 @@ module fsmtestbench (
         instr = 6'b000011; 
         #10
         // $display("JAL IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("JAL ID");
-        if ((currState == 2) && (outputs != 21'b10_0000_0000_0000_0000000)) begin
+        if ((currState == 2) && (outputs != 21'b10_0000_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("JAL ID phase broken.");
         end 
         #10
         // $display("JAL WB");
-        if ((currState == 14) && (outputs != 21'b00_0000_0100_0001_0000000)) begin
+        if ((currState == 14) && (outputs != 21'b00_0000_0110_0001_0000_000)) begin
             dutpassed = 0;
             $display("JAL WB phase broken.");
         end
@@ -342,25 +339,25 @@ module fsmtestbench (
         instr = 6'b001000; 
         #10
         // $display("JR IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("JR ID");
-        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000000)) begin
+        if ((currState == 1) && (outputs != 21'b00_0001_1000_0000_0000_000)) begin
             dutpassed = 0;
             $display("JR ID phase broken.");
         end 
         #10
         // $display("JR EX");
-        if ((currState == 7) && (outputs != 21'b00_0000_0000_0000_0100000)) begin
+        if ((currState == 7) && (outputs != 0)) begin
             dutpassed = 0;
             $display("JR EX phase broken.");
         end 
         #10
         // $display("JR WB");
-        if ((currState == 15) && (outputs != 21'b10_0000_0000_0100_0000000)) begin
+        if ((currState == 15) && (outputs != 21'b10_0000_0000_0100_0000_000)) begin
             dutpassed = 0;
             $display("JR WB phase broken.");
         end
@@ -371,19 +368,19 @@ module fsmtestbench (
         instr = 6'b000101; 
         #10
         // $display("BNE IF");
-        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000000)) begin
+        if ((currState == 0) && (outputs != 21'b11_0110_0000_0000_0000_000)) begin
             dutpassed = 0;
             $display("IF phase broken.");
         end 
         #10
         // $display("BNE ID");
-        if ((currState == 3) && (outputs != 21'b00_0011_1001_0010_0000000)) begin
+        if ((currState == 3) && (outputs != 21'b00_0011_1001_0010_0000_000)) begin
             dutpassed = 0;
             $display("BNE ID phase broken.");
         end 
         #10
         // $display("BNE EX");
-        if ((currState == 8) && (outputs != {!zeroflag, 20'b0_0000_0000_1100_0100010})) begin
+        if ((currState == 8) && (outputs != {!zeroflag, 20'b0_0000_0000_1100_0000_011})) begin
             dutpassed = 0;
             $display("BNE EX phase broken.");
         end
@@ -393,3 +390,15 @@ module fsmtestbench (
     end
 
 endmodule
+
+
+
+
+
+
+
+
+
+
+
+

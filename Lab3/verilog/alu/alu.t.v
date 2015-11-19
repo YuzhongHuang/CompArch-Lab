@@ -2,7 +2,7 @@
 
 module testalu();	
 	wire [31:0] alu_res, a, b;
-	wire [1:0] op;
+	wire [5:0] op;
 	wire clk;
 
 	reg	begintest;
@@ -46,7 +46,7 @@ module alutestbench (
 	output reg dutpassed,
 
 	output reg [31:0] a, b,
-	output reg [1:0] op,
+	output reg [5:0] op,
 	output reg clk,
 	input [31:0] alu_res
 );
@@ -61,7 +61,7 @@ module alutestbench (
 		clk = 0;
 
 		// ADDITION TEST CASES
-		op=0; 
+		op=6'b10_0000; 
 		a=2**31+2**28; b=2**31+2**29; #10;
 		if (alu_res != a+b) begin
 			dutpassed = 0;
@@ -87,7 +87,7 @@ module alutestbench (
 		end
 
 		// SUBTRACTION TEST CASES
-		op=1; 
+		op=6'b10_0010; 
 		a=2**31+2**28; b=2**30+2**29; #10;
 		if (alu_res != a-b) begin
 			dutpassed = 0;
@@ -113,7 +113,7 @@ module alutestbench (
 		end
 
 		// XOR TEST CASES
-		op=2;
+		op=6'b00_1110;
 		a=0; b=0; #10
 		if (alu_res != (a^b)) begin
 			dutpassed = 0;
@@ -139,7 +139,7 @@ module alutestbench (
 		end
 
 		// SLT TEST CASES
-		op=3;
+		op=6'b10_1010;
 		a=0; b=0; #10
 		if (alu_res != 0) begin
 			dutpassed = 0;

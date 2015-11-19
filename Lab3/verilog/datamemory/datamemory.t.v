@@ -2,7 +2,7 @@
 
 module testdatamemory();	
 	wire [31:0] dout;	
-	wire [2**17-1:0] address;
+	wire [31:0] address;
 	wire [31:0] din;
 	wire wr_enable, clk;
 
@@ -46,7 +46,7 @@ module datamemorytestbench (
 	output reg endtest,
 	output reg dutpassed,
 
-	output reg [2**17-1:0] address,
+	output reg [31:0] address,
 	output reg [31:0] din,
 	output reg wr_enable, clk,
 	input [31:0] dout
@@ -64,9 +64,9 @@ module datamemorytestbench (
 		// Write a bunch of data to separate memory addresses
 		wr_enable=1; 
 		address=25; din=1407; #10;
-		address=1789; din=85;
-		address=2**17-1; din=20;
-		address=0; din=2**32-1;
+		address=1789; din=85; #10;
+		address=2**12-1; din=20; #10;
+		address=0; din=2**32-1; #10;
 
 		// Then read from each written address
 		wr_enable=0; 
@@ -82,7 +82,7 @@ module datamemorytestbench (
 			$display("Port %d broken", address);
 		end
 
-		address=2**17-1; #10;
+		address=2**12-1; #10;
 		if (dout != 20) begin
 			dutpassed = 0;
 			$display("Port %d broken", address);

@@ -1,20 +1,22 @@
 module alu(
 	output reg [31:0] alu_res,
+	output reg zeroflag,
 	input [31:0] a, b,
-	input [1:0] op,
+	input [5:0] op,
 	input clk
 );
 
 always @(posedge clk) begin
-	if (op == 0) begin
+	if (op == 6'b10_0000) begin
 		assign alu_res = a + b;
-	end else if (op == 1) begin
+	end else if (op == 6'b10_0010) begin
 		assign alu_res = a - b;
-	end else if (op == 2) begin
+	end else if (op == 6'b00_1110) begin
 		assign alu_res = a ^ b;
-	end else if (op == 3) begin
+	end else if (op == 6'b10_1010) begin
 		assign alu_res = (a < b) ? 1 : 0;
 	end
+	assign zeroflag = (a == b);
 end
 
 endmodule
@@ -22,22 +24,21 @@ endmodule
 // module testalu();
 
 // 	wire [31:0] alu_res;
+// 	wire zeroflag;
 // 	reg [31:0] a,b;
-// 	reg [1:0] op;
+// 	reg [5:0] op;
 // 	reg clk;
 
-// 	alu dut(alu_res, a, b, op, clk);
+// 	alu dut(alu_res, zeroflag, a, b, op, clk);
 
 // 	always begin
 // 		#5 clk = !clk;
 // 	end
 
 // 	initial begin
-// 		clk=0; a=0; b=2**30; op=0; #10
-// 		$display("a: %b | b: %b | res: %b", a, b, alu_res);
+// 		clk=0; a=5; b=5; op=6'b10_0000; #10
+// 		$display("a: %b | b: %b | res: %b | zero: ", a, b, alu_res, zeroflag);
 
-// 		a=2**30; b=2**31+2**30+2**29+2**28; op=1; #10;
-// 		$display("a: %b | b: %b | res: %b", a, b, alu_res);
 // 		$finish;
 // 	end
 
