@@ -31,6 +31,7 @@ module IR (
 );
 
 always @(posedge clk) begin
+	$display("Hi from IR, %b", instr);
 	if (IR_WE) begin
 		funct <= instr[5:0];
 		Rd <= instr[15:11]; 

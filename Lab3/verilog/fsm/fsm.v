@@ -8,7 +8,7 @@ module fsm
 	input 		zeroflag,
 	input [5:0] instr,
 	input [5:0] IR_ALU_OP,
-	output reg 	[3:0] currState,
+	// output reg 	[3:0] currState,
 	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN,
 	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
@@ -49,7 +49,9 @@ reg[3:0] counter;
 reg[5:0] opcode;
 
 initial begin
-	state = 4'b0;
+	$display("Hi from fsm");
+	MEM_IN <= 1;
+	IR_WE <= 1;
 end
 
 fsmCommand LUT(.next_state(next_state), 
@@ -68,20 +70,31 @@ fsmCommand LUT(.next_state(next_state),
 		 * case statement to change around states given the situation
 		 */
 		case (state)
+			default: begin
+				MEM_IN <= 1;
+				IR_WE <= 1;
+				state <= 0;
+				$display("fsm default");
+			end
+
 			STATE_IF: begin // read address bits from MOSI
 				PC_WE <= 1;
 				MEM_IN <= 1;
 				IR_WE <= 1;
 				ALU_SRCA <= 1;
+				state <= next_state;
+				$display("fsm IF");
 			end
 
 			STATE_ID_1: begin
 				A_WE <= 1;
 				B_WE <= 1;
+				state <= next_state;
 			end
 
 			STATE_ID_J: begin
 				PC_WE <= 1;
+				state <= next_state;
 			end
 
 			STATE_ID_BNE: begin
@@ -90,24 +103,29 @@ fsmCommand LUT(.next_state(next_state),
 				PC_SRC <= 1; //ALU
 				A_WE <= 1;
 				B_WE <= 1;
+				state <= next_state;
 			end
 
 			STATE_EX_OP_IMM: begin
 				ALU_OP <= 14;
+				state <= next_state;
 			end
 
 			STATE_EX_ADDI: begin
 				ALU_SRCB <= 2; //SE(Imm)
 				ALU_OP <= 32;
+				state <= next_state;
 			end
 
 			STATE_EX_A_OP_B: begin
 				ALU_SRCB <= 2; // SE(Imm)
 				ALU_OP <= IR_ALU_OP;
+				state <= next_state;
 			end
 
 			STATE_EX_A_ADD0: begin
 				ALU_OP <= 32;
+				state <= next_state;
 				// GO TO NEXT STATE
 			end
 
@@ -116,43 +134,49 @@ fsmCommand LUT(.next_state(next_state),
 				ALU_SRCB <= 1;
 				ALU_OP <= 34;
 				PC_SRC <= 2; 
+				state <= next_state;
 			end
 
 			STATE_MEM_READ: begin
+				state <= next_state;
 				// GO TO NEXT STATE
 			end
 
 			STATE_MEM_WRITE: begin
 				MEM_WE <= 1;
+				state <= next_state;
 			end
 
 			STATE_WB_XORI: begin
 				REG_WE <= 1;
+				state <= next_state;
 			end
 
 			STATE_WB_LW: begin
 				REG_WE <= 1;
 				REG_IN <= 1;
+				state <= next_state;
 			end
 
 			STATE_WB_ALU: begin
 				REG_WE <= 1;
 				DST <= 1;
+				state <= next_state;
 			end
 
 			STATE_WB_JAL: begin
 				REG_WE <= 1;
 				DST <= 2;
+				state <= next_state;
 			end
 
 			STATE_WB_JR: begin
 				PC_WE <= 1;
 				PC_SRC <= 2;
+				state <= next_state;
 			end
 		endcase
-
-		state <= next_state;
-		currState <= state;
+		// currState <= state;
 	end	
 endmodule
 

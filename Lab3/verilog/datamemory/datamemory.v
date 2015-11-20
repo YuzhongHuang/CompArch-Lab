@@ -9,6 +9,7 @@ module datamemory(
 	reg [31:0] memory [2**15-1:0];
 
 	always @(posedge clk) begin
+		$display("Hi from datamemory with clk, %d", address);
 		if (wr_enable) begin
 			memory[address] <= din;
 		end

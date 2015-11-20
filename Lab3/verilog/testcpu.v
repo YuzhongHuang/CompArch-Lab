@@ -1,22 +1,26 @@
-`include "cpu.v"
-
 module testCPU();
+	integer index;
 	reg clk;
 	CPU ourCpu(clk);
-	always begin
-		#5 clk = !clk;
-	end
-
-	integer index;
 
 	initial begin
-		clk = 0;
-		#10000;
-		$display("HELLO THERE");
-
-        for (index = 0; index < 32; index = index + 1) begin: registerGen
-            $display("%d: %d", index, ourCpu.RegisterFile.data[index]);
-        end
-		$finish;
+		$display("Hi from testCPU");
+		clk = 0; #5
+		$display("Hi from testCPU");
+		clk = 1; #5
+		$display("Hi from testCPU");
+		clk = 0; #5
+		$display("Hi from testCPU");
+		clk = 1; #5
+		$display("Hi from testCPU");
+		clk = 0; #5
+		$display("Hi from testCPU");
+		clk = 1; #5
+		$display("Hi from testCPU");
 	end
+
+	// always begin
+	// 	#5 clk = !clk;
+	// end
+	
 endmodule
