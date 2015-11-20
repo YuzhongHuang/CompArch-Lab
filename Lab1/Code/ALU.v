@@ -95,20 +95,20 @@ module ALU(
 	checkzero zeroOutput(zero, out);
 endmodule
 
-module test;
-	reg [31:0] a, b;
-	reg [2:0] ALUCommand;
-	wire carryout, overflow, zero;
-	wire [31:0] out;
+// module test;
+// 	reg [31:0] a, b;
+// 	reg [2:0] ALUCommand;
+// 	wire carryout, overflow, zero;
+// 	wire [31:0] out;
 	
-	ALU alu(out, carryout, overflow, zero, ALUCommand, a, b);
+// 	ALU alu(out, carryout, overflow, zero, ALUCommand, a, b);
 
-	initial begin
-		$dumpfile("alu.vcd");
-		$dumpvars(0, test);
-		ALUCommand = 3'd0; a=32'b100111; b=32'b100111; #1500 
-		$display("inputb: %b, signal: %b \n------------ \n  a: %b\n  b: %b \n------------ \nsum: %b\nxor: %b\n or: %b\nand: %b\nslt: %b\nzero: %b\n----------- \nOUT: %b", 
-					b[5:0], alu.LutResults, alu.a, alu.b, alu.validSum, alu.validXor, alu.validOr, alu.validAnd, alu.validSLT, alu.zero, out);
-		$finish;
-	end
-endmodule
+// 	initial begin
+// 		$dumpfile("alu.vcd");
+// 		$dumpvars(0, test);
+// 		ALUCommand = 3'd0; a=32'b100111; b=32'b100111; #1500 
+// 		$display("inputb: %b, signal: %b \n------------ \n  a: %b\n  b: %b \n------------ \nsum: %b\nxor: %b\n or: %b\nand: %b\nslt: %b\nzero: %b\n----------- \nOUT: %b", 
+// 					b[5:0], alu.LutResults, alu.a, alu.b, alu.validSum, alu.validXor, alu.validOr, alu.validAnd, alu.validSLT, alu.zero, out);
+// 		$finish;
+// 	end
+// endmodule

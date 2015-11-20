@@ -153,6 +153,5 @@ module test();
   initial begin
     clk = 0; 
     we = 1; writedata = 2**15-1; writeport = 29; #10;
-    $finish;
   end
 endmodule

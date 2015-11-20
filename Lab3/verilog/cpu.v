@@ -1,15 +1,3 @@
-`include "IR/IR.v"
-`include "alu/alu.v"
-`include "concat/concat.v"
-`include "datamemory/datamemory.v"
-`include "dff/dff.v"
-`include "fsm/fsm.v"
-`include "fsm/fsmCommand.v"
-`include "muxes/muxes.v"
-`include "regfile/regfile.v"
-`include "shifter/shifter.v"
-`include "signextend/se.v"
-
 module CPU(
 	input clk
 	);
@@ -64,6 +52,25 @@ module CPU(
 	wire [31:0] PCMux_PC;
 
 	wire zeroflag;
+
+	//finite state machine
+	fsm FSM(.zeroflag(zeroflag),
+			.instr(IR_FSM_opcode),
+			.IR_ALU_OP(IR_FSM_funct),
+			.PC_WE(PC_WE),
+			.MEM_IN(MEMIN),
+			.MEM_WE(MEM_WE),
+			.IR_WE(IR_WE),
+			.ALU_SRCA(ALU_SRCA),
+			.A_WE(A_WE),
+			.B_WE(B_WE),
+			.REG_WE(REG_WE),
+			.REG_IN(REGIN),
+			.ALU_SRCB(ALU_SRCB),
+			.PC_SRC(PC_SRC),
+			.DST(DST),
+			.ALU_OP(ALUOP),
+			.clk(clk));
 
 	// Registers
 	DFF PC(.q(PC_out),

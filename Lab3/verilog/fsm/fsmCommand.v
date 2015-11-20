@@ -30,9 +30,9 @@
 `define XORI  6'b001110
 `define LW    6'b100011
 `define SW    6'b101011
-`define ADD   6'b100000
-`define SUB   6'b100010
-`define SLT   6'b101010
+`define ADD   6'b000000
+`define SUB   6'b000000
+`define SLT   6'b000000
 `define J     6'b000010
 `define JAL   6'b000011
 `define JR    6'b001000
@@ -136,39 +136,39 @@ module fsmCommand (
         next_state = `STATE_IF;
       end
 
-      // The life cycle of SUB is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
-      {`SUB, `STATE_IF}: begin
-        next_state = `STATE_ID_1;
-      end
+      // // The life cycle of SUB is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
+      // {`SUB, `STATE_IF}: begin
+      //   next_state = `STATE_ID_1;
+      // end
 
-      {`SUB, `STATE_ID_1}: begin
-        next_state = `STATE_EX_A_OP_B;
-      end
+      // {`SUB, `STATE_ID_1}: begin
+      //   next_state = `STATE_EX_A_OP_B;
+      // end
 
-      {`SUB, `STATE_EX_A_OP_B}: begin
-        next_state = `STATE_WB_ALU;
-      end
+      // {`SUB, `STATE_EX_A_OP_B}: begin
+      //   next_state = `STATE_WB_ALU;
+      // end
 
-      {`SUB, `STATE_WB_ALU}: begin
-        next_state = `STATE_IF;
-      end
+      // {`SUB, `STATE_WB_ALU}: begin
+      //   next_state = `STATE_IF;
+      // end
 
-      // The life cycle of SLT is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
-      {`SLT, `STATE_IF}: begin
-        next_state = `STATE_ID_1;
-      end
+      // // The life cycle of SLT is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
+      // {`SLT, `STATE_IF}: begin
+      //   next_state = `STATE_ID_1;
+      // end
 
-      {`SLT, `STATE_ID_1}: begin
-        next_state = `STATE_EX_A_OP_B;
-      end
+      // {`SLT, `STATE_ID_1}: begin
+      //   next_state = `STATE_EX_A_OP_B;
+      // end
 
-      {`SLT, `STATE_EX_A_OP_B}: begin
-        next_state = `STATE_WB_ALU;
-      end
+      // {`SLT, `STATE_EX_A_OP_B}: begin
+      //   next_state = `STATE_WB_ALU;
+      // end
 
-      {`SLT, `STATE_WB_ALU}: begin
-        next_state = `STATE_IF;
-      end
+      // {`SLT, `STATE_WB_ALU}: begin
+      //   next_state = `STATE_IF;
+      // end
 
       // The life cycle of J is (STATE_IF -> STATE_ID_J -> STATE_IF)
       {`J, `STATE_IF}: begin
@@ -176,7 +176,7 @@ module fsmCommand (
       end
 
       {`J, `STATE_ID_J}: begin
-        next_state = `STATE_IF;
+        next_state = 4'bx;
       end
 
       // The life cycle of JAL is (STATE_IF -> STATE_ID_J -> STATE_WB_JAL -> STATE_IF)
