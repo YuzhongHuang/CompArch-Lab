@@ -1,4 +1,14 @@
-`include "IR/IR.v", "alu/alu.v", "concat/concat.v", "datamemory/datamemory.v", "dff/dff.v", "fsm/fsm.v", "fsm/fsmCommand.v", "muxes/muxes.v", "regfile/regfile.v", "shifter/shifter.v", "signextend/se.v"
+`include "IR/IR.v"
+`include "alu/alu.v"
+`include "concat/concat.v"
+`include "datamemory/datamemory.v"
+`include "dff/dff.v"
+`include "fsm/fsm.v"
+`include "fsm/fsmCommand.v"
+`include "muxes/muxes.v"
+`include "regfile/regfile.v"
+`include "shifter/shifter.v"
+`include "signextend/se.v"
 
 module CPU(
 	input clk
