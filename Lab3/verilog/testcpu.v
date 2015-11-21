@@ -59,19 +59,15 @@ module testCPU();
 		$dumpfile("cpu.vcd");
 		$dumpvars(0, testCPU);
 		clk = 0;
-		#120;
-		// for (index = 0; index < 32; index = index + 1) begin: registerGen
-  //           $display("Register %d: %b", index, ourCpu.RegisterFile.data[index]);
-  //       end
+		#20;
+		for (index = 0; index < 32; index = index + 1) begin: registerGen
+            $display("Register %d: %b", index, ourCpu.RegisterFile.data[index]);
+        end
 		$finish;
 	end
 
-	always @(ourCpu.PC.q) begin
-		$display("CPU Q: %b", ourCpu.PC.q);
-	end
-
-	always @(ourCpu.IR.instr) begin
-		$display("IR instr: %b", ourCpu.IR.instr);
+	always @(posedge ourCpu.ALU.op) begin
+		$display("ALU OP: %b", ourCpu.ALU.op);
 	end
 
 	always begin

@@ -18,7 +18,7 @@ input       RegWrite,   // Enable writing of register when High
 input       Clk     // Clock (Positive Edge Triggered)
 );
 
-    wire [31:0] data[31:0]; // data initially stored in the register file
+    wire [31:0] data [31:0]; // data initially stored in the register file
 
     // Selects which register of the register file is being written to
     wire[31:0] RegisterToWrite;
@@ -31,7 +31,15 @@ input       Clk     // Clock (Positive Edge Triggered)
     genvar index;
     generate
         for (index = 1; index < 32; index = index + 1) begin: registerGen
-            register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
+            if (index == 29) begin
+                if (data[29] == 1'bx || data[29] == 1'bz) begin
+                    register32 register (data[index], 2**15-1, 1, Clk);
+                end else begin
+                    register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
+                end
+            end else begin
+                register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
+            end
         end
     endgenerate
 
@@ -64,8 +72,8 @@ endmodule
 //   Positive edge triggered
 module register32
 (
-output reg[31:0]    q,
-input[31:0]     d,
+output reg [31:0]    q,
+input [31:0]     d,
 input           wrenable,
 input           clk
 );

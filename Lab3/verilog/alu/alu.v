@@ -6,15 +6,15 @@ module alu(
 	input clk
 );
 
-always @(posedge clk) begin
+always @(op) begin
 	if (op == 6'b10_0000) begin
-		assign alu_res = a + b;
+		alu_res <= a + b;
 	end else if (op == 6'b10_0010) begin
-		assign alu_res = a - b;
+		alu_res <= a - b;
 	end else if (op == 6'b00_1110) begin
-		assign alu_res = a ^ b;
+		alu_res <= a ^ b;
 	end else if (op == 6'b10_1010) begin
-		assign alu_res = (a < b) ? 1 : 0;
+		alu_res <= (a < b) ? 1 : 0;
 	end
 	assign zeroflag = (a == b);
 end

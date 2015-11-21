@@ -100,7 +100,7 @@ module CPU(
 		.clk(clk)
 		);
 
-	DFF Alu_Res(
+	DFFneg Alu_Res(
 		.q(AluRes_out),
 		.in(Alu_out),
 		.wr_enable(1),

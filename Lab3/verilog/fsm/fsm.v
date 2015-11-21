@@ -45,7 +45,6 @@ initial begin
 	IR_WE <= 1;
 end
 
-
 reg[3:0] state;
 wire [3:0] next_state;
 reg[3:0] counter;
@@ -57,8 +56,8 @@ fsmCommand LUT(.next_state(next_state),
 
 	always @(posedge clk) begin
 	 	PC_WE <= 0; MEM_IN <= 0; MEM_WE <= 0; IR_WE <= 0;
-		ALU_SRCA <= 0; ALU_OP <= 0; A_WE <= 0; B_WE <= 0; REG_WE <= 0; REG_IN <= 0; DST <= 0;
-		ALU_SRCB <= 0; PC_SRC <= 0;
+		ALU_SRCA <= 0; ALU_OP <= 0; A_WE <= 0; B_WE <= 0; 
+		REG_WE <= 0; REG_IN <= 0; DST <= 0; ALU_SRCB <= 0; PC_SRC <= 0;
 		// $display("Instruction: %b", instr);
 		// $display("state: %b", state);
 		// $display("next state: %b", next_state);
@@ -126,7 +125,8 @@ fsmCommand LUT(.next_state(next_state),
 			STATE_EX_A_OP_B: begin
 				ALU_SRCB <= 1; // B
 				$display("IR_ALU_OP: %b", IR_ALU_OP);
-				ALU_OP = IR_ALU_OP;
+				ALU_OP <= IR_ALU_OP;
+				//ALU_OP <= 32;
 				state <= next_state;
 				$display("\nfsm EX_A_OP_B");
 			end

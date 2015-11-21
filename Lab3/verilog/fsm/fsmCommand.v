@@ -126,6 +126,7 @@ module fsmCommand (
 
       {`ADD, `STATE_ID_1}: begin
         next_state = `STATE_EX_A_OP_B;
+        $display("nextState: %b | instr: %b", next_state, opcode);
       end
 
       {`ADD, `STATE_EX_A_OP_B}: begin
