@@ -1,12 +1,14 @@
 #Lab 3 Report#
 
 ##Processor Architecture##
-![Block diagram of the multicycle CPU implementation](https://github.com/YuzhongHuang/CompArch-Lab/tree/master/Lab3/report_segments/BlockDiagram.PNG)
+![Block diagram of the multicycle CPU implementation](https://github.com/YuzhongHuang/CompArch-Lab/blob/master/Lab3/report_segments/BlockDiagram.PNG)
+
 Above is the block diagram of our multicycle CPU design. This design fetches the instruction from the memory with the PC. It then passes the instruction to the IR to get decoded. The decoded instruction then gets passed to the FSM to generate all the control signals. Depending on the signals the CPU would then go through the EX, MEM, WB phases if needed for excuting the instruction.
 
 We have included some RTL here to demonstrate how instructions are implemented.
 ```
-**Jump and Link**
+Jump and Link
+
 IF:		IR = Memory[PC]
 		MDR = Memory[PC]
 		PC = PC+4
@@ -16,24 +18,26 @@ WB: 	RegFile[31] = MDR
 		set MemIn to PC
 ```
 ```
-**Jump Register**
+Jump Register
+
 IF:		IR = Memory[PC]
 		PC = PC+4
 ID:		A = RegFile[ra]
 EX:		Res = A+0
-~~MEM:~~
+~~MEM:.~~
 WB:		PC = Res
 ```
 ```
-**Branch if Not Equal**
+Branch if Not Equal
+
 IF: 	Instruction Register = Memory[PC] 
 		PC = PC+4
 ID:		A = RegFile[rs] 
 		B = RegFile[rt] 
 		Res = PC + sign extended immediate
 EX:		if(A!=B) PC = Res
-~~MEM:~~
-~~WB:~~
+~~MEM:.~~
+~~WB:.~~
 ```
 
 ##Test Plan##
