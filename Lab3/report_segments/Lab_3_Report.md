@@ -24,7 +24,6 @@ IF:		IR = Memory[PC]
 		PC = PC+4
 ID:		A = RegFile[ra]
 EX:		Res = A+0
-~~MEM:.~~
 WB:		PC = Res
 ```
 ```
@@ -36,8 +35,6 @@ ID:		A = RegFile[rs]
 		B = RegFile[rt] 
 		Res = PC + sign extended immediate
 EX:		if(A!=B) PC = Res
-~~MEM:.~~
-~~WB:.~~
 ```
 
 ##Test Plan##
