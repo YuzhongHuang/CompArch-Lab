@@ -31,14 +31,11 @@ input       Clk     // Clock (Positive Edge Triggered)
     genvar index;
     generate
         for (index = 1; index < 32; index = index + 1) begin: registerGen
-            if (index == 29) begin
-                if (data[29] == 1'bx || data[29] == 1'bz) begin
-                    register32 register (data[index], 2**15-1, 1, Clk);
-                end else begin
-                    register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
-                end
+            register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
+            if (index != 29) begin
+                initial register.q = 0;
             end else begin
-                register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
+                initial register.q = 2**15-1;
             end
         end
     endgenerate

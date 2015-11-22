@@ -63,10 +63,15 @@ module fsmCommand (
 	);
 
   always @(negedge clk) begin
+    $display("instr: %b", opcode);
     case ({opcode, state})
+      default: begin
+        next_state = `STATE_IF;
+      end
+
       // The life cycle of XORI is (STATE_IF -> STATE_ID_1 -> STATE_EX_OP_IMM -> STATE_WB_XORI -> STATE_IF)
       {`XORI, `STATE_IF}:  begin 
-        next_state = `STATE_ID_1;
+        next_state = `STATE_ID_1; 
       end
 
       {`XORI, `STATE_ID_1}:  begin 
@@ -174,6 +179,7 @@ module fsmCommand (
       // The life cycle of J is (STATE_IF -> STATE_ID_J -> STATE_IF)
       {`J, `STATE_IF}: begin
         next_state = `STATE_ID_J;
+        $display("JUMP IF");
       end
 
       {`J, `STATE_ID_J}: begin
