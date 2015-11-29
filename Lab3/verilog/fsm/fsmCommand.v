@@ -56,9 +56,10 @@
 `define STATE_WB_JR       4'b1111
 
 module fsmCommand (
-	output reg[3:0] next_state, 
+	output reg[3:0] next_state,
   input[3:0] state,
 	input[5:0] opcode,
+  input[5:0] alu,
   input clk
 	);
 
@@ -71,7 +72,7 @@ module fsmCommand (
 
       // The life cycle of XORI is (STATE_IF -> STATE_ID_1 -> STATE_EX_OP_IMM -> STATE_WB_XORI -> STATE_IF)
       {`XORI, `STATE_IF}:  begin 
-        next_state = `STATE_ID_1; 
+        next_state = `STATE_ID_1;
       end
 
       {`XORI, `STATE_ID_1}:  begin 
@@ -82,7 +83,7 @@ module fsmCommand (
         next_state = `STATE_WB_XORI;
       end
 
-      {`XORI, `STATE_WB_XORI}:  begin 
+      {`XORI, `STATE_WB_XORI}:  begin
         next_state = `STATE_IF;
       end
 
@@ -130,7 +131,11 @@ module fsmCommand (
       end
 
       {`ADD, `STATE_ID_1}: begin
-        next_state = `STATE_EX_A_OP_B;
+        if (alu == 8) begin
+          next_state = `STATE_EX_A_ADD0;
+        end else begin
+          next_state = `STATE_EX_A_OP_B;
+        end
         $display("nextState: %b | instr: %b", next_state, opcode);
       end
 
@@ -183,7 +188,7 @@ module fsmCommand (
       end
 
       {`J, `STATE_ID_J}: begin
-        next_state = 4'bx;
+        next_state = `STATE_IF;
       end
 
       // The life cycle of JAL is (STATE_IF -> STATE_ID_J -> STATE_WB_JAL -> STATE_IF)
@@ -200,19 +205,19 @@ module fsmCommand (
       end
 
       // The life cycle of JR is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_ADD0 -> STATE_WB_JR -> STATE_IF)
-      {`JR, `STATE_IF}: begin
-        next_state = `STATE_ID_1;
-      end
+      // {`JR, `STATE_IF}: begin
+      //   next_state = `STATE_ID_1;
+      // end
 
-      {`JR, `STATE_ID_1}: begin
-        next_state = `STATE_EX_A_ADD0;
-      end
+      // {`JR, `STATE_ID_1}: begin
+      //   next_state = `STATE_EX_A_ADD0;
+      // end
 
-      {`JR, `STATE_EX_A_ADD0}: begin
+      {`ADD, `STATE_EX_A_ADD0}: begin
         next_state = `STATE_WB_JR;
       end
 
-      {`JR, `STATE_WB_JR}: begin
+      {`ADD, `STATE_WB_JR}: begin
         next_state = `STATE_IF;
       end
 

@@ -59,19 +59,19 @@ module testCPU();
 		$dumpfile("cpu.vcd");
 		$dumpvars(0, testCPU);
 		clk = 0;
-		#800;
+		#500;
 		for (index = 0; index < 32; index = index + 1) begin: registerGen
             $display("Register %d: %b", index, ourCpu.RegisterFile.data[index]);
         end
 		$finish;
 	end
 
-	always @(posedge ourCpu.ALU.op) begin
-		$display("ALU OP: %b", ourCpu.ALU.op);
-	end
-
 	always begin
 		#5 clk = !clk;
+	end
+
+	always @(ourCpu.IR.imm) begin
+		$display("Immediate: %b", ourCpu.IR.imm);
 	end
 	
 endmodule

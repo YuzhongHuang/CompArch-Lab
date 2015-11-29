@@ -10,7 +10,7 @@ module fsm
 	input [5:0] IR_ALU_OP,
 	// output reg 	[3:0] currState,
 	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-				A_WE, B_WE, REG_WE, REG_IN,
+				A_WE, B_WE, REG_WE, REG_IN, CONCAT_WE, SE_WE,
 	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
 	output reg 	[5:0] ALU_OP
 );
@@ -49,15 +49,17 @@ reg[3:0] state;
 wire [3:0] next_state;
 reg[3:0] counter;
 
-fsmCommand LUT(.next_state(next_state), 
+fsmCommand LUT(.next_state(next_state),
 			   .state(state), 
 			   .opcode(instr),
+			   .alu(IR_ALU_OP),
 			   .clk(clk));
 
 	always @(posedge clk) begin
 	 	PC_WE <= 0; MEM_IN <= 0; MEM_WE <= 0; IR_WE <= 0;
 		ALU_SRCA <= 0; ALU_OP <= 0; A_WE <= 0; B_WE <= 0; 
 		REG_WE <= 0; REG_IN <= 0; DST <= 0; ALU_SRCB <= 0; PC_SRC <= 0;
+		CONCAT_WE <= 0; SE_WE <= 0;
 		// $display("Instruction: %b", instr);
 		// $display("state: %b", state);
 		// $display("next state: %b", next_state);
@@ -75,11 +77,20 @@ fsmCommand LUT(.next_state(next_state),
 			STATE_IF: begin // read address bits from MOSI
 				PC_WE <= 1;
 				MEM_IN <= 1;
-				IR_WE <= 1;
+				if (next_state != STATE_ID_BNE) begin
+					IR_WE <= 1;
+				end
 				ALU_SRCA <= 1;
 				PC_SRC <= 1;
 				ALU_OP <= 32;
 				state <= next_state;
+				if (next_state == STATE_ID_J) begin
+					CONCAT_WE <= 1;
+				end else if ((next_state == STATE_ID_BNE) ||
+								(instr == 14) ||
+								(instr == 43)) begin
+					SE_WE <= 1;
+				end
 				$display("\nfsm IF");
 			end
 
@@ -92,17 +103,20 @@ fsmCommand LUT(.next_state(next_state),
 
 			STATE_ID_J: begin
 				PC_WE <= 1;
-				state <= next_state;
+				//CONCAT_WE <= 1;
+				if (instr == 3) begin
+					state <= STATE_WB_JAL;
+				end else begin
+					state <= 4'bx;
+				end
 				$display("\nfsm ID_J");
 			end
 
 			STATE_ID_BNE: begin
-				ALU_SRCA <= 1; //PC
-				ALU_SRCB <= 2;//SE(Imm)
 				PC_SRC <= 1; //ALU
 				A_WE <= 1;
 				B_WE <= 1;
-				state <= 4'bx;
+				state <= next_state;
 				$display("\nfsm ID_BNE");
 			end
 
@@ -140,10 +154,12 @@ fsmCommand LUT(.next_state(next_state),
 
 			STATE_EX_BNE: begin
 				PC_WE <= !zeroflag;
-				ALU_SRCB <= 1;
-				ALU_OP <= 34;
-				PC_SRC <= 2; 
-				state <= next_state;
+				ALU_SRCA <= 1; //PC
+				ALU_SRCB <= 2;//SE(Imm)
+				ALU_OP <= 32;
+				IR_WE <= 1;
+				PC_SRC <= 1; 
+				state <= 4'bx;
 				$display("\nfsm EX_BNE");
 			end
 
@@ -193,8 +209,6 @@ fsmCommand LUT(.next_state(next_state),
 				$display("\nfsm WB_JR");
 			end
 		endcase
-		// currState <= state;
-		$display("ALU_OP: %b", ALU_OP);
 	end	
 endmodule
 

@@ -1,10 +1,14 @@
 xori $t1, $zero, 198
-xori $ra, $zero, 908
 xori $v0, $zero, 8
-sub $sp, $sp, $v0
-sw $t1, 4($sp)
-sw $ra, 0($sp)
-lw $t2, 4($sp)
-lw $t3, 0($sp)
-add $sp, $sp, $v0
+bne $zero, $v0, END
 
+FIRST:
+#xori $ra, $zero, 7
+sub $v1, $sp, $v0
+jr $ra
+add $t3, $v1, $t1
+add $t4, $v1, $t1
+xori $t5, $zero, 205
+
+END:
+sub $s1, $t1, $v0

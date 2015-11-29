@@ -5,6 +5,6 @@ module concat
 	input [25:0] dout
 );
 
-assign concat = {PC[31:28], dout, 2'b00};
+assign concat = {6'b0, dout};
 
 endmodule

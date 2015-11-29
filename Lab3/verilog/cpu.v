@@ -16,6 +16,8 @@ module CPU(
 	wire REG_WE;
 	wire A_WE;
 	wire B_WE;
+	wire CONCAT_WE;
+	wire SE_WE;
 
 	// all wires naming: fromSource_toSource
 	wire [31:0] PC_out;
@@ -23,6 +25,8 @@ module CPU(
 	wire [31:0] MemMux_DM;
 	wire [31:0] DM_out;
 
+	wire [31:0] SE_Res;
+	wire [31:0] Concat_Res;
 	wire [25:0] IR_Concat;
 	wire [4:0] IR_Rd;
 	wire [4:0] IR_Rt;
@@ -66,6 +70,8 @@ module CPU(
 			.B_WE(B_WE),
 			.REG_WE(REG_WE),
 			.REG_IN(REGIN),
+			.CONCAT_WE(CONCAT_WE),
+			.SE_WE(SE_WE),
 			.ALU_SRCB(ALU_SRCB),
 			.PC_SRC(PC_SRC),
 			.DST(DST),
@@ -100,6 +106,20 @@ module CPU(
 		.clk(clk)
 		);
 
+	DFFneg ConcatReg(
+		.q(Concat_PCMux),
+		.in(Concat_Res),
+		.wr_enable(CONCAT_WE),
+		.clk(clk)
+		);
+
+	DFFneg SEReg(
+		.q(SEImm_out),
+		.in(SE_Res),
+		.wr_enable(SE_WE),
+		.clk(clk)
+		);
+
 	DFFneg Alu_Res(
 		.q(AluRes_out),
 		.in(Alu_out),
@@ -127,19 +147,14 @@ module CPU(
 		);
 
 	concat Concat(
-		.concat(Concat_PCMux),
+		.concat(Concat_Res),
 		.PC(PC_out),
 		.dout(IR_Concat)
 		);
 
 	signextend SignExtend(
-		.se(SEImm_out),
+		.se(SE_Res),
 		.imm(IR_Imm16)
-		);
-
-	shifter ShifterLeft2(
-		.out(Shifter_AluMuxB),
-		.in(SEImm_out)
 		);
 
 	regfile RegisterFile(
@@ -193,13 +208,12 @@ module CPU(
 		.in1(PC_out)
 		);
 
-	mux4to1 AluMuxB(
+	mux3to1 AluMuxB(
 		.out(AluMuxB_Alu),
 		.address(ALU_SRCB),
 		.in0(1),
 		.in1(B_out),
-		.in2(SEImm_out),
-		.in3(Shifter_AluMuxB)
+		.in2(SEImm_out)
 		);
 
 	mux3to1 PCMux(
