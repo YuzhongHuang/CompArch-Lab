@@ -148,7 +148,6 @@ module CPU(
 
 	concat Concat(
 		.concat(Concat_Res),
-		.PC(PC_out),
 		.dout(IR_Concat)
 		);
 
@@ -173,8 +172,7 @@ module CPU(
 		.zeroflag(zeroflag),
 		.a(AluMuxA_Alu),
 		.b(AluMuxB_Alu),
-		.op(ALUOP),
-		.clk(clk)
+		.op(ALUOP)
 		);
 
 	// All Muxes

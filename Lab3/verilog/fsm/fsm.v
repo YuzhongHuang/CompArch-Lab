@@ -4,20 +4,17 @@
 
 module fsm 
 (
-	input 		clk, // positive edge of the serial clock 
+	input 		clk,
 	input 		zeroflag,
 	input [5:0] instr,
 	input [5:0] IR_ALU_OP,
-	// output reg 	[3:0] currState,
 	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN, CONCAT_WE, SE_WE,
 	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
 	output reg 	[5:0] ALU_OP
 );
 
-/*
- * state encoding
- */
+// state encoding
 localparam  STATE_IF = 0,
 			STATE_ID_1 = 1,
 			STATE_ID_J = 2,
@@ -35,11 +32,9 @@ localparam  STATE_IF = 0,
 			STATE_WB_JAL = 14,
 			STATE_WB_JR = 15;
 
-/*
-* state reg declaration
-*/
+// state reg declaration
 
-// TODO: Decode Instruction Sequence for ALU Operation
+
 initial begin
 	MEM_IN <= 1;
 	IR_WE <= 1;
@@ -60,12 +55,8 @@ fsmCommand LUT(.next_state(next_state),
 		ALU_SRCA <= 0; ALU_OP <= 0; A_WE <= 0; B_WE <= 0; 
 		REG_WE <= 0; REG_IN <= 0; DST <= 0; ALU_SRCB <= 0; PC_SRC <= 0;
 		CONCAT_WE <= 0; SE_WE <= 0;
-		// $display("Instruction: %b", instr);
-		// $display("state: %b", state);
-		// $display("next state: %b", next_state);
-		/*
-		 * case statement to change around states given the situation
-		 */
+
+		// case statement to change around states given the situation
 		case (state)
 			default: begin
 				MEM_IN <= 1;
@@ -74,12 +65,15 @@ fsmCommand LUT(.next_state(next_state),
 				$display("\nfsm default");
 			end
 
-			STATE_IF: begin // read address bits from MOSI
+			STATE_IF: begin
 				PC_WE <= 1;
 				MEM_IN <= 1;
+
+				// If next state is BNE, do not allow IR to be overwritten
 				if (next_state != STATE_ID_BNE) begin
 					IR_WE <= 1;
 				end
+
 				ALU_SRCA <= 1;
 				PC_SRC <= 1;
 				ALU_OP <= 32;
