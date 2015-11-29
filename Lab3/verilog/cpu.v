@@ -36,7 +36,6 @@ module CPU(
 	wire [5:0] IR_FSM_funct;
 
 	wire [31:0] SEImm_out;
-	wire [31:0] Shifter_AluMuxB;
 
 	wire [4:0]  DstMux_RegFile;
 	wire [31:0] MDR_RegMux;

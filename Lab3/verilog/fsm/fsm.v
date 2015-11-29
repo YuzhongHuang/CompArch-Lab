@@ -71,20 +71,26 @@ fsmCommand LUT(.next_state(next_state),
 
 				// If next state is BNE, do not allow IR to be overwritten
 				if (next_state != STATE_ID_BNE) begin
+					// If next state is Jump, Concat needs to be overwritten
+					if (next_state == STATE_ID_J) begin
+						CONCAT_WE <= 1;
+					end
 					IR_WE <= 1;
+				end
+
+				// If next state is BNE, or the instruction requires the immediate register,
+				// allow it to be overwritten
+				if ((next_state == STATE_ID_BNE) ||
+								(instr == 14) ||
+								(instr == 43)) begin
+					SE_WE <= 1;
 				end
 
 				ALU_SRCA <= 1;
 				PC_SRC <= 1;
 				ALU_OP <= 32;
 				state <= next_state;
-				if (next_state == STATE_ID_J) begin
-					CONCAT_WE <= 1;
-				end else if ((next_state == STATE_ID_BNE) ||
-								(instr == 14) ||
-								(instr == 43)) begin
-					SE_WE <= 1;
-				end
+				
 				$display("\nfsm IF");
 			end
 
@@ -97,7 +103,6 @@ fsmCommand LUT(.next_state(next_state),
 
 			STATE_ID_J: begin
 				PC_WE <= 1;
-				//CONCAT_WE <= 1;
 				if (instr == 3) begin
 					state <= STATE_WB_JAL;
 				end else begin
@@ -107,7 +112,7 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_ID_BNE: begin
-				PC_SRC <= 1; //ALU
+				PC_SRC <= 1; // chooses ALU out
 				A_WE <= 1;
 				B_WE <= 1;
 				state <= next_state;
@@ -118,23 +123,20 @@ fsmCommand LUT(.next_state(next_state),
 				ALU_OP <= 14;
 				ALU_SRCB <= 2;
 				state <= next_state;
-				$display("instr: %b", instr);
-				$display("NEXT STATE: %b", next_state);
 				$display("\nfsm EX_OP_IMM");
 			end
 
 			STATE_EX_ADDI: begin
-				ALU_SRCB <= 2; //SE(Imm)
+				ALU_SRCB <= 2; // chooses SE(Imm)
 				ALU_OP <= 32;
 				state <= next_state;
 				$display("\nfsm EX_ADDI");
 			end
 
 			STATE_EX_A_OP_B: begin
-				ALU_SRCB <= 1; // B
+				ALU_SRCB <= 1; // chooses Register B
 				$display("IR_ALU_OP: %b", IR_ALU_OP);
 				ALU_OP <= IR_ALU_OP;
-				//ALU_OP <= 32;
 				state <= next_state;
 				$display("\nfsm EX_A_OP_B");
 			end
@@ -142,14 +144,13 @@ fsmCommand LUT(.next_state(next_state),
 			STATE_EX_A_ADD0: begin
 				ALU_OP <= 32;
 				state <= next_state;
-				// GO TO NEXT STATE
 				$display("\nfsm EX_A_ADD0");
 			end
 
 			STATE_EX_BNE: begin
 				PC_WE <= !zeroflag;
-				ALU_SRCA <= 1; //PC
-				ALU_SRCB <= 2;//SE(Imm)
+				ALU_SRCA <= 1; // chooses PC
+				ALU_SRCB <= 2; // chooses SE(Imm)
 				ALU_OP <= 32;
 				IR_WE <= 1;
 				PC_SRC <= 1; 
@@ -159,7 +160,6 @@ fsmCommand LUT(.next_state(next_state),
 
 			STATE_MEM_READ: begin
 				state <= next_state;
-				// GO TO NEXT STATE
 				$display("\nfsm MEM_READ");
 			end
 
