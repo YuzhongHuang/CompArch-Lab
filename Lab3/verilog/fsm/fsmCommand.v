@@ -64,7 +64,7 @@ module fsmCommand (
 	);
 
   always @(negedge clk) begin
-    $display("instr: %b", opcode);
+    $display("opcode: %b | state: %b", opcode, state);
     case ({opcode, state})
       default: begin
         next_state = `STATE_IF;

@@ -54,11 +54,10 @@ endmodule
 // 32 bit decoder with enable signal
 //   enable=0: all output bits are 0
 //   enable=1: out[address] is 1, all other outputs are 0
-module decoder1to32
-(
-output[31:0]    out,
-input       enable,
-input[4:0]  address
+module decoder1to32 (
+  output[31:0] out,
+  input enable,
+  input[4:0] address
 );
 
     assign out = enable<<address; 
@@ -67,43 +66,38 @@ endmodule
 
 // 32-bit D Flip-Flop with enable
 //   Positive edge triggered
-module register32
-(
-output reg [31:0]    q,
-input [31:0]     d,
-input           wrenable,
-input           clk
+module register32 (
+  output reg [31:0] q,
+  input [31:0] d,
+  input wrenable,
+  input clk
 );
 
-    always @(posedge clk) begin
-        if(wrenable) begin
-            q = d;
-        end
-    end
+  always @(posedge clk) begin
+      if(wrenable) begin
+          q = d;
+      end
+  end
 
 endmodule
 
 // Always output zero
-module register32zero
-(
-output wire[31:0]   q,
-input[31:0]     d,
-input           wrenable,
-input           clk
+module register32zero (
+  output wire[31:0] q,
+  input[31:0] d,
+  input wrenable,
+  input clk
 );
-
     assign q = 32'b0;
-
 endmodule
 
 // multiplexer that is 32 bits wide and 32 inputs deep
-module mux32to1by32
-(
-output[31:0]    out,
-input[4:0]      address,
-input[31:0]     input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, 
-input[31:0] input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, 
-input[31:0] input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31
+module mux32to1by32 (
+  output[31:0] out,
+  input[4:0] address,
+  input[31:0] input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, 
+  input[31:0] input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, 
+  input[31:0] input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31
 );
 
   wire[31:0] mux[31:0];         // Create a 2D array of wires
@@ -142,21 +136,21 @@ input[31:0] input21, input22, input23, input24, input25, input26, input27, input
   assign out = mux[address];    // Connect the output of the array
 endmodule
 
-module test();
+// module test();
 
-  wire [31:0] read1, read2;
-  reg [31:0] writedata;
-  reg [4:0] writeport, readport1, readport2;
-  reg we, clk;
+//   wire [31:0] read1, read2;
+//   reg [31:0] writedata;
+//   reg [4:0] writeport, readport1, readport2;
+//   reg we, clk;
 
-  regfile RF(read1, read2, writedata, readport1, readport2, writeport, we, clk);
+//   regfile RF(read1, read2, writedata, readport1, readport2, writeport, we, clk);
 
-  always begin
-      #5; clk = !clk;
-  end
+//   always begin
+//       #5; clk = !clk;
+//   end
 
-  initial begin
-    clk = 0; 
-    we = 1; writedata = 2**15-1; writeport = 29; #10;
-  end
-endmodule
+//   initial begin
+//     clk = 0; 
+//     we = 1; writedata = 2**15-1; writeport = 29; #10;
+//   end
+// endmodule

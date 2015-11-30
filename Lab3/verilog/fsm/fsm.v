@@ -74,16 +74,20 @@ fsmCommand LUT(.next_state(next_state),
 					// If next state is Jump, Concat needs to be overwritten
 					if (next_state == STATE_ID_J) begin
 						CONCAT_WE <= 1;
+					end else begin
+						IR_WE <= 1;
 					end
-					IR_WE <= 1;
 				end
 
 				// If next state is BNE, or the instruction requires the immediate register,
 				// allow it to be overwritten
+				$display("instr: %d", instr);
 				if ((next_state == STATE_ID_BNE) ||
 								(instr == 14) ||
-								(instr == 43)) begin
+								(instr == 43) || (instr == 35) || 
+								(next_state == STATE_ID_J)) begin
 					SE_WE <= 1;
+					$display("SE CHANGING!!");
 				end
 
 				ALU_SRCA <= 1;
@@ -102,12 +106,14 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_ID_J: begin
-				PC_WE <= 1;
+				//PC_WE <= 1;
 				if (instr == 3) begin
 					state <= STATE_WB_JAL;
+					PC_WE <= 1;
 				end else begin
 					state <= 4'bx;
 				end
+
 				$display("\nfsm ID_J");
 			end
 
@@ -197,7 +203,7 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_WB_JR: begin
-				PC_WE <= 1;
+				//PC_WE <= 1;
 				PC_SRC <= 2;
 				state <= 4'bx;
 				$display("\nfsm WB_JR");

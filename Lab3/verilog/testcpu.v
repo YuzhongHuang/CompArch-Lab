@@ -59,10 +59,10 @@ module testCPU();
 		$dumpfile("cpu.vcd");
 		$dumpvars(0, testCPU);
 		clk = 0;
-		#500;
-		for (index = 0; index < 32; index = index + 1) begin: registerGen
-            $display("Register %d: %b", index, ourCpu.RegisterFile.data[index]);
-        end
+		#800;
+		// for (index = 0; index < 32; index = index + 1) begin: registerGen
+  //           $display("Register %d: %b", index, ourCpu.RegisterFile.data[index]);
+  //       end
 		$finish;
 	end
 
@@ -70,8 +70,13 @@ module testCPU();
 		#5 clk = !clk;
 	end
 
-	always @(ourCpu.IR.imm) begin
-		$display("Immediate: %b", ourCpu.IR.imm);
+	always @(ourCpu.FSM.state) begin
+		if (ourCpu.FSM.state == 0) begin
+			for (index = 0; index < 32; index = index + 1) begin: registerGen
+	            $display("Register %d: %b", index, ourCpu.RegisterFile.data[index]);
+	        end
+	        $display("mem[sp-4]: %b | mem[sp-4+1]: %b", ourCpu.DM.memory[32'b0000_0000_0000_0000_0110_1000_0001_1101], ourCpu.DM.memory[2**15-5]);
+		end
 	end
 	
 endmodule
