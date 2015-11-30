@@ -18,37 +18,37 @@ input       RegWrite,   // Enable writing of register when High
 input       Clk     // Clock (Positive Edge Triggered)
 );
 
-    wire [31:0] data [31:0]; // data initially stored in the register file
+  wire [31:0] data [31:0]; // data initially stored in the register file
 
-    // Selects which register of the register file is being written to
-    wire[31:0] RegisterToWrite;
-    decoder1to32 decoder1 (RegisterToWrite, RegWrite, WriteRegister);
+  // Selects which register of the register file is being written to
+  wire[31:0] RegisterToWrite;
+  decoder1to32 decoder1 (RegisterToWrite, RegWrite, WriteRegister);
 
-    // The first register is alwats zero
-    register32zero register0 (data[0], WriteData, RegisterToWrite[0], Clk);
+  // The first register is alwats zero
+  register32zero register0 (data[0], WriteData, RegisterToWrite[0], Clk);
 
-    // Writes the data into the rest of the register file
-    genvar index;
-    generate
-        for (index = 1; index < 32; index = index + 1) begin: registerGen
-            register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
-            if (index != 29) begin
-                initial register.q = 0;
-            end else begin
-                initial register.q = 2**15-1;
-            end
-        end
-    endgenerate
+  // Writes the data into the rest of the register file
+  genvar index;
+  generate
+      for (index = 1; index < 32; index = index + 1) begin: registerGen
+          register32 register (data[index], WriteData, RegisterToWrite[index], Clk);
+          if (index != 29) begin
+              initial register.q = 0;
+          end else begin
+              initial register.q = 2**15-1;
+          end
+      end
+  endgenerate
 
-    // Read first and second register data from first and second register addresses
-    mux32to1by32 mux1 (ReadData1, ReadRegister1, data[0], data[1], data[2], data[3], data[4], data[5], data[6],
-            data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15],
-            data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23],
-            data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31]);
-    mux32to1by32 mux2 (ReadData2, ReadRegister2, data[0], data[1], data[2], data[3], data[4], data[5], data[6],
-            data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15],
-            data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23],
-            data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31]);
+  // Read first and second register data from first and second register addresses
+  mux32to1by32 mux1 (ReadData1, ReadRegister1, data[0], data[1], data[2], data[3], data[4], data[5], data[6],
+          data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15],
+          data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23],
+          data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31]);
+  mux32to1by32 mux2 (ReadData2, ReadRegister2, data[0], data[1], data[2], data[3], data[4], data[5], data[6],
+          data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15],
+          data[16], data[17], data[18], data[19], data[20], data[21], data[22], data[23],
+          data[24], data[25], data[26], data[27], data[28], data[29], data[30], data[31]);
 endmodule
 
 // 32 bit decoder with enable signal
@@ -78,10 +78,9 @@ module register32 (
           q = d;
       end
   end
-
 endmodule
 
-// Always output zero
+// Always outputs zero
 module register32zero (
   output wire[31:0] q,
   input[31:0] d,
@@ -100,8 +99,8 @@ module mux32to1by32 (
   input[31:0] input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31
 );
 
-  wire[31:0] mux[31:0];         // Create a 2D array of wires
-  assign mux[0] = input0;       // Connect the sources of the array
+  wire[31:0] mux[31:0];
+  assign mux[0] = input0;
   assign mux[1] = input1;
   assign mux[2] = input2;
   assign mux[3] = input3;
@@ -136,21 +135,3 @@ module mux32to1by32 (
   assign out = mux[address];    // Connect the output of the array
 endmodule
 
-// module test();
-
-//   wire [31:0] read1, read2;
-//   reg [31:0] writedata;
-//   reg [4:0] writeport, readport1, readport2;
-//   reg we, clk;
-
-//   regfile RF(read1, read2, writedata, readport1, readport2, writeport, we, clk);
-
-//   always begin
-//       #5; clk = !clk;
-//   end
-
-//   initial begin
-//     clk = 0; 
-//     we = 1; writedata = 2**15-1; writeport = 29; #10;
-//   end
-// endmodule

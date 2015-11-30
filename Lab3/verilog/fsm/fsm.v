@@ -4,14 +4,14 @@
 
 module fsm 
 (
-	input 		clk,
-	input 		zeroflag,
+	input clk,
+	input zeroflag,
 	input [5:0] instr,
 	input [5:0] IR_ALU_OP,
-	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
+	output reg PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN, CONCAT_WE, SE_WE,
-	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
-	output reg 	[5:0] ALU_OP
+	output reg [1:0] ALU_SRCB, PC_SRC, DST,
+	output reg [5:0] ALU_OP
 );
 
 // state encoding
@@ -31,9 +31,6 @@ localparam  STATE_IF = 0,
 			STATE_WB_ALU = 13,
 			STATE_WB_JAL = 14,
 			STATE_WB_JR = 15;
-
-// state reg declaration
-
 
 initial begin
 	MEM_IN <= 1;
@@ -82,12 +79,8 @@ fsmCommand LUT(.next_state(next_state),
 				// If next state is BNE, or the instruction requires the immediate register,
 				// allow it to be overwritten
 				$display("instr: %d", instr);
-				if ((next_state == STATE_ID_BNE) ||
-								(instr == 14) ||
-								(instr == 43) || (instr == 35) || 
-								(next_state == STATE_ID_J)) begin
+				if ((next_state == STATE_ID_BNE) || (next_state == STATE_ID_J)) begin
 					SE_WE <= 1;
-					$display("SE CHANGING!!");
 				end
 
 				ALU_SRCA <= 1;
@@ -99,6 +92,10 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_ID_1: begin
+				// Allow SE to be overwritten for XORI, SW and LW
+				if ((instr == 14) || (instr == 43) || (instr == 35)) begin
+					SE_WE <= 1;
+				end
 				A_WE <= 1;
 				B_WE <= 1;
 				state <= next_state;
@@ -211,32 +208,3 @@ fsmCommand LUT(.next_state(next_state),
 		endcase
 	end	
 endmodule
-
-
-// module testfsm();
-
-// 	reg clk, zeroflag;
-// 	wire PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-// 				A_WE, B_WE, REG_WE, REG_IN;
-// 	wire [1:0] ALU_SRCB, PC_SRC, DST;
-// 	wire [2:0] ALU_OP;
-
-// 	fsm myFsm(clk, zeroflag, PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-// 				A_WE, B_WE, REG_WE, REG_IN, ALU_SRCB, PC_SRC, DST, ALU_OP);
-
-// 	always begin
-// 		#5 clk = !clk;
-// 	end
-
-// 	always @(myFsm.state, myFsm.clk) begin
-// 		$display("STATE: %b", myFsm.state);
-// 	end
-
-// 	initial begin 
-// 		clk=0; #20;
-// 		$display("PC_WE: %b", myFsm.PC_WE);
-// 		$finish;
-// 	end
-
-// endmodule
- 
