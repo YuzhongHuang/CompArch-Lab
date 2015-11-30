@@ -3,7 +3,7 @@
 ### Yuzhong, Hieu, Selina
 
 ## Processor Architecture
-![enter image description here](https://lh3.googleusercontent.com/-yVH_Dew4lDA/Vlu5MIquppI/AAAAAAAAAWQ/RyqLqLqnWC8/s0/BlockDiagram.PNG "BlockDiagram.PNG")
+![Block diagram of the multicycle CPU implementation](https://github.com/YuzhongHuang/CompArch-Lab/blob/master/Lab3/report_segments/BlockDiagram.PNG)
 
 Above is the block diagram of our multicycle CPU design. This design fetches the instruction from the memory with the PC. It then passes the instruction to the IR to get decoded. The decoded instruction then gets passed to the FSM to generate all the control signals. Depending on the signals the CPU would then go through the EX, MEM, WB phases if needed for excuting the instruction. There is some timing issue with the FSM since the FSM needs input from instruction decoder, however, the IR will not get input from Memory until FSM set MemIn to choose PC. So if we only have IF state, we will enter a deadlock. So we add another default state at the beginning of each instruction before IF state. In this case, we can send out FSM instructions beforehand and solve the problem. 
 
@@ -42,8 +42,8 @@ Default: Setup FSM controls
 
 IF: 	Instruction Register = Memory[PC] 
 		PC = PC+4
-ID:		A = RegFile[rs] 
-		B = RegFile[rt] 
+ID:		A = RegFile[rs]
+		B = RegFile[rt]
 		Res = PC + sign extended immediate
 EX:		if(A!=B) PC = Res
 ```
@@ -67,4 +67,5 @@ This is because we could not get the timing right with posedge or negedge.
 - In our FSM Look-Up Table, we also added a default case. In the IF state, our CPU has two choices: go to ID_1 (used by most instructions) or ID_J (used by Jump and JAL). The CPU actually does not decide correctly which one to go to, but chooses the one it previously used. Which means it can progress normally going from ADD to SLT, but from SLT to JAL it will have trouble. Therefore, the default cause in the LUT essentially allows the CPU to "start over" with the instruction and actually go to the right state.
 
 ## Work Plan Reflection
+
 Designing the components of our multicycle CPU and writing the verilog scripts for each took about the amount of time we expected with the exception of the finite state machine. We originally planned on spending around 3.5 hours on the design, build, and test. We ended up spending about 6 hours due to little errors we made here and there and the long time we spent debugging these errors. We didn't allocate time for integration in our original work plan since we believed that once we get the individual components working the "putting together" part should be really simple. However, integration turned out to be the most time consumimg piece of our lab. We didn't expect timing to be an issue since for the last few labs timing was relatively easy to deal with. Our ID phase was getting instructions too early and our ALU was calculating results too late. We ended up spending a lot of time on adjusting the timing so every component would work nicely together.
