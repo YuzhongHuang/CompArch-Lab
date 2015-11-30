@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="synth_1" LaunchPart="xc7z010clg400-1" LaunchTime="1448849564">
+  <File Type="RDS-DCP" Name="CPU.dcp"/>
+  <File Type="RUN-CONSTRS" Name="$PDATADIR/runs/synth_1/constrs_in.xml"/>
+  <File Type="RDS-UTIL-PB" Name="CPU_utilization_synth.pb"/>
+  <File Type="RUN-SRCS" Name="$PDATADIR/runs/synth_1/sources.xml"/>
+  <File Type="RDS-PROPCONSTRS" Name="CPU_drc_synth.rpt"/>
+  <File Type="PA-TCL" Name="CPU.tcl"/>
+  <File Type="RUN-STRAT" Name="$PDATADIR/runs/synth_1/synth_1.psg"/>
+  <File Type="RDS-RDS" Name="CPU.vds"/>
+  <File Type="RDS-UTIL" Name="CPU_utilization_synth.rpt"/>
+  <File Type="VDS-TIMINGSUMMARY" Name="CPU_timing_summary_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="CPU_timing_summary_synth.pb"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/fsm/fsmCommand.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/fsm/fsmCommand.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/signextend/se.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/signextend/se.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/IR/IR.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/IR/IR.v"/>
+        <Attr Name="ImportTime" Val="1447868350"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/fsm/fsm.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/fsm/fsm.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/dff/dff.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/dff/dff.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/datamemory/datamemory.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/datamemory/datamemory.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/concat/concat.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/concat/concat.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/alu/alu.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/alu/alu.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/regfile/regfile.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/regfile/regfile.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/muxes/muxes.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/muxes/muxes.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/verilog/cpu.v">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../verilog/cpu.v"/>
+        <Attr Name="ImportTime" Val="1448845604"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="CPU"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2015">
+      <Desc>Vivado Synthesis Defaults</Desc>
+    </StratHandle>
+    <Step Id="synth_design"/>
+  </Strategy>
+</GenRun>
