@@ -1,38 +1,34 @@
 /* 
- * The FSM command LUT takes a 6-bit opcode and a 4-bit current state as inputs, and outputs a 4-bit command as the next 
- * state. 
- *
- * The state encoding are listed below:
- *
- * STATE_IF = 0,
- * STATE_ID_1 = 1,
- * STATE_ID_J = 2,
- * STATE_ID_BNE = 3,
- * STATE_EX_OP_IMM = 4,
- * STATE_EX_ADDI = 5,
- * STATE_EX_A_OP_B = 6,
- * STATE_EX_A_ADD0 = 7,
- * STATE_EX_BNE = 8,
- * STATE_MEM_READ = 9,
- * STATE_MEM_WRITE = 10,
- * STATE_WB_XORI = 11,
- * STATE_WB_LW = 12,
- * STATE_WB_ALU = 13,
- * STATE_WB_JAL = 14,
- * STATE_WB_JR = 15;
- * 
+ The FSM command LUT takes a 6-bit opcode and a 4-bit current state as inputs, and outputs a 4-bit command as the next 
+state. 
+
+The state encoding are listed below:
+
+STATE_IF = 0,
+STATE_ID_1 = 1,
+STATE_ID_J = 2,
+STATE_ID_BNE = 3,
+STATE_EX_OP_IMM = 4,
+STATE_EX_ADDI = 5,
+STATE_EX_A_OP_B = 6,
+STATE_EX_A_ADD0 = 7,
+STATE_EX_BNE = 8,
+STATE_MEM_READ = 9,
+STATE_MEM_WRITE = 10,
+STATE_WB_XORI = 11,
+STATE_WB_LW = 12,
+STATE_WB_ALU = 13,
+STATE_WB_JAL = 14,
+STATE_WB_JR = 15;
+
  */
 
 
-/*
- * opcode encoding
- */
+// opcode encoding
 `define XORI  6'b001110
 `define LW    6'b100011
 `define SW    6'b101011
-`define ADD   6'b000000
-`define SUB   6'b000000
-`define SLT   6'b000000
+`define MATH   6'b000000
 `define J     6'b000010
 `define JAL   6'b000011
 `define JR    6'b001000
@@ -64,7 +60,6 @@ module fsmCommand (
 	);
 
   always @(negedge clk) begin
-    $display("instr: %b", opcode);
     case ({opcode, state})
       default: begin
         next_state = `STATE_IF;
@@ -126,65 +121,29 @@ module fsmCommand (
       end
 
       // The life cycle of ADD is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
-      {`ADD, `STATE_IF}: begin
+      {`MATH, `STATE_IF}: begin
         next_state = `STATE_ID_1;
       end
 
-      {`ADD, `STATE_ID_1}: begin
+      {`MATH, `STATE_ID_1}: begin
         if (alu == 8) begin
           next_state = `STATE_EX_A_ADD0;
         end else begin
           next_state = `STATE_EX_A_OP_B;
         end
-        $display("nextState: %b | instr: %b", next_state, opcode);
       end
 
-      {`ADD, `STATE_EX_A_OP_B}: begin
+      {`MATH, `STATE_EX_A_OP_B}: begin
         next_state = `STATE_WB_ALU;
       end
 
-      {`ADD, `STATE_WB_ALU}: begin
+      {`MATH, `STATE_WB_ALU}: begin
         next_state = `STATE_IF;
       end
-
-      // // The life cycle of SUB is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
-      // {`SUB, `STATE_IF}: begin
-      //   next_state = `STATE_ID_1;
-      // end
-
-      // {`SUB, `STATE_ID_1}: begin
-      //   next_state = `STATE_EX_A_OP_B;
-      // end
-
-      // {`SUB, `STATE_EX_A_OP_B}: begin
-      //   next_state = `STATE_WB_ALU;
-      // end
-
-      // {`SUB, `STATE_WB_ALU}: begin
-      //   next_state = `STATE_IF;
-      // end
-
-      // // The life cycle of SLT is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_OP_B -> STATE_WB_ALU -> STATE_IF)
-      // {`SLT, `STATE_IF}: begin
-      //   next_state = `STATE_ID_1;
-      // end
-
-      // {`SLT, `STATE_ID_1}: begin
-      //   next_state = `STATE_EX_A_OP_B;
-      // end
-
-      // {`SLT, `STATE_EX_A_OP_B}: begin
-      //   next_state = `STATE_WB_ALU;
-      // end
-
-      // {`SLT, `STATE_WB_ALU}: begin
-      //   next_state = `STATE_IF;
-      // end
 
       // The life cycle of J is (STATE_IF -> STATE_ID_J -> STATE_IF)
       {`J, `STATE_IF}: begin
         next_state = `STATE_ID_J;
-        $display("JUMP IF");
       end
 
       {`J, `STATE_ID_J}: begin
@@ -205,19 +164,11 @@ module fsmCommand (
       end
 
       // The life cycle of JR is (STATE_IF -> STATE_ID_1 -> STATE_EX_A_ADD0 -> STATE_WB_JR -> STATE_IF)
-      // {`JR, `STATE_IF}: begin
-      //   next_state = `STATE_ID_1;
-      // end
-
-      // {`JR, `STATE_ID_1}: begin
-      //   next_state = `STATE_EX_A_ADD0;
-      // end
-
-      {`ADD, `STATE_EX_A_ADD0}: begin
+      {`MATH, `STATE_EX_A_ADD0}: begin
         next_state = `STATE_WB_JR;
       end
 
-      {`ADD, `STATE_WB_JR}: begin
+      {`MATH, `STATE_WB_JR}: begin
         next_state = `STATE_IF;
       end
 
@@ -236,23 +187,3 @@ module fsmCommand (
     endcase
   end
 endmodule
-
-// module test();
-  
-//   wire [3:0] next_state;
-//   reg [3:0] state;
-//   reg [5:0] instr;
-
-//   initial begin
-//     state = 4'b1000;
-//     instr = 6'b000101;
-//   end
-
-//   fsmCommand DUT(next_state, state, instr);
-
-//   initial begin
-//     #10
-//     $display("%b, %b, %b", next_state, state, instr);
-//   end
-
-// endmodule

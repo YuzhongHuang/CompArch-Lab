@@ -6,20 +6,17 @@
 module testconcat();	
 
 	wire[31:0] concat;
-	wire[3:0] PC;
 	wire[25:0] dout;
 
 	reg		begintest;
-	wire		dutpassed;
+	wire	dutpassed;
 
 	concat dut(.concat(concat),
-			.PC(PC),
 			.dout(dout));
 
 	concattestbench test(.begintest(begintest),
 							.endtest(endtest),
 							.dutpassed(dutpassed),
-							.PC(PC),
 							.dout(dout),
 							.concat(concat));
 
@@ -45,7 +42,6 @@ module concattestbench (
 	output reg endtest,
 	output reg dutpassed,
 
-	output reg [3:0] PC,
 	output reg [25:0] dout,
 	input[31:0] concat
 );
@@ -54,8 +50,8 @@ module concattestbench (
 		endtest = 0;
 		dutpassed = 1;
 
-		PC=4'd12; dout=26'd1753; #1
-		if (concat != 32'b11000000000000000001101101100100) begin
+		dout=26'd1753; #1
+		if (concat != 32'b00000000000000000000011011011001) begin
 			dutpassed = 0;
 			$display("Concat broken.");
 		end

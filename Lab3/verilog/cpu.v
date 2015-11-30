@@ -36,7 +36,6 @@ module CPU(
 	wire [5:0] IR_FSM_funct;
 
 	wire [31:0] SEImm_out;
-	wire [31:0] Shifter_AluMuxB;
 
 	wire [4:0]  DstMux_RegFile;
 	wire [31:0] MDR_RegMux;
@@ -148,7 +147,6 @@ module CPU(
 
 	concat Concat(
 		.concat(Concat_Res),
-		.PC(PC_out),
 		.dout(IR_Concat)
 		);
 
@@ -173,8 +171,7 @@ module CPU(
 		.zeroflag(zeroflag),
 		.a(AluMuxA_Alu),
 		.b(AluMuxB_Alu),
-		.op(ALUOP),
-		.clk(clk)
+		.op(ALUOP)
 		);
 
 	// All Muxes

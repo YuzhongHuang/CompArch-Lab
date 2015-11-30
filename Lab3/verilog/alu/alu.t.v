@@ -3,7 +3,6 @@
 module testalu();	
 	wire [31:0] alu_res, a, b;
 	wire [5:0] op;
-	wire clk;
 
 	reg	begintest;
 	wire dutpassed;
@@ -11,8 +10,7 @@ module testalu();
 	alu dut(.alu_res(alu_res),
 			.a(a),
 			.b(b),
-			.op(op),
-			.clk(clk));
+			.op(op));
 
 	alutestbench test(.begintest(begintest),
 					.endtest(endtest),
@@ -20,7 +18,6 @@ module testalu();
 					.a(a),
 					.b(b),
 					.op(op),
-					.clk(clk),
 					.alu_res(alu_res));
 
 	initial begin
@@ -47,18 +44,12 @@ module alutestbench (
 
 	output reg [31:0] a, b,
 	output reg [5:0] op,
-	output reg clk,
 	input [31:0] alu_res
 );
-
-	always begin
-        #5 clk = !clk;
-    end
 
 	always @(posedge begintest) begin
 		endtest = 0;
 		dutpassed = 1;
-		clk = 0;
 
 		// ADDITION TEST CASES
 		op=6'b10_0000; 
@@ -68,18 +59,21 @@ module alutestbench (
 			$display("Addition: Carryout & overflow failed.");
 		end
 
+		op=6'bx; op=6'b10_0000; 
 		a=2**30+2**29; b=2**30; #10;
 		if (alu_res != a+b) begin
 			dutpassed = 0;
 			$display("Addition: !Carryout & overflow failed.");
 		end
 
+		op=6'bx; op=6'b10_0000; 
 		a=2**31+2**30; b=2**31+2**30+2**28; #10;
 		if (alu_res != a+b) begin
 			dutpassed = 0;
 			$display("Addition: Carryout & !overflow failed.");
 		end
 
+		op=6'bx; op=6'b10_0000; 
 		a=2**28; b=2**30; #10
 		if (alu_res != a+b) begin
 			dutpassed = 0;
@@ -94,18 +88,21 @@ module alutestbench (
 			$display("Subtraction: Carryout & overflow failed.");
 		end
 
+		op=6'bx; op=6'b10_0010; 
 		a=2**30+2**28; b=2**31+2**29; #10;
 		if (alu_res != a-b) begin
 			dutpassed = 0;
 			$display("Subtraction: !Carryout & overflow failed.");
 		end
 
+		op=6'bx; op=6'b10_0010; 
 		a=2**31+2**30+2**29; b=2**30; #10;
 		if (alu_res != a-b) begin
 			dutpassed = 0;
 			$display("Subtraction: Carryout & !overflow failed.");
 		end
 
+		op=6'bx; op=6'b10_0010; 
 		a=2**30; b=2**31+2**30+2**29+2**28; #10
 		if (alu_res != a-b) begin
 			dutpassed = 0;
@@ -120,18 +117,21 @@ module alutestbench (
 			$display("Xor: 0 ^ 0 failed");
 		end
 
+		op=6'bx; op=6'b00_1110;
 		a=0; b=2**32-1; #10
 		if (alu_res != (a^b)) begin
 			dutpassed = 0;
 			$display("Xor: 0 ^ 1 failed");
 		end
 
+		op=6'bx; op=6'b00_1110;
 		a=2**32-1; b=0; #10
 		if (alu_res != (a^b)) begin
 			dutpassed = 0;
 			$display("Xor: 1 ^ 0 failed");
 		end
 
+		op=6'bx; op=6'b00_1110;
 		a=2**32-1; b=2**32-1; #10
 		if (alu_res != (a^b)) begin
 			dutpassed = 0;
@@ -146,18 +146,21 @@ module alutestbench (
 			$display("SLT: 0 < 0 failed");
 		end
 
+		op=6'bx; op=6'b10_1010;
 		a=0; b=2**32-1; #10
 		if (alu_res != 1) begin
 			dutpassed = 0;
 			$display("SLT: 0 < 1 failed");
 		end
 
+		op=6'bx; op=6'b10_1010;
 		a=2**32-1; b=0; #10
 		if (alu_res != 0) begin
 			dutpassed = 0;
 			$display("SLT: 1 < 0 failed");
 		end
 
+		op=6'bx; op=6'b10_1010;
 		a=2**32-1; b=2**32-1; #10
 		if (alu_res != 0) begin
 			dutpassed = 0;

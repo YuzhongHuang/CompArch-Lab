@@ -4,20 +4,17 @@
 
 module fsm 
 (
-	input 		clk, // positive edge of the serial clock 
-	input 		zeroflag,
+	input clk,
+	input zeroflag,
 	input [5:0] instr,
 	input [5:0] IR_ALU_OP,
-	// output reg 	[3:0] currState,
-	output reg 	PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
+	output reg PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
 				A_WE, B_WE, REG_WE, REG_IN, CONCAT_WE, SE_WE,
-	output reg 	[1:0] ALU_SRCB, PC_SRC, DST,
-	output reg 	[5:0] ALU_OP
+	output reg [1:0] ALU_SRCB, PC_SRC, DST,
+	output reg [5:0] ALU_OP
 );
 
-/*
- * state encoding
- */
+// state encoding
 localparam  STATE_IF = 0,
 			STATE_ID_1 = 1,
 			STATE_ID_J = 2,
@@ -35,11 +32,6 @@ localparam  STATE_IF = 0,
 			STATE_WB_JAL = 14,
 			STATE_WB_JR = 15;
 
-/*
-* state reg declaration
-*/
-
-// TODO: Decode Instruction Sequence for ALU Operation
 initial begin
 	MEM_IN <= 1;
 	IR_WE <= 1;
@@ -60,12 +52,8 @@ fsmCommand LUT(.next_state(next_state),
 		ALU_SRCA <= 0; ALU_OP <= 0; A_WE <= 0; B_WE <= 0; 
 		REG_WE <= 0; REG_IN <= 0; DST <= 0; ALU_SRCB <= 0; PC_SRC <= 0;
 		CONCAT_WE <= 0; SE_WE <= 0;
-		// $display("Instruction: %b", instr);
-		// $display("state: %b", state);
-		// $display("next state: %b", next_state);
-		/*
-		 * case statement to change around states given the situation
-		 */
+
+		// case statement to change around states given the situation
 		case (state)
 			default: begin
 				MEM_IN <= 1;
@@ -74,27 +62,40 @@ fsmCommand LUT(.next_state(next_state),
 				$display("\nfsm default");
 			end
 
-			STATE_IF: begin // read address bits from MOSI
+			STATE_IF: begin
 				PC_WE <= 1;
 				MEM_IN <= 1;
+
+				// If next state is BNE, do not allow IR to be overwritten
 				if (next_state != STATE_ID_BNE) begin
-					IR_WE <= 1;
+					// If next state is Jump, Concat needs to be overwritten
+					if (next_state == STATE_ID_J) begin
+						CONCAT_WE <= 1;
+					end else begin
+						IR_WE <= 1;
+					end
 				end
+
+				// If next state is BNE, or the instruction requires the immediate register,
+				// allow it to be overwritten
+				$display("instr: %d", instr);
+				if ((next_state == STATE_ID_BNE) || (next_state == STATE_ID_J)) begin
+					SE_WE <= 1;
+				end
+
 				ALU_SRCA <= 1;
 				PC_SRC <= 1;
 				ALU_OP <= 32;
 				state <= next_state;
-				if (next_state == STATE_ID_J) begin
-					CONCAT_WE <= 1;
-				end else if ((next_state == STATE_ID_BNE) ||
-								(instr == 14) ||
-								(instr == 43)) begin
-					SE_WE <= 1;
-				end
+				
 				$display("\nfsm IF");
 			end
 
 			STATE_ID_1: begin
+				// Allow SE to be overwritten for XORI, SW and LW
+				if ((instr == 14) || (instr == 43) || (instr == 35)) begin
+					SE_WE <= 1;
+				end
 				A_WE <= 1;
 				B_WE <= 1;
 				state <= next_state;
@@ -102,18 +103,19 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_ID_J: begin
-				PC_WE <= 1;
-				//CONCAT_WE <= 1;
+				//PC_WE <= 1;
 				if (instr == 3) begin
 					state <= STATE_WB_JAL;
+					PC_WE <= 1;
 				end else begin
 					state <= 4'bx;
 				end
+
 				$display("\nfsm ID_J");
 			end
 
 			STATE_ID_BNE: begin
-				PC_SRC <= 1; //ALU
+				PC_SRC <= 1; // chooses ALU out
 				A_WE <= 1;
 				B_WE <= 1;
 				state <= next_state;
@@ -124,23 +126,20 @@ fsmCommand LUT(.next_state(next_state),
 				ALU_OP <= 14;
 				ALU_SRCB <= 2;
 				state <= next_state;
-				$display("instr: %b", instr);
-				$display("NEXT STATE: %b", next_state);
 				$display("\nfsm EX_OP_IMM");
 			end
 
 			STATE_EX_ADDI: begin
-				ALU_SRCB <= 2; //SE(Imm)
+				ALU_SRCB <= 2; // chooses SE(Imm)
 				ALU_OP <= 32;
 				state <= next_state;
 				$display("\nfsm EX_ADDI");
 			end
 
 			STATE_EX_A_OP_B: begin
-				ALU_SRCB <= 1; // B
+				ALU_SRCB <= 1; // chooses Register B
 				$display("IR_ALU_OP: %b", IR_ALU_OP);
 				ALU_OP <= IR_ALU_OP;
-				//ALU_OP <= 32;
 				state <= next_state;
 				$display("\nfsm EX_A_OP_B");
 			end
@@ -148,14 +147,13 @@ fsmCommand LUT(.next_state(next_state),
 			STATE_EX_A_ADD0: begin
 				ALU_OP <= 32;
 				state <= next_state;
-				// GO TO NEXT STATE
 				$display("\nfsm EX_A_ADD0");
 			end
 
 			STATE_EX_BNE: begin
 				PC_WE <= !zeroflag;
-				ALU_SRCA <= 1; //PC
-				ALU_SRCB <= 2;//SE(Imm)
+				ALU_SRCA <= 1; // chooses PC
+				ALU_SRCB <= 2; // chooses SE(Imm)
 				ALU_OP <= 32;
 				IR_WE <= 1;
 				PC_SRC <= 1; 
@@ -165,7 +163,6 @@ fsmCommand LUT(.next_state(next_state),
 
 			STATE_MEM_READ: begin
 				state <= next_state;
-				// GO TO NEXT STATE
 				$display("\nfsm MEM_READ");
 			end
 
@@ -203,7 +200,7 @@ fsmCommand LUT(.next_state(next_state),
 			end
 
 			STATE_WB_JR: begin
-				PC_WE <= 1;
+				//PC_WE <= 1;
 				PC_SRC <= 2;
 				state <= 4'bx;
 				$display("\nfsm WB_JR");
@@ -211,32 +208,3 @@ fsmCommand LUT(.next_state(next_state),
 		endcase
 	end	
 endmodule
-
-
-// module testfsm();
-
-// 	reg clk, zeroflag;
-// 	wire PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-// 				A_WE, B_WE, REG_WE, REG_IN;
-// 	wire [1:0] ALU_SRCB, PC_SRC, DST;
-// 	wire [2:0] ALU_OP;
-
-// 	fsm myFsm(clk, zeroflag, PC_WE, MEM_IN, MEM_WE, IR_WE, ALU_SRCA,
-// 				A_WE, B_WE, REG_WE, REG_IN, ALU_SRCB, PC_SRC, DST, ALU_OP);
-
-// 	always begin
-// 		#5 clk = !clk;
-// 	end
-
-// 	always @(myFsm.state, myFsm.clk) begin
-// 		$display("STATE: %b", myFsm.state);
-// 	end
-
-// 	initial begin 
-// 		clk=0; #20;
-// 		$display("PC_WE: %b", myFsm.PC_WE);
-// 		$finish;
-// 	end
-
-// endmodule
- 

@@ -72,10 +72,6 @@ module testFsm();
         end
     end
     
-    // Your Test Code
-    // Be sure to test each of the three conditioner functions:
-    // Synchronize, Clean, Preprocess (edge finding)
-    
 endmodule
 
 module fsmtestbench (
