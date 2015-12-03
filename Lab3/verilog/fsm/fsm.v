@@ -59,7 +59,7 @@ fsmCommand LUT(.next_state(next_state),
 				MEM_IN <= 1;
 				IR_WE <= 1;
 				state <= 0;
-				$display("\nfsm default");
+				$display("fsm default");
 			end
 
 			STATE_IF: begin
@@ -88,7 +88,7 @@ fsmCommand LUT(.next_state(next_state),
 				ALU_OP <= 32;
 				state <= next_state;
 				
-				$display("\nfsm IF");
+				$display("fsm IF");
 			end
 
 			STATE_ID_1: begin
@@ -99,7 +99,7 @@ fsmCommand LUT(.next_state(next_state),
 				A_WE <= 1;
 				B_WE <= 1;
 				state <= next_state;
-				$display("\nfsm ID_1");
+				$display("fsm ID_1");
 			end
 
 			STATE_ID_J: begin
@@ -111,7 +111,7 @@ fsmCommand LUT(.next_state(next_state),
 					state <= 4'bx;
 				end
 
-				$display("\nfsm ID_J");
+				$display("fsm ID_J");
 			end
 
 			STATE_ID_BNE: begin
@@ -119,21 +119,21 @@ fsmCommand LUT(.next_state(next_state),
 				A_WE <= 1;
 				B_WE <= 1;
 				state <= next_state;
-				$display("\nfsm ID_BNE");
+				$display("fsm ID_BNE");
 			end
 
 			STATE_EX_OP_IMM: begin
 				ALU_OP <= 14;
 				ALU_SRCB <= 2;
 				state <= next_state;
-				$display("\nfsm EX_OP_IMM");
+				$display("fsm EX_OP_IMM");
 			end
 
 			STATE_EX_ADDI: begin
 				ALU_SRCB <= 2; // chooses SE(Imm)
 				ALU_OP <= 32;
 				state <= next_state;
-				$display("\nfsm EX_ADDI");
+				$display("fsm EX_ADDI");
 			end
 
 			STATE_EX_A_OP_B: begin
@@ -141,69 +141,69 @@ fsmCommand LUT(.next_state(next_state),
 				$display("IR_ALU_OP: %b", IR_ALU_OP);
 				ALU_OP <= IR_ALU_OP;
 				state <= next_state;
-				$display("\nfsm EX_A_OP_B");
+				$display("fsm EX_A_OP_B");
 			end
 
 			STATE_EX_A_ADD0: begin
 				ALU_OP <= 32;
 				state <= next_state;
-				$display("\nfsm EX_A_ADD0");
+				$display("fsm EX_A_ADD0");
 			end
 
 			STATE_EX_BNE: begin
 				PC_WE <= !zeroflag;
-				ALU_SRCA <= 1; // chooses PC
-				ALU_SRCB <= 2; // chooses SE(Imm)
+				ALU_SRCA <= 0; // chooses A
+				ALU_SRCB <= 1; // chooses B
 				ALU_OP <= 32;
 				IR_WE <= 1;
 				PC_SRC <= 1; 
 				state <= 4'bx;
-				$display("\nfsm EX_BNE");
+				$display("fsm EX_BNE");
 			end
 
 			STATE_MEM_READ: begin
 				state <= next_state;
-				$display("\nfsm MEM_READ");
+				$display("fsm MEM_READ");
 			end
 
 			STATE_MEM_WRITE: begin
 				MEM_WE <= 1;
 				state <= 4'bx;
-				$display("\nfsm MEM_WRITE");
+				$display("fsm MEM_WRITE");
 			end
 
 			STATE_WB_XORI: begin
 				REG_WE <= 1;
 				state <= 4'bx;
-				$display("\nfsm WB_XORI");
+				$display("fsm WB_XORI");
 			end
 
 			STATE_WB_LW: begin
 				REG_WE <= 1;
 				REG_IN <= 1;
 				state <= 4'bx;
-				$display("\nfsm WB_LW");
+				$display("fsm WB_LW");
 			end
 
 			STATE_WB_ALU: begin
 				REG_WE <= 1;
 				DST <= 1;
 				state <= 4'bx;
-				$display("\nfsm WB_ALU");
+				$display("fsm WB_ALU");
 			end
 
 			STATE_WB_JAL: begin
 				REG_WE <= 1;
 				DST <= 2;
 				state <= 4'bx;
-				$display("\nfsm WB_JAL");
+				$display("fsm WB_JAL");
 			end
 
 			STATE_WB_JR: begin
 				//PC_WE <= 1;
 				PC_SRC <= 2;
 				state <= 4'bx;
-				$display("\nfsm WB_JR");
+				$display("fsm WB_JR");
 			end
 		endcase
 	end	

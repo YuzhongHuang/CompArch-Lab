@@ -15,7 +15,7 @@ module datamemory(
 	end
 
 	initial begin
-		$readmemb("datamemory/YuzhongSelinaHieu.dat", memory);
+		$readmemb("datamemory/secondtest.dat", memory);
 	end
 
 	assign dout = memory[address];
